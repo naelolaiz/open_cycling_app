@@ -17,6 +17,7 @@ public:
         std::stringstream s;
         s << "Power Balance: " << getPowerBalance() << "%" << std::endl;
         s << "Instant Power: " << getInstantPowerInWatts()  << " Watts" << std::endl;
+        return s;
     }
 
 private:
