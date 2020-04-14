@@ -20,73 +20,73 @@ IndoorBikeData::IndoorBikeData(const quint8 *data)
     uint16_t index=2;
     if(_moreData)
     {
-        _instantSpeed = qFromLittleEndian<quint16>(data[index]);
+        _instantSpeed = data[index]+(data[index+1]<<8);
         index += 2;
     }
     if (_averageSpeedPresent)
     {
-        _averageSpeed = qFromLittleEndian<quint16>(data[index]);
+        _averageSpeed = data[index]+(data[index+1]<<8);
         index += 2;
     }
     if (_instantCadencePresent)
     {
-        _instantCadence = qFromLittleEndian<quint16>(data[index]);
+        _instantCadence = data[index]+(data[index+1]<<8);
         index += 2;
     }
     if (_averageCadencePresent)
     {
-        _averageCadence = qFromLittleEndian<quint16>(data[index]);
+        _averageCadence = data[index]+(data[index+1]<<8);
         index +=2;
     }
     if (_totalDistancePresent)
     {
         // TODO! !?
         //_totalDistance = qFromLittleEndian
-        _totalDistance = data[index] + (data[index+1]<<8) + (data[index+2]<<8); // ?
+        _totalDistance = data[index] + (data[index+1]<<8) + (data[index+2]<<16); // ?
         index += 3;
     }
     if (_resistanceLevelPresent)
     {
-        _resistanceLevel = qFromLittleEndian<qint16>(data[index]);
+        _resistanceLevel = data[index] + (data[index+1]<<8);
         index += 2;
     }
     if (_instantPowerPresent)
     {
-        _instantPower = qFromLittleEndian<qint16>(data[index]);
+        _instantPower = data[index] + (data[index+1]<<8);
         index += 2;
     }
     if (_averagePowerPresent)
     {
-        _averagePower = qFromLittleEndian<qint16>(data[index]);
+        _averagePower = data[index] + (data[index+1]<<8);
         index += 2;
     }
     if(_expendedEnergyPresent)
     {
-        _totalEnergy = qFromLittleEndian<quint16>(data[index]);
+        _totalEnergy = data[index]+(data[index+1]<<8);
         index += 2;
-        _energyPerHour = qFromLittleEndian<quint16>(data[index]);
+        _energyPerHour = data[index]+(data[index+1]<<8);
         index += 2;
-        _energyPerMinute = qFromLittleEndian<quint8>(data[index]);
+        _energyPerMinute = reinterpret_cast<quint8>(data[index]);
         index++;
     }
     if(_heartRatePresent)
     {
-        _heartRate = qFromLittleEndian<quint8>(data[index]);
+        _heartRate = reinterpret_cast<quint8>(data[index]);
         index++;
     }
     if(_metabolicEquivalentPresent)
     {
-        _metabolicEquivalent = qFromLittleEndian<quint8>(data[index]);
+        _metabolicEquivalent = reinterpret_cast<quint8>(data[index]);
         index++;
     }
     if(_elapsedTimePresent)
     {
-        _elapsedTime = qFromLittleEndian<quint16>(data[index]);
+        _elapsedTime = data[index]+(data[index+1]<<8);
         index += 2;
     }
     if(_remainingTimePresent)
     {
-        _remainingTime = qFromLittleEndian<quint16>(data[index]);
+        _remainingTime = data[index]+(data[index+1]<<8);
         index += 2;
 
     }

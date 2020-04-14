@@ -15,7 +15,7 @@ CSCMeasurementData::CSCMeasurementData(const quint8 *data, const CSCMeasurementD
         _wheelRevolutions = data[index] + (data[index+1]<<8) + (data[index+2]<<16) + (data[index+3]<<24);
 //        assert(_wheelRevolutions == qFromLittleEndian<quint32>(data[index]));
         index += 4;
-        _lastWheelEventTimestamp = qFromLittleEndian<quint16>(data[index]);
+        _lastWheelEventTimestamp = data[index] + (data[index+1]<<8);
         index += 2;
         if(_lastWheelEventTimestamp < _previousWheelEventTimestamp) // overflow happened
         {
@@ -24,9 +24,9 @@ CSCMeasurementData::CSCMeasurementData(const quint8 *data, const CSCMeasurementD
     }
     if(_crankRevolutionDataPresent)
     {
-        _crankRevolutions = qFromLittleEndian<quint16>(data[index]);
+        _crankRevolutions = data[index] + (data[index+1]<<8);
         index += 2;
-        _lastCrankEventTimestamp = qFromLittleEndian<quint16>(data[index]);
+        _lastCrankEventTimestamp = data[index] + (data[index+1]<<8);
         index += 2;
         if(_lastCrankEventTimestamp < _previousCrankEventTimestamp) // overflow happened
         {

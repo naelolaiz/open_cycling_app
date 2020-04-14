@@ -2,9 +2,9 @@
 #include <QtEndian>
 
 SupportedPowerRange::SupportedPowerRange(const quint8 *data)
-    : _minimumPowerInWatts(qFromLittleEndian<qint16>(data[0]))
-    , _maximumPowerInWatts(qFromLittleEndian<qint16>(data[2]))
-    , _minimumIncrementInWatts(qFromLittleEndian<quint16>(data[4]))
+    : _minimumPowerInWatts(data[0]     + (data[1]<<8))
+    , _maximumPowerInWatts(data[2]     + (data[3]<<8))//qFromLittleEndian<qint16>(data[2]))
+    , _minimumIncrementInWatts(data[4] + (data[5]<<8))
 {
 }
 
@@ -33,9 +33,9 @@ std::stringstream SupportedPowerRange::dump()
 }
 
 SupportedResistanceLevelRange::SupportedResistanceLevelRange(const quint8 *data)
-    : _minimumResistanceLevel(qFromLittleEndian<qint16>(data[0]))
-    , _maximumResistanceLevel(qFromLittleEndian<qint16>(data[2]))
-    , _minimumIncrement(qFromLittleEndian<quint16>(data[4]))
+    : _minimumResistanceLevel(data[0] + (data[1]<<8))
+    , _maximumResistanceLevel(data[2] + (data[3]<<8))
+    , _minimumIncrement(data[4] + (data[5]<<8))
 {
 }
 

@@ -19,7 +19,7 @@ CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8 * data)
 {
     uint16_t index = 2;
 
-    _instantPowerInWatts = qFromLittleEndian<qint16>(data[index]);
+    _instantPowerInWatts = data[index] + (data[index+1]<<8);
     index += 2;
     if(_pedalBalancePresent)
     {
@@ -28,7 +28,7 @@ CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8 * data)
     }
     if(_accumulatedTorquePresent)
     {
-        _accumulatedTorque = qFromLittleEndian<quint16>(data[index]);
+        _accumulatedTorque = data[index]+(data[index+1]<<8);
         index += 2;
     }
     if(_wheelRevolutionDataPresent)
@@ -36,14 +36,14 @@ CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8 * data)
         _wheelRevolutions = data[index] + (data[index+1]<<8) + (data[index+2]<<16) + (data[index+3]<<24);
         //_wheelRevolutions = qFromLittleEndian<quint32>(data[index]);
         index += 4;
-        _wheelRevolutionsLastEventTs = qFromLittleEndian<quint16>(data[index]);
+        _wheelRevolutionsLastEventTs = data[index]+(data[index+1]<<8);
         index += 2;
     }
     if(_crankRevolutionDataPresent)
     {
-        _crankRevolutions = qFromLittleEndian<quint16>(data[index]);
+        _crankRevolutions = data[index]+(data[index+1]<<8);
         index += 2;
-        _crankRevolutionsLastEventTs = qFromLittleEndian<quint16>(data[index]);
+        _crankRevolutionsLastEventTs = data[index] + (data[index+1]<<8);
         index += 2;
     }
 }
