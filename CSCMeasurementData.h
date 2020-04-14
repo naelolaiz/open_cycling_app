@@ -3,6 +3,7 @@
 
 #include <QtGlobal>
 #include <cstdint>
+#include <sstream>
 
 class CSCMeasurementData
 {
@@ -12,8 +13,15 @@ public:
     uint32_t getWheelRevolutions() const;
     uint16_t getCrankRevolutions() const;
     double getLastWheelEventTimestampInSecs() const;
-
     double getLastCrankEventTimestampInSecs() const;
+
+    std::stringstream dump() const 
+    {
+        std::stringstream s;
+        s << "Crank revolutions : " << getCrankRevolutions() << " @ " << getLastCrankEventTimestampInSecs() << std::endl 
+          << "Wheel revolutions : " << getWheelRevolutions() << " @ " << getLastWheelEventTimestampInSecs() << std::endl;
+        return s;
+    }
 
 private:
     const bool _wheelRevolutionDataPresent{false};

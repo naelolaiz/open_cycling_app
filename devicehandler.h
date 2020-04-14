@@ -82,6 +82,27 @@ class DeviceHandler : public BluetoothBaseClass
     Q_PROPERTY(float average READ average NOTIFY statsChanged)
     Q_PROPERTY(int time READ time NOTIFY statsChanged)
     Q_PROPERTY(float calories READ calories NOTIFY statsChanged)
+
+    Q_PROPERTY(double powerBalance READ getPedalBalance NOTIFY statsChanged)
+    Q_PROPERTY(int powerInWatts READ getPowerInWatts NOTIFY statsChanged)
+
+    Q_PROPERTY(unsigned int wheelRevolutions READ getWheelRevolutions NOTIFY statsChanged)
+    Q_PROPERTY(double wheelRevsTs READ getWheelRevsTs NOTIFY statsChanged)
+    Q_PROPERTY(unsigned int crankRevolutions READ getCrankRevolutions NOTIFY statsChanged)
+    Q_PROPERTY(double crankRevsTs READ getCrankRevsTs NOTIFY statsChanged)
+
+    Q_PROPERTY(double instantSpeed READ getInstantSpeed NOTIFY statsChanged)
+    Q_PROPERTY(double averageSpeed READ getAverageSpeed NOTIFY statsChanged)
+    Q_PROPERTY(double instantCadenceInRPM READ getInstantCadenceInRPM NOTIFY statsChanged)
+    Q_PROPERTY(double averageCadenceInRPM READ getAverageCadenceInRPM NOTIFY statsChanged)
+    Q_PROPERTY(unsigned int totalDistanceInM READ getTotalDistanceInM NOTIFY statsChanged)
+    Q_PROPERTY(int resistanceLevel READ getResistanceLevel NOTIFY statsChanged)
+    Q_PROPERTY(int instantPowerInWatts READ getInstantPowerInWatts NOTIFY statsChanged)
+    Q_PROPERTY(int averagePowerInWatts READ getAveragePowerInWatts NOTIFY statsChanged)
+
+
+
+
     Q_PROPERTY(AddressType addressType READ addressType WRITE setAddressType)
 
 public:
@@ -110,6 +131,22 @@ public:
     int maxHR() const;
     int minHR() const;
     float calories() const;
+
+
+    double getPedalBalance() const;
+    int16_t getPowerInWatts() const;
+    uint32_t getWheelRevolutions() const;
+    double getWheelRevsTs() const;
+    uint32_t getCrankRevolutions() const;
+    double getCrankRevsTs() const;
+    double getInstantSpeed() const;
+    double getAverageSpeed() const;
+    double getInstantCadenceInRPM() const;
+    double getAverageCadenceInRPM() const;
+    uint32_t getTotalDistanceInM() const;
+    int16_t  getResistanceLevel() const;
+    int16_t getInstantPowerInWatts() const;
+    int16_t getAveragePowerInWatts() const;
 
 signals:
     void measuringChanged();

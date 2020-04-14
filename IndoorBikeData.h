@@ -3,6 +3,7 @@
 
 #include <QtGlobal>
 #include <cstdint>
+#include <sstream>
 
 class IndoorBikeData
 {
@@ -23,6 +24,7 @@ public:
     uint8_t getMetabolicEquivalent() const;
     uint16_t getElapsedTimeInSecs() const;
     uint16_t getRemainingTimeInSecs() const;
+    std::stringstream dump() const;
 private:
     const bool _moreData;
     const bool _averageSpeedPresent;

@@ -3,6 +3,7 @@
 
 #include <QtGlobal>
 #include <cstdint>
+#include <sstream>
 
 class CyclingPowerMeasurementData
 {
@@ -10,6 +11,14 @@ public:
     CyclingPowerMeasurementData(quint16 flags, const quint8 * data); // todo: add previous state for CSC
     double getPowerBalance() const;
     int16_t getInstantPowerInWatts() const;
+
+    std::stringstream dump() const 
+    {
+        std::stringstream s;
+        s << "Power Balance: " << getPowerBalance() << "%" << std::endl;
+        s << "Instant Power: " << getInstantPowerInWatts()  << " Watts" << std::endl;
+    }
+
 private:
     const bool _pedalBalancePresent;
     const bool _pedalBalanceReferencePresent;

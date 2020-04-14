@@ -57,7 +57,7 @@ GamePage {
     infoMessage: deviceHandler.info
 
     property real __timeCounter: 0;
-    property real __maxTimeCount: 60
+    property real __maxTimeCount: 60000 //60
     property string relaxText: qsTr("Relax!\nWhen you are ready, press Start. You have %1s time to increase heartrate so much as possible.\nGood luck!").arg(__maxTimeCount)
 
     function close()

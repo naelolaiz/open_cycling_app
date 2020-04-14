@@ -53,6 +53,7 @@
 #include "deviceinfo.h"
 #include <QtEndian>
 #include <QRandomGenerator>
+#include <QDebug>
 
 DeviceHandler::DeviceHandler(QObject *parent) :
     BluetoothBaseClass(parent),
@@ -446,9 +447,8 @@ void DeviceHandler::updatePowerValue(const QLowEnergyCharacteristic &c, const QB
     if(c.uuid() != QBluetoothUuid(QBluetoothUuid::CyclingPowerMeasurement))
         return;
     auto data = reinterpret_cast<const quint8 *>(value.constData());
-    const CSCMeasurementData measurementData(data[0], data, m_currentCSCData.get());
-    addCSCMeasurement(measurementData);
-
+    const CyclingPowerMeasurementData measurementData(qFromLittleEndian<quint16>(data[0]), data);
+    addPowerMeasurement(measurementData);
 }
 
 //! [Reading value]
@@ -634,6 +634,104 @@ float DeviceHandler::calories() const
     return m_calories;
 }
 
+double DeviceHandler::getPedalBalance() const
+{
+    if(!m_currentPowerData)
+        return 0.;
+    return m_currentPowerData->getPowerBalance();
+}
+
+int16_t DeviceHandler::getPowerInWatts() const
+{
+    if(!m_currentPowerData)
+        return 0;
+    return m_currentPowerData->getInstantPowerInWatts();
+}
+
+uint32_t DeviceHandler::getWheelRevolutions() const
+{
+    if(!m_currentCSCData)
+        return 0u;
+    return m_currentCSCData->getWheelRevolutions();
+}
+
+double DeviceHandler::getWheelRevsTs() const
+{
+    if(!m_currentCSCData)
+        return 0u;
+    return m_currentCSCData->getLastWheelEventTimestampInSecs();
+}
+
+uint32_t DeviceHandler::getCrankRevolutions() const
+{
+    if(!m_currentCSCData)
+        return 0u;
+    return m_currentCSCData->getCrankRevolutions();
+}
+
+double DeviceHandler::getCrankRevsTs() const
+{
+    if(!m_currentCSCData)
+        return 0u;
+    return m_currentCSCData->getLastCrankEventTimestampInSecs();
+}
+
+double DeviceHandler::getInstantSpeed() const
+{
+    if(!m_currentIndoorBikeData)
+        return 0.;
+    return m_currentIndoorBikeData->getInstantSpeedInKmPerSecond();
+}
+
+double DeviceHandler::getAverageSpeed() const
+{
+    if(!m_currentIndoorBikeData)
+        return 0.;
+    return m_currentIndoorBikeData->getAverageSpeedInKmPerSecond();
+}
+
+double DeviceHandler::getInstantCadenceInRPM() const
+{
+    if(!m_currentIndoorBikeData)
+        return 0.;
+    return m_currentIndoorBikeData->getInstantCadenceInRPM();
+}
+
+double DeviceHandler::getAverageCadenceInRPM() const
+{
+    if(!m_currentIndoorBikeData)
+        return 0.;
+    return m_currentIndoorBikeData->getAverageCadenceInRPM();
+}
+
+uint32_t DeviceHandler::getTotalDistanceInM() const
+{
+    if(!m_currentIndoorBikeData)
+        return 0u;
+    return m_currentIndoorBikeData->getTotalDistanceInMeters();
+}
+
+int16_t DeviceHandler::getResistanceLevel() const
+{
+    if(!m_currentIndoorBikeData)
+        return 0;
+    return m_currentIndoorBikeData->getResistanceLevel();
+}
+
+int16_t DeviceHandler::getInstantPowerInWatts() const
+{
+    if(!m_currentIndoorBikeData)
+        return 0;
+    return m_currentIndoorBikeData->getInstantPowerInWatts();
+}
+
+int16_t DeviceHandler::getAveragePowerInWatts() const
+{
+    if(!m_currentIndoorBikeData)
+        return 0;
+    return m_currentIndoorBikeData->getAveragePowerInWatts();
+}
+
 void DeviceHandler::addHRMeasurement(int value)
 {
     m_currentValue = value;
@@ -656,17 +754,23 @@ void DeviceHandler::addHRMeasurement(int value)
 
 void DeviceHandler::addFitnessBikeDataMeasurement(const IndoorBikeData & bikeData)
 {
+    qDebug() << bikeData.dump().str().c_str();
     m_currentIndoorBikeData.reset(new IndoorBikeData(bikeData));
+    emit statsChanged();
 }
 
 void DeviceHandler::addCSCMeasurement(const CSCMeasurementData & data)
 {
+    qDebug() << data.dump().str().c_str();
     m_currentCSCData.reset(new CSCMeasurementData(data));
+    emit statsChanged();
 }
 
 void DeviceHandler::addPowerMeasurement(const CyclingPowerMeasurementData &data)
 {
+    qDebug() << data.dump().str().c_str();
     m_currentPowerData.reset(new CyclingPowerMeasurementData(data));
+    emit statsChanged();
 }
 
 void DeviceHandler::tryToStop()

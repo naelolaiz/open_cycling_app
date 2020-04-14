@@ -17,7 +17,7 @@ IndoorBikeData::IndoorBikeData(quint16 flags, const quint8 *data)
       _elapsedTimePresent         ((flags >> 11) & 1),
       _remainingTimePresent       ((flags >> 12) & 1)
 {
-    uint16_t index=1;
+    uint16_t index=2;
     if(_moreData)
     {
         _instantSpeed = qFromLittleEndian<quint16>(data[index]);
@@ -165,4 +165,27 @@ uint16_t IndoorBikeData::getElapsedTimeInSecs() const
 uint16_t IndoorBikeData::getRemainingTimeInSecs() const
 {
     return _remainingTime;
+}
+
+std::stringstream IndoorBikeData::dump() const
+{
+    std::stringstream s;
+    s << "Instant Speed: "  << getInstantSpeedInKmPerSecond() << " Km/s" << std::endl;
+    if(_averageSpeedPresent)        s << "average speed: "  << getAverageSpeedInKmPerSecond() << " Km/s" << std::endl;
+    if(_instantCadencePresent)      s  << "Instant Cadence:" << getInstantCadenceInRPM() << " RPM" << std::endl;
+    if(_averageCadencePresent)      s  << "Average Cadence: " << getAverageCadenceInRPM() << " RPM" << std::endl;
+    if(_totalDistancePresent)       s << "Total Distance: " << getTotalDistanceInMeters() << " meters" << std::endl;
+    if(_resistanceLevelPresent)     s << "Resistance Level: " << getResistanceLevel() << " (unitless) " << std::endl;
+    if(_instantPowerPresent)        s << "Instant Power: " << getInstantPowerInWatts() << " Watts" << std::endl;
+    if(_averagePowerPresent)        s << "Average Power: " << getAveragePowerInWatts() << " Watts" << std::endl;
+    if(_expendedEnergyPresent)      s << "Total Energy: " << getTotalEnergyInKiloCalorie() << " KiloCalorie" << std::endl
+                                      << "Energy Per Hour: " << getEnergyPerHourInKiloCalorie()  << " KiloCalorie" << std::endl
+                                      << "Energy Per Minute: " << getEnergyPerMinuteInKiloCalorie() << " KiloCalorie" << std::endl;
+    if(_heartRatePresent)           s << "Heart Rate: " << getBPM() << " BPM" << std::endl;
+    if(_metabolicEquivalentPresent) s << "Metabolic Equivalent: " << getMetabolicEquivalent();
+    if(_elapsedTimePresent)         s << "Elapsed Time: " << getElapsedTimeInSecs() << " secs" << std::endl;
+    if(_remainingTimePresent)       s << "Remaining Time: " << getRemainingTimeInSecs() << " secs" << std::endl;
+
+    return s;
+
 }

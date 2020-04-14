@@ -16,7 +16,7 @@ CyclingPowerMeasurementData::CyclingPowerMeasurementData(quint16 flags, const qu
     , _accumulatedEnergyPresent((flags>>11) & 1)
     , _offsetCompensationIndicator((flags>>12) & 1)
 {
-    uint16_t index =1;
+    uint16_t index = 2;
 
     _instantPowerInWatts = qFromLittleEndian<qint16>(data[index]);
     index += 2;
