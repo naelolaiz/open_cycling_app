@@ -9,6 +9,7 @@ HEADERS += \
     CyclingPowerMeasurementData.h \
     FitnessMachineFeature.h \
     IndoorBikeData.h \
+    VariousStructs.h \
     connectionhandler.h \
     deviceinfo.h \
     devicefinder.h \
@@ -21,6 +22,7 @@ SOURCES += main.cpp \
     CyclingPowerMeasurementData.cpp \
     FitnessMachineFeature.cpp \
     IndoorBikeData.cpp \
+    VariousStructs.cpp \
     connectionhandler.cpp \
     deviceinfo.cpp \
     devicefinder.cpp \

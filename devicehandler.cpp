@@ -262,6 +262,7 @@ void DeviceHandler::serviceScanDone()
         connect(m_service_fitness_machine, &QLowEnergyService::stateChanged, this, &DeviceHandler::serviceFitnessMachineStateChanged);
         connect(m_service_fitness_machine, &QLowEnergyService::characteristicChanged, this, &DeviceHandler::updateFitnessBikeDataValue);
         connect(m_service_fitness_machine, &QLowEnergyService::descriptorWritten, this, &DeviceHandler::confirmedFitnessDescriptorWrite);
+        connect(m_service_fitness_machine, &QLowEnergyService::characteristicRead, this, &DeviceHandler::confirmedFitnessMachineFeaturesCharacteristicRead);
         m_service_fitness_machine->discoverDetails();
     }
     else
@@ -336,6 +337,7 @@ void DeviceHandler::serviceFitnessMachineStateChanged(QLowEnergyService::Service
             setError("Fitness Machine Feature Not found");
             break;
         }
+        m_service_fitness_machine->readCharacteristic(fitnessMachineFeatureChar);
 
 
 
@@ -495,6 +497,34 @@ void DeviceHandler::confirmedHRDescriptorWrite(const QLowEnergyDescriptor &d, co
         //disabled notifications -> assume disconnect intent
         m_services_running[0] = false;
         tryToStop();
+    }
+}
+
+void DeviceHandler::confirmedFitnessMachineFeaturesCharacteristicRead(const QLowEnergyCharacteristic &info,
+                                                                      const QByteArray &value)
+{
+    if(!info.isValid())
+    {
+        qDebug() << "FitnessMachineFeaturesCharRead not good!";
+    }
+    const auto *data = reinterpret_cast<const quint8 *>(value.constData());
+
+    if(info.uuid() == QBluetoothUuid(quint32(0x2acc)))
+    {
+
+        m_currentFitnessMachineFeature.reset(new FitnessMachineFeature(data));
+        qDebug() << m_currentFitnessMachineFeature->dump().str().c_str();
+    }
+    else if(info.uuid() == QBluetoothUuid(quint32(0x2ad8 /*power range*/)))
+    {
+        m_currentSupportedPowerRange.reset(new SupportedPowerRange(data));
+        qDebug() << m_currentSupportedPowerRange->dump().str().c_str();
+    }
+    else if (info.uuid() == QBluetoothUuid(quint32(0x2ad6 /*resistance level*/)))
+    {
+        m_currentSupportedResistanceLevelRange.reset(new SupportedResistanceLevelRange(data));
+        qDebug() << m_currentSupportedResistanceLevelRange->dump().str().c_str();
+
     }
 }
 
@@ -774,21 +804,21 @@ void DeviceHandler::addHRMeasurement(int value)
 
 void DeviceHandler::addFitnessBikeDataMeasurement(const IndoorBikeData & bikeData)
 {
-    qDebug() << bikeData.dump().str().c_str();
+//    qDebug() << bikeData.dump().str().c_str();
     m_currentIndoorBikeData.reset(new IndoorBikeData(bikeData));
     emit statsChanged();
 }
 
 void DeviceHandler::addCSCMeasurement(const CSCMeasurementData & data)
 {
-    qDebug() << data.dump().str().c_str();
+//    qDebug() << data.dump().str().c_str();
     m_currentCSCData.reset(new CSCMeasurementData(data));
     emit statsChanged();
 }
 
 void DeviceHandler::addPowerMeasurement(const CyclingPowerMeasurementData &data)
 {
-    qDebug() << data.dump().str().c_str();
+//    qDebug() << data.dump().str().c_str();
     m_currentPowerData.reset(new CyclingPowerMeasurementData(data));
     emit statsChanged();
 }

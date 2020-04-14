@@ -55,6 +55,8 @@
 #include "IndoorBikeData.h"
 #include "CSCMeasurementData.h"
 #include "CyclingPowerMeasurementData.h"
+#include "FitnessMachineFeature.h"
+#include "VariousStructs.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -184,6 +186,8 @@ private:
     void confirmedHRDescriptorWrite(const QLowEnergyDescriptor &d,
                               const QByteArray &value);
 
+    void confirmedFitnessMachineFeaturesCharacteristicRead(const QLowEnergyCharacteristic &info,
+                            const QByteArray &value);
     void confirmedFitnessDescriptorWrite(const QLowEnergyDescriptor &d,
                               const QByteArray &value);
     void confirmedCSCDescriptorWrite(const QLowEnergyDescriptor &d,
@@ -230,6 +234,9 @@ private:
     std::unique_ptr<IndoorBikeData> m_currentIndoorBikeData;
     std::unique_ptr<CSCMeasurementData> m_currentCSCData;
     std::unique_ptr<CyclingPowerMeasurementData> m_currentPowerData;
+    std::unique_ptr<FitnessMachineFeature> m_currentFitnessMachineFeature;
+    std::unique_ptr<SupportedPowerRange> m_currentSupportedPowerRange;
+    std::unique_ptr<SupportedResistanceLevelRange> m_currentSupportedResistanceLevelRange;
 
     float m_avg, m_calories;
 
