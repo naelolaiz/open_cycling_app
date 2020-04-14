@@ -112,7 +112,7 @@ GamePage {
                 anchors.top: parent.top
                 anchors.left: parent.left
                 id: power
-                text: "Power: "+ deviceHandler.instantPowerInWatts +" Watts"
+                text: "Power: "+ deviceHandler.powerInWatts +" Watts"
             }
             Text {
                 id: balance

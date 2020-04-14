@@ -12,7 +12,8 @@ CSCMeasurementData::CSCMeasurementData(const quint8 *data, const CSCMeasurementD
     uint16_t index = 1;
     if(_wheelRevolutionDataPresent)
     {
-        _wheelRevolutions = qFromLittleEndian<quint32>(data[index]);
+        _wheelRevolutions = data[index] + (data[index+1]<<8) + (data[index+2]<<16) + (data[index+3]<<24);
+//        assert(_wheelRevolutions == qFromLittleEndian<quint32>(data[index]));
         index += 4;
         _lastWheelEventTimestamp = qFromLittleEndian<quint16>(data[index]);
         index += 2;

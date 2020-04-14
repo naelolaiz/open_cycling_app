@@ -249,6 +249,16 @@ void DeviceHandler::serviceScanDone()
 
     if(m_service_fitness_machine)
     {
+        //0x2acc // fitness machine feature
+        //m_service_fitness_machine->readCharacteristic(QLowEnergyCharacteristic::)
+
+//        const QLowEnergyCharacteristic ch = m_service_fitness_machine->characteristic(QBluetoothUuid(quint16(0x2acc)));
+//        m_service_fitness_machine->readCharacteristic(
+//        for (const QLowEnergyCharacteristic &ch : chars) {
+//            qDebug() << ch.name();
+//            CharacteristicInfo cInfo(ch);
+//            m_characteristics.append(cInfo);
+        //}
         connect(m_service_fitness_machine, &QLowEnergyService::stateChanged, this, &DeviceHandler::serviceFitnessMachineStateChanged);
         connect(m_service_fitness_machine, &QLowEnergyService::characteristicChanged, this, &DeviceHandler::updateFitnessBikeDataValue);
         connect(m_service_fitness_machine, &QLowEnergyService::descriptorWritten, this, &DeviceHandler::confirmedFitnessDescriptorWrite);
@@ -319,6 +329,17 @@ void DeviceHandler::serviceFitnessMachineStateChanged(QLowEnergyService::Service
     case QLowEnergyService::ServiceDiscovered:
     {
         setInfo(tr("Service Fitness discovered."));
+        ////
+        const QLowEnergyCharacteristic fitnessMachineFeatureChar = m_service_fitness_machine->characteristic(QBluetoothUuid(quint32(0x2acc)));
+        if(!fitnessMachineFeatureChar.isValid())
+        {
+            setError("Fitness Machine Feature Not found");
+            break;
+        }
+
+
+
+        /////
         const QLowEnergyCharacteristic indoorBikeDataChar = m_service_fitness_machine->characteristic(QBluetoothUuid(quint32(0x2ad2 /*indoor bike data*/)));
         if (!indoorBikeDataChar.isValid()) {
             setError("Indoor Bike Data not found.");

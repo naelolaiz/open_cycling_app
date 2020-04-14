@@ -23,7 +23,7 @@ CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8 * data)
     index += 2;
     if(_pedalBalancePresent)
     {
-        _pedalPowerBalance = qFromLittleEndian<quint8>(data[index]);
+        _pedalPowerBalance = data[index];
         index += 1;
     }
     if(_accumulatedTorquePresent)
@@ -33,7 +33,8 @@ CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8 * data)
     }
     if(_wheelRevolutionDataPresent)
     {
-        _wheelRevolutions = qFromLittleEndian<quint32>(data[index]);
+        _wheelRevolutions = data[index] + (data[index+1]<<8) + (data[index+2]<<16) + (data[index+3]<<24);
+        //_wheelRevolutions = qFromLittleEndian<quint32>(data[index]);
         index += 4;
         _wheelRevolutionsLastEventTs = qFromLittleEndian<quint16>(data[index]);
         index += 2;

@@ -7,6 +7,7 @@ CONFIG += c++11
 HEADERS += \
     CSCMeasurementData.h \
     CyclingPowerMeasurementData.h \
+    FitnessMachineFeature.h \
     IndoorBikeData.h \
     connectionhandler.h \
     deviceinfo.h \
@@ -18,6 +19,7 @@ HEADERS += \
 SOURCES += main.cpp \
     CSCMeasurementData.cpp \
     CyclingPowerMeasurementData.cpp \
+    FitnessMachineFeature.cpp \
     IndoorBikeData.cpp \
     connectionhandler.cpp \
     deviceinfo.cpp \
