@@ -5,6 +5,8 @@ QT += qml quick bluetooth
 CONFIG += c++11
 
 HEADERS += \
+    CSCMeasurementData.h \
+    CyclingPowerMeasurementData.h \
     IndoorBikeData.h \
     connectionhandler.h \
     deviceinfo.h \
@@ -14,6 +16,8 @@ HEADERS += \
     heartrate-global.h
 
 SOURCES += main.cpp \
+    CSCMeasurementData.cpp \
+    CyclingPowerMeasurementData.cpp \
     IndoorBikeData.cpp \
     connectionhandler.cpp \
     deviceinfo.cpp \

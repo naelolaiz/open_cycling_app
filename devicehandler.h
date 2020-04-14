@@ -53,6 +53,8 @@
 
 #include "bluetoothbaseclass.h"
 #include "IndoorBikeData.h"
+#include "CSCMeasurementData.h"
+#include "CyclingPowerMeasurementData.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -159,8 +161,8 @@ private:
 private:
     void addHRMeasurement(int value);
     void addFitnessBikeDataMeasurement(const IndoorBikeData & bikeData);
-    void addCSCMeasurement();
-    void addPowerMeasurement();
+    void addCSCMeasurement(const CSCMeasurementData & data);
+    void addPowerMeasurement(const CyclingPowerMeasurementData & data );
 
     void tryToStop();
 
@@ -184,10 +186,13 @@ private:
     bool m_foundCyclingPowerService{false};
     bool m_foundFitnessMachineService{false};
     bool m_foundCyclingSpeedAndCadenceService{false};
+
     bool m_measuring;
     int m_currentValue, m_min, m_max, m_sum;
 
     std::unique_ptr<IndoorBikeData> m_currentIndoorBikeData;
+    std::unique_ptr<CSCMeasurementData> m_currentCSCData;
+    std::unique_ptr<CyclingPowerMeasurementData> m_currentPowerData;
 
     float m_avg, m_calories;
 
