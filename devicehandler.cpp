@@ -339,6 +339,21 @@ void DeviceHandler::serviceFitnessMachineStateChanged(QLowEnergyService::Service
         }
         m_service_fitness_machine->readCharacteristic(fitnessMachineFeatureChar);
 
+        const QLowEnergyCharacteristic powerRangeChar = m_service_fitness_machine->characteristic(QBluetoothUuid(quint32(0x2ad8)));
+        if(!powerRangeChar.isValid())
+        {
+            setError("Power range Not found");
+            break;
+        }
+        m_service_fitness_machine->readCharacteristic(powerRangeChar);
+
+        const QLowEnergyCharacteristic resistanceRangeChar = m_service_fitness_machine->characteristic(QBluetoothUuid(quint32(0x2ad6)));
+        if(!resistanceRangeChar.isValid())
+        {
+            setError("Resistance range Not found");
+            break;
+        }
+        m_service_fitness_machine->readCharacteristic(resistanceRangeChar);
 
 
         /////
