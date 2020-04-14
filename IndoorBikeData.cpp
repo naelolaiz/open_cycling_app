@@ -1,21 +1,21 @@
 #include "IndoorBikeData.h"
 #include <QtEndian>
 
-IndoorBikeData::IndoorBikeData(quint16 flags, const quint8 *data)
-    :
-      _moreData                   ( flags & 1),
-      _averageSpeedPresent        ((flags >> 1)  & 1),
-      _instantCadencePresent      ((flags >> 2)  & 1),
-      _averageCadencePresent      ((flags >> 3)  & 1),
-      _totalDistancePresent       ((flags >> 4)  & 1),
-      _resistanceLevelPresent     ((flags >> 5)  & 1),
-      _instantPowerPresent        ((flags >> 6)  & 1),
-      _averagePowerPresent        ((flags >> 7)  & 1),
-      _expendedEnergyPresent      ((flags >> 8)  & 1),
-      _heartRatePresent           ((flags >> 9)  & 1),
-      _metabolicEquivalentPresent ((flags >> 10) & 1),
-      _elapsedTimePresent         ((flags >> 11) & 1),
-      _remainingTimePresent       ((flags >> 12) & 1)
+IndoorBikeData::IndoorBikeData(const quint8 *data)
+    : _flags(qFromLittleEndian<quint16>(data[0]))
+    ,_moreData                   ( _flags & 1),
+      _averageSpeedPresent        ((_flags >> 1)  & 1),
+      _instantCadencePresent      ((_flags >> 2)  & 1),
+      _averageCadencePresent      ((_flags >> 3)  & 1),
+      _totalDistancePresent       ((_flags >> 4)  & 1),
+      _resistanceLevelPresent     ((_flags >> 5)  & 1),
+      _instantPowerPresent        ((_flags >> 6)  & 1),
+      _averagePowerPresent        ((_flags >> 7)  & 1),
+      _expendedEnergyPresent      ((_flags >> 8)  & 1),
+      _heartRatePresent           ((_flags >> 9)  & 1),
+      _metabolicEquivalentPresent ((_flags >> 10) & 1),
+      _elapsedTimePresent         ((_flags >> 11) & 1),
+      _remainingTimePresent       ((_flags >> 12) & 1)
 {
     uint16_t index=2;
     if(_moreData)

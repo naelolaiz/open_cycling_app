@@ -8,7 +8,7 @@
 class CyclingPowerMeasurementData
 {
 public:
-    CyclingPowerMeasurementData(quint16 flags, const quint8 * data); // todo: add previous state for CSC
+    CyclingPowerMeasurementData(const quint8 * data); // todo: add previous state for CSC
     double getPowerBalance() const;
     int16_t getInstantPowerInWatts() const;
 
@@ -21,6 +21,7 @@ public:
     }
 
 private:
+    const uint16_t _flags;
     const bool _pedalBalancePresent;
     const bool _pedalBalanceReferencePresent;
     const bool _accumulatedTorquePresent;

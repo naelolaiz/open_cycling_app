@@ -105,9 +105,74 @@ GamePage {
             anchors.horizontalCenter: parent.horizontalCenter
             width: Math.min(measurePage.width, measurePage.height-GameSettings.fieldHeight*4) - 2*GameSettings.fieldMargin
             height: width
-            radius: width*0.5
+            //radius: width*0.5
             color: GameSettings.viewColor
 
+            Text {
+                anchors.top: parent.top
+                anchors.left: parent.left
+                id: power
+                text: "Power: "+ deviceHandler.instantPowerInWatts +" Watts"
+            }
+            Text {
+                id: balance
+                anchors.left: power.right
+                anchors.top: parent.top
+                anchors.leftMargin: 10
+                text: deviceHandler.powerBalance + "%"
+            }
+            Text {
+                anchors.left: parent.left
+                anchors.top: balance.bottom
+                id: crankRevolutions
+                text: "Crank Revolutions: " + deviceHandler.crankRevolutions
+            }
+            Text {
+                id: crankTS
+                anchors.left: crankRevolutions.right
+                anchors.leftMargin: 10
+                anchors.top: balance.bottom
+                text: deviceHandler.crankRevsTs + " seg"
+            }
+            Text {
+                anchors.top: crankRevolutions.bottom
+                anchors.left: parent.left
+                id: wheelRevs
+                text: "Wheel revolutions: " + deviceHandler.wheelRevolutions
+            }
+            Text {
+                id: wheelRevsTS
+                anchors.left: wheelRevs.right
+                anchors.leftMargin: 10
+                anchors.top: crankRevolutions.bottom
+                text: deviceHandler.wheelRevsTs + " seg"
+            }
+            Text {
+                id: instantSpeed
+                anchors.left: parent.left
+                anchors.top: wheelRevs.bottom
+                text: "Instant velocity: " + deviceHandler.instantSpeed + " Km/s"
+            }
+            Text {
+                id: instantCadence
+                anchors.left: parent.left
+                anchors.top: instantSpeed.bottom
+                text: "Instant cadence: " + deviceHandler.instantCadenceInRPM + " RPM"
+            }
+            Text {
+                id: totalDistance
+                anchors.left: parent.left
+                anchors.top: instantCadence.bottom
+                text: "Total distance: " + deviceHandler.totalDistanceInM + " meters"
+            }
+            Text {
+                id: resistanceLevel
+                anchors.left: parent.left
+                anchors.top: totalDistance.bottom
+                text: "Resistance level: " + deviceHandler.resistanceLevel
+            }
+
+/*
             Text {
                 id: hintText
                 anchors.centerIn: parent
@@ -218,7 +283,7 @@ GamePage {
                 color: "gray"
                 text: (__maxTimeCount - __timeCounter).toFixed(0) + " s"
                 font.pixelSize: GameSettings.bigFontSize
-            }
+            }*/
         }
     }
 

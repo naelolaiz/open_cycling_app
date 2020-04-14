@@ -1,9 +1,9 @@
 #include "CSCMeasurementData.h"
 #include <QtEndian>
 
-CSCMeasurementData::CSCMeasurementData(quint8 flags, const quint8 *data, const CSCMeasurementData * previousEvent)
-    : _wheelRevolutionDataPresent  (flags & 1)
-    , _crankRevolutionDataPresent  ((flags >> 1) & 1)
+CSCMeasurementData::CSCMeasurementData(const quint8 *data, const CSCMeasurementData * previousEvent)
+    : _wheelRevolutionDataPresent  (data[0] & 1)
+    , _crankRevolutionDataPresent  ((data[0] >> 1) & 1)
     , _previousWheelEventTimestamp(previousEvent  ? previousEvent->_lastWheelEventTimestamp : 0u)
     , _previousCrankEventTimestamp(previousEvent  ? previousEvent->_lastCrankEventTimestamp : 0u)
     , _accumulatedTimeForWheelEvents(previousEvent? previousEvent->_accumulatedTimeForWheelEvents : 0u)

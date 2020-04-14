@@ -199,7 +199,7 @@ private:
     void addHRMeasurement(int value);
     void addFitnessBikeDataMeasurement(const IndoorBikeData & bikeData);
     void addCSCMeasurement(const CSCMeasurementData & data);
-    void addPowerMeasurement(const CyclingPowerMeasurementData & data );
+    void addPowerMeasurement(const CyclingPowerMeasurementData & data);
 
     void tryToStop();
 

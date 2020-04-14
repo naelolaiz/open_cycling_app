@@ -8,7 +8,7 @@
 class IndoorBikeData
 {
 public:
-    IndoorBikeData(quint16 flags, const quint8 * data);
+    IndoorBikeData(const quint8 * data);
     double getInstantSpeedInKmPerSecond() const;
     double getAverageSpeedInKmPerSecond() const;
     double getInstantCadenceInRPM() const;
@@ -26,6 +26,7 @@ public:
     uint16_t getRemainingTimeInSecs() const;
     std::stringstream dump() const;
 private:
+    const uint16_t _flags;
     const bool _moreData;
     const bool _averageSpeedPresent;
     const bool _instantCadencePresent;

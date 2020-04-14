@@ -8,7 +8,7 @@
 class CSCMeasurementData
 {
 public:
-    CSCMeasurementData(quint8 flags, const quint8 * data, const CSCMeasurementData *previousValue);
+    CSCMeasurementData(const quint8 * data, const CSCMeasurementData *previousValue);
 
     uint32_t getWheelRevolutions() const;
     uint16_t getCrankRevolutions() const;

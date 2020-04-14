@@ -1,20 +1,21 @@
 #include "CyclingPowerMeasurementData.h"
 #include <QtEndian>
 
-CyclingPowerMeasurementData::CyclingPowerMeasurementData(quint16 flags, const quint8 * data)
-    : _pedalBalancePresent(flags & 1)
-    , _pedalBalanceReferencePresent((flags>>1) & 1)
-    , _accumulatedTorquePresent((flags>>2) & 1)
-    , _accumulatedTorqueSourcePresent((flags>>3) & 1)
-    , _wheelRevolutionDataPresent((flags>>4) & 1)
-    , _crankRevolutionDataPresent((flags>>5) & 1)
-    , _extremeForceMagnitudesPresent((flags>>6) & 1)
-    , _extremeTorqueMagnitudesPresent((flags>>7) & 1)
-    , _extremeAnglesPresent((flags>>8) & 1)
-    , _topDeadSpotAnglePresent((flags>>9) & 1)
-    , _bottomDeadSpotAnglePresent((flags>>10) & 1)
-    , _accumulatedEnergyPresent((flags>>11) & 1)
-    , _offsetCompensationIndicator((flags>>12) & 1)
+CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8 * data)
+    : _flags(qFromLittleEndian<quint16>(data[0]))
+    , _pedalBalancePresent(_flags & 1)
+    , _pedalBalanceReferencePresent((_flags>>1) & 1)
+    , _accumulatedTorquePresent((_flags>>2) & 1)
+    , _accumulatedTorqueSourcePresent((_flags>>3) & 1)
+    , _wheelRevolutionDataPresent((_flags>>4) & 1)
+    , _crankRevolutionDataPresent((_flags>>5) & 1)
+    , _extremeForceMagnitudesPresent((_flags>>6) & 1)
+    , _extremeTorqueMagnitudesPresent((_flags>>7) & 1)
+    , _extremeAnglesPresent((_flags>>8) & 1)
+    , _topDeadSpotAnglePresent((_flags>>9) & 1)
+    , _bottomDeadSpotAnglePresent((_flags>>10) & 1)
+    , _accumulatedEnergyPresent((_flags>>11) & 1)
+    , _offsetCompensationIndicator((_flags>>12) & 1)
 {
     uint16_t index = 2;
 

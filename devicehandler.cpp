@@ -428,8 +428,7 @@ void DeviceHandler::updateFitnessBikeDataValue(const QLowEnergyCharacteristic &c
     // ignore any other characteristic change -> shouldn't really happen though
     if (c.uuid() != QBluetoothUuid(quint32(0x2ad2 /*indoor bike data*/)))
         return;
-    auto data = reinterpret_cast<const quint8 *>(value.constData());
-    const IndoorBikeData indoorBikeData(qFromLittleEndian<quint16>(data[0]), data);
+    const IndoorBikeData indoorBikeData(reinterpret_cast<const quint8 *>(value.constData()));
     addFitnessBikeDataMeasurement(indoorBikeData);
 }
 
@@ -437,8 +436,8 @@ void DeviceHandler::updateCSCValue(const QLowEnergyCharacteristic &c, const QByt
 {
     if(c.uuid() != QBluetoothUuid(QBluetoothUuid::CSCMeasurement))
         return;
-    auto data = reinterpret_cast<const quint8 *>(value.constData());
-    const CSCMeasurementData measurementData(data[0], data, m_currentCSCData.get());
+    const CSCMeasurementData measurementData(reinterpret_cast<const quint8 *>(value.constData()),
+                                             m_currentCSCData.get());
     addCSCMeasurement(measurementData);
 }
 
@@ -446,8 +445,8 @@ void DeviceHandler::updatePowerValue(const QLowEnergyCharacteristic &c, const QB
 {
     if(c.uuid() != QBluetoothUuid(QBluetoothUuid::CyclingPowerMeasurement))
         return;
-    auto data = reinterpret_cast<const quint8 *>(value.constData());
-    const CyclingPowerMeasurementData measurementData(qFromLittleEndian<quint16>(data[0]), data);
+
+    const CyclingPowerMeasurementData measurementData(reinterpret_cast<const quint8 *>(value.constData()));
     addPowerMeasurement(measurementData);
 }
 
