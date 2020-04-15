@@ -11,11 +11,7 @@ public:
     int16_t getMaximumPowerInWatts() const;
     uint16_t getMinimumIncrementInWatts() const;
     std::stringstream dump();
-    static quint32 getCharUuid()
-    {
-        //         00002ad6-0000-1000-8000-00805f9b34fb
-        return quint32(0x2ad6);
-    }
+    static quint32 getCharUuid();
 private:
     const int16_t _minimumPowerInWatts;
     const int16_t _maximumPowerInWatts;
@@ -77,8 +73,6 @@ private:
     const Status _status;
     std::string _string;
     std::string _extendedString;
-
-
 };
 
 #endif // VARIOUSSTRUCTS_H

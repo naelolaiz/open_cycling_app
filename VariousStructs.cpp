@@ -32,6 +32,11 @@ std::stringstream SupportedPowerRange::dump()
     return s;
 }
 
+quint32 SupportedPowerRange::getCharUuid()
+{
+    return quint32(0x2ad8);
+}
+
 SupportedResistanceLevelRange::SupportedResistanceLevelRange(const quint8 *data)
     : _minimumResistanceLevel(data[0] + (data[1]<<8))
     , _maximumResistanceLevel(data[2] + (data[3]<<8))

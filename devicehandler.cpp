@@ -339,7 +339,7 @@ void DeviceHandler::serviceFitnessMachineStateChanged(QLowEnergyService::Service
         }
         m_service_fitness_machine->readCharacteristic(fitnessMachineFeatureChar);
 
-        const QLowEnergyCharacteristic powerRangeChar = m_service_fitness_machine->characteristic(QBluetoothUuid(quint32(0x2ad8)));
+        const QLowEnergyCharacteristic powerRangeChar = m_service_fitness_machine->characteristic(QBluetoothUuid(SupportedPowerRange::getCharUuid()));
         if(!powerRangeChar.isValid())
         {
             setError("Power range Not found");
@@ -347,7 +347,7 @@ void DeviceHandler::serviceFitnessMachineStateChanged(QLowEnergyService::Service
         }
         m_service_fitness_machine->readCharacteristic(powerRangeChar);
 
-        const QLowEnergyCharacteristic resistanceRangeChar = m_service_fitness_machine->characteristic(QBluetoothUuid(quint32(0x2ad6)));
+        const QLowEnergyCharacteristic resistanceRangeChar = m_service_fitness_machine->characteristic(QBluetoothUuid(SupportedResistanceLevelRange::getCharUuid()));
         if(!resistanceRangeChar.isValid())
         {
             setError("Resistance range Not found");
@@ -530,12 +530,12 @@ void DeviceHandler::confirmedFitnessMachineFeaturesCharacteristicRead(const QLow
         m_currentFitnessMachineFeature.reset(new FitnessMachineFeature(data));
         qDebug() << m_currentFitnessMachineFeature->dump().str().c_str();
     }
-    else if(info.uuid() == QBluetoothUuid(quint32(0x2ad8 /*power range*/)))
+    else if(info.uuid() == QBluetoothUuid(SupportedPowerRange::getCharUuid()))
     {
         m_currentSupportedPowerRange.reset(new SupportedPowerRange(data));
         qDebug() << m_currentSupportedPowerRange->dump().str().c_str();
     }
-    else if (info.uuid() == QBluetoothUuid(quint32(0x2ad6 /*resistance level*/)))
+    else if (info.uuid() == QBluetoothUuid(SupportedResistanceLevelRange::getCharUuid()))
     {
         m_currentSupportedResistanceLevelRange.reset(new SupportedResistanceLevelRange(data));
         qDebug() << m_currentSupportedResistanceLevelRange->dump().str().c_str();
