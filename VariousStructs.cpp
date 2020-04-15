@@ -75,8 +75,44 @@ quint32 FitnessMachineStatus::getCharUuid()
     return quint32(0x2ada);
 }
 
+TrainingStatus::TrainingStatus(const quint8 *data)
+    : _trainingStatusStringPresent(data[0]&1)
+    , _extendedStringPresent((data[0]>>1)&1)
+    , _status(static_cast<Status>(data[1]))
+{
+    size_t index = 1;
+    if(_trainingStatusStringPresent)
+    {
+        while(data[index] != 0)
+        {
+            _string += data[index];
+            index++;
+        }
+    }
+    if(_extendedStringPresent)
+    {
+        while(data[index] != 0)
+        {
+            _extendedString += data[index];
+            index++;
+        }
+    }
+}
+
 quint32 TrainingStatus::getCharUuid()
 {
     // 0x2ad3
     return quint32(0x2ad3);
+}
+
+TrainingStatus::Status TrainingStatus::getStatus() const { return _status; }
+
+const std::string &TrainingStatus::getString()
+{
+    return _string;
+}
+
+const std::string &TrainingStatus::getExtendedString()
+{
+    return _extendedString;
 }
