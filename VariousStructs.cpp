@@ -62,3 +62,21 @@ std::stringstream SupportedResistanceLevelRange::dump()
     s<< "min res increment: "<< _minimumIncrement << std::endl;
     return s;
 }
+
+quint32 SupportedResistanceLevelRange::getCharUuid()
+{
+    //         00002ad6-0000-1000-8000-00805f9b34fb
+    return quint32(0x2ad6);
+}
+
+quint32 FitnessMachineStatus::getCharUuid()
+{
+    // 0x2ada
+    return quint32(0x2ada);
+}
+
+quint32 TrainingStatus::getCharUuid()
+{
+    // 0x2ad3
+    return quint32(0x2ad3);
+}

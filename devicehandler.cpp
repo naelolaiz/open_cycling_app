@@ -819,21 +819,21 @@ void DeviceHandler::addHRMeasurement(int value)
 
 void DeviceHandler::addFitnessBikeDataMeasurement(const IndoorBikeData & bikeData)
 {
-//    qDebug() << bikeData.dump().str().c_str();
+    qDebug() << bikeData.dump().str().c_str();
     m_currentIndoorBikeData.reset(new IndoorBikeData(bikeData));
     emit statsChanged();
 }
 
 void DeviceHandler::addCSCMeasurement(const CSCMeasurementData & data)
 {
-//    qDebug() << data.dump().str().c_str();
+    qDebug() << data.dump().str().c_str();
     m_currentCSCData.reset(new CSCMeasurementData(data));
     emit statsChanged();
 }
 
 void DeviceHandler::addPowerMeasurement(const CyclingPowerMeasurementData &data)
 {
-//    qDebug() << data.dump().str().c_str();
+    qDebug() << data.dump().str().c_str();
     m_currentPowerData.reset(new CyclingPowerMeasurementData(data));
     emit statsChanged();
 }
