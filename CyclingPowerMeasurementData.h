@@ -4,6 +4,7 @@
 #include <QtGlobal>
 #include <cstdint>
 #include <sstream>
+#include <QBluetoothUuid>
 
 class CyclingPowerMeasurementData
 {
@@ -11,6 +12,8 @@ public:
     CyclingPowerMeasurementData(const quint8 * data); // todo: add previous state for CSC
     double getPowerBalance() const;
     int16_t getInstantPowerInWatts() const;
+
+    static QBluetoothUuid getCharUuid();
 
     std::stringstream dump() const 
     {

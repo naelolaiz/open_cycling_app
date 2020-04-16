@@ -57,3 +57,8 @@ int16_t CyclingPowerMeasurementData::getInstantPowerInWatts() const
 {
     return _instantPowerInWatts;
 }
+
+QBluetoothUuid CyclingPowerMeasurementData::getCharUuid()
+{
+    return QBluetoothUuid::CyclingPowerMeasurement;
+}

@@ -3,6 +3,7 @@
 
 #include <QtGlobal>
 #include <sstream>
+#include <QBluetoothUuid>
 
 class FitnessMachineFeature
 {
@@ -59,13 +60,8 @@ public:
     FitnessMachineFeature(const quint8 * data);
     const MachineFeatures & getMachineFeatures() const;
     const TargetSettingFeatures & getTargetSettingFeatures() const;
-    std::stringstream dump() const
-    {
-        std::stringstream s;
-        s << getMachineFeatures().dump().str() ;
-        s << getTargetSettingFeatures().dump().str();
-        return s;
-    }
+    static QBluetoothUuid getCharUuid();
+    std::stringstream dump() const;
 private:
     const MachineFeatures _fitnessMachineFeatures;
     const TargetSettingFeatures _targetSettingFeatures;

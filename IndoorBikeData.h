@@ -2,8 +2,10 @@
 #define INDOORBIKEDATA_H
 
 #include <QtGlobal>
+#include <QBluetoothUuid>
 #include <cstdint>
 #include <sstream>
+
 
 class IndoorBikeData
 {
@@ -25,6 +27,7 @@ public:
     uint16_t getElapsedTimeInSecs() const;
     uint16_t getRemainingTimeInSecs() const;
     std::stringstream dump() const;
+    static QBluetoothUuid getCharUuid();
 private:
     const uint16_t _flags;
     const bool _moreData;

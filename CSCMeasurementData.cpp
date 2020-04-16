@@ -55,3 +55,8 @@ double CSCMeasurementData::getLastCrankEventTimestampInSecs() const
 {
     return (_accumulatedTimeForCrankEvents + _lastCrankEventTimestamp) / 1024.;
 }
+
+QBluetoothUuid CSCMeasurementData::getCharUuid()
+{
+    return QBluetoothUuid::CSCMeasurement;
+}

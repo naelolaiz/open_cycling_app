@@ -2,6 +2,8 @@
 #define VARIOUSSTRUCTS_H
 #include <QtGlobal>
 #include <sstream>
+#include <QBluetoothUuid>
+
 
 class SupportedPowerRange
 {
@@ -11,7 +13,7 @@ public:
     int16_t getMaximumPowerInWatts() const;
     uint16_t getMinimumIncrementInWatts() const;
     std::stringstream dump();
-    static quint32 getCharUuid();
+    static QBluetoothUuid getCharUuid();
 private:
     const int16_t _minimumPowerInWatts;
     const int16_t _maximumPowerInWatts;
@@ -27,7 +29,7 @@ public:
     int16_t getMaximumResistanceLevel() const;
     int16_t getMinimumIncrement() const;
     std::stringstream dump();
-    static quint32 getCharUuid();
+    static QBluetoothUuid getCharUuid();
 private:
     const int16_t _minimumResistanceLevel;
     const int16_t _maximumResistanceLevel;
@@ -37,8 +39,7 @@ private:
 class FitnessMachineStatus
 {
 public:
-    static quint32 getCharUuid();
-
+    static QBluetoothUuid getCharUuid();
 };
 
 class TrainingStatus
@@ -63,7 +64,7 @@ public:
         POST_WORKOUT = 0x0F,
     };
     TrainingStatus(const quint8 * data);
-    static quint32 getCharUuid();
+    static QBluetoothUuid getCharUuid();
     Status getStatus() const;
     const std::string & getString();
     const std::string & getExtendedString();

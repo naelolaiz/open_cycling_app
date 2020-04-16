@@ -16,6 +16,14 @@ const FitnessMachineFeature::TargetSettingFeatures &FitnessMachineFeature::getTa
     return _targetSettingFeatures;
 }
 
+std::stringstream FitnessMachineFeature::dump() const
+{
+    std::stringstream s;
+    s << getMachineFeatures().dump().str() ;
+    s << getTargetSettingFeatures().dump().str();
+    return s;
+}
+
 FitnessMachineFeature::TargetSettingFeatures::TargetSettingFeatures(const quint8 *data)
     : _targetSettingFeatures(data[0] + (data[1]<<8) + (data[2]<<16) + (data[3]<<24))
     , _speedTargetSettingSupported                             (_targetSettingFeatures        & 1)
@@ -104,4 +112,9 @@ std::stringstream FitnessMachineFeature::MachineFeatures::dump() const
     s << "_forceOnBeltAndPowerOutputSupported: " << _forceOnBeltAndPowerOutputSupported << std::endl;
     s << "_userDataRetentionSupported: " << _userDataRetentionSupported << std::endl;
     return s;
+}
+
+QBluetoothUuid FitnessMachineFeature::getCharUuid()
+{
+    return QBluetoothUuid(quint32(0x2acc));
 }

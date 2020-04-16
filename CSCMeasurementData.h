@@ -4,6 +4,7 @@
 #include <QtGlobal>
 #include <cstdint>
 #include <sstream>
+#include <QBluetoothUuid>
 
 class CSCMeasurementData
 {
@@ -14,6 +15,8 @@ public:
     uint16_t getCrankRevolutions() const;
     double getLastWheelEventTimestampInSecs() const;
     double getLastCrankEventTimestampInSecs() const;
+
+    static QBluetoothUuid getCharUuid();
 
     std::stringstream dump() const 
     {

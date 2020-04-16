@@ -189,3 +189,8 @@ std::stringstream IndoorBikeData::dump() const
     return s;
 
 }
+
+QBluetoothUuid IndoorBikeData::getCharUuid()
+{
+    return QBluetoothUuid(quint32(0x2ad2));
+}

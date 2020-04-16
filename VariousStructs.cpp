@@ -32,9 +32,9 @@ std::stringstream SupportedPowerRange::dump()
     return s;
 }
 
-quint32 SupportedPowerRange::getCharUuid()
+QBluetoothUuid SupportedPowerRange::getCharUuid()
 {
-    return quint32(0x2ad8);
+    return QBluetoothUuid(quint32(0x2ad8));
 }
 
 SupportedResistanceLevelRange::SupportedResistanceLevelRange(const quint8 *data)
@@ -68,16 +68,16 @@ std::stringstream SupportedResistanceLevelRange::dump()
     return s;
 }
 
-quint32 SupportedResistanceLevelRange::getCharUuid()
+QBluetoothUuid SupportedResistanceLevelRange::getCharUuid()
 {
     //         00002ad6-0000-1000-8000-00805f9b34fb
-    return quint32(0x2ad6);
+    return QBluetoothUuid(quint32(0x2ad6));
 }
 
-quint32 FitnessMachineStatus::getCharUuid()
+QBluetoothUuid FitnessMachineStatus::getCharUuid()
 {
     // 0x2ada
-    return quint32(0x2ada);
+    return QBluetoothUuid(quint32(0x2ada));
 }
 
 TrainingStatus::TrainingStatus(const quint8 *data)
@@ -104,10 +104,10 @@ TrainingStatus::TrainingStatus(const quint8 *data)
     }
 }
 
-quint32 TrainingStatus::getCharUuid()
+QBluetoothUuid TrainingStatus::getCharUuid()
 {
     // 0x2ad3
-    return quint32(0x2ad3);
+    return QBluetoothUuid(quint32(0x2ad3));
 }
 
 TrainingStatus::Status TrainingStatus::getStatus() const { return _status; }
