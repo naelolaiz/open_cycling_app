@@ -1,64 +1,74 @@
 #include "CyclingPowerMeasurementData.h"
 #include <QtEndian>
+#include <sstream>
 
-CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8 * data)
-    : _flags(qFromLittleEndian<quint16>(data[0]))
-    , _pedalBalancePresent(_flags & 1)
-    , _pedalBalanceReferencePresent((_flags>>1) & 1)
-    , _accumulatedTorquePresent((_flags>>2) & 1)
-    , _accumulatedTorqueSourcePresent((_flags>>3) & 1)
-    , _wheelRevolutionDataPresent((_flags>>4) & 1)
-    , _crankRevolutionDataPresent((_flags>>5) & 1)
-    , _extremeForceMagnitudesPresent((_flags>>6) & 1)
-    , _extremeTorqueMagnitudesPresent((_flags>>7) & 1)
-    , _extremeAnglesPresent((_flags>>8) & 1)
-    , _topDeadSpotAnglePresent((_flags>>9) & 1)
-    , _bottomDeadSpotAnglePresent((_flags>>10) & 1)
-    , _accumulatedEnergyPresent((_flags>>11) & 1)
-    , _offsetCompensationIndicator((_flags>>12) & 1)
+CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8* data)
+  : _flags(qFromLittleEndian<quint16>(data[0]))
+  , _pedalBalancePresent(_flags & 1)
+  , _pedalBalanceReferencePresent((_flags >> 1) & 1)
+  , _accumulatedTorquePresent((_flags >> 2) & 1)
+  , _accumulatedTorqueSourcePresent((_flags >> 3) & 1)
+  , _wheelRevolutionDataPresent((_flags >> 4) & 1)
+  , _crankRevolutionDataPresent((_flags >> 5) & 1)
+  , _extremeForceMagnitudesPresent((_flags >> 6) & 1)
+  , _extremeTorqueMagnitudesPresent((_flags >> 7) & 1)
+  , _extremeAnglesPresent((_flags >> 8) & 1)
+  , _topDeadSpotAnglePresent((_flags >> 9) & 1)
+  , _bottomDeadSpotAnglePresent((_flags >> 10) & 1)
+  , _accumulatedEnergyPresent((_flags >> 11) & 1)
+  , _offsetCompensationIndicator((_flags >> 12) & 1)
 {
-    uint16_t index = 2;
+  uint16_t index = 2;
 
-    _instantPowerInWatts = data[index] + (data[index+1]<<8);
+  _instantPowerInWatts = data[index] + (data[index + 1] << 8);
+  index += 2;
+  if (_pedalBalancePresent) {
+    _pedalPowerBalance = data[index];
+    index += 1;
+  }
+  if (_accumulatedTorquePresent) {
+    _accumulatedTorque = data[index] + (data[index + 1] << 8);
     index += 2;
-    if(_pedalBalancePresent)
-    {
-        _pedalPowerBalance = data[index];
-        index += 1;
-    }
-    if(_accumulatedTorquePresent)
-    {
-        _accumulatedTorque = data[index]+(data[index+1]<<8);
-        index += 2;
-    }
-    if(_wheelRevolutionDataPresent)
-    {
-        _wheelRevolutions = data[index] + (data[index+1]<<8) + (data[index+2]<<16) + (data[index+3]<<24);
-        //_wheelRevolutions = qFromLittleEndian<quint32>(data[index]);
-        index += 4;
-        _wheelRevolutionsLastEventTs = data[index]+(data[index+1]<<8);
-        index += 2;
-    }
-    if(_crankRevolutionDataPresent)
-    {
-        _crankRevolutions = data[index]+(data[index+1]<<8);
-        index += 2;
-        _crankRevolutionsLastEventTs = data[index] + (data[index+1]<<8);
-        index += 2;
-    }
+  }
+  if (_wheelRevolutionDataPresent) {
+    _wheelRevolutions = data[index] + (data[index + 1] << 8) +
+                        (data[index + 2] << 16) + (data[index + 3] << 24);
+    //_wheelRevolutions = qFromLittleEndian<quint32>(data[index]);
+    index += 4;
+    _wheelRevolutionsLastEventTs = data[index] + (data[index + 1] << 8);
+    index += 2;
+  }
+  if (_crankRevolutionDataPresent) {
+    _crankRevolutions = data[index] + (data[index + 1] << 8);
+    index += 2;
+    _crankRevolutionsLastEventTs = data[index] + (data[index + 1] << 8);
+    index += 2;
+  }
 }
 
-double CyclingPowerMeasurementData::getPowerBalance() const
+double
+CyclingPowerMeasurementData::getPowerBalance() const
 {
-    return _pedalPowerBalance * 0.5;
+  return _pedalPowerBalance * 0.5;
 }
 
-int16_t CyclingPowerMeasurementData::getInstantPowerInWatts() const
+int16_t
+CyclingPowerMeasurementData::getInstantPowerInWatts() const
 {
-    return _instantPowerInWatts;
+  return _instantPowerInWatts;
 }
 
-QBluetoothUuid CyclingPowerMeasurementData::getCharUuid()
+QBluetoothUuid
+CyclingPowerMeasurementData::getCharUuid()
 {
-    return QBluetoothUuid::CyclingPowerMeasurement;
+  return QBluetoothUuid::CyclingPowerMeasurement;
+}
+
+std::string
+CyclingPowerMeasurementData::dump() const
+{
+  std::stringstream s;
+  s << "Power Balance: " << getPowerBalance() << "%" << std::endl;
+  s << "Instant Power: " << getInstantPowerInWatts() << " Watts" << std::endl;
+  return s.str();
 }

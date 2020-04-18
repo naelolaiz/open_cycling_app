@@ -3,7 +3,8 @@
 ** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the QtBluetooth module of the Qt Toolkit.
+** This file is part of the examples of the QtBluetooth module of the Qt
+*Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -51,12 +52,12 @@
 #ifndef DEVICEHANDLER_H
 #define DEVICEHANDLER_H
 
-#include "bluetoothbaseclass.h"
-#include "IndoorBikeData.h"
 #include "CSCMeasurementData.h"
 #include "CyclingPowerMeasurementData.h"
-#include "FitnessMachineFeature.h"
+#include "FitnessMachineFeatureData.h"
+#include "IndoorBikeData.h"
 #include "VariousStructs.h"
+#include "bluetoothbaseclass.h"
 
 #include <QDateTime>
 #include <QTimer>
@@ -69,186 +70,201 @@ class DeviceInfo;
 
 class DeviceHandler : public BluetoothBaseClass
 {
-    Q_OBJECT
+  Q_OBJECT
 
-    Q_PROPERTY(bool measuring READ measuring NOTIFY measuringChanged)
+  Q_PROPERTY(bool measuring READ measuring NOTIFY measuringChanged)
 
-    Q_PROPERTY(bool aliveHR READ aliveHR NOTIFY aliveHRChanged)
-    Q_PROPERTY(bool aliveCSC READ aliveCSC NOTIFY aliveCSCChanged)
-    Q_PROPERTY(bool alivePower READ alivePower NOTIFY alivePowerChanged)
-    Q_PROPERTY(bool aliveFitness READ aliveFitness NOTIFY aliveFitnessChanged)
+  Q_PROPERTY(bool aliveHR READ aliveHR NOTIFY aliveHRChanged)
+  Q_PROPERTY(bool aliveCSC READ aliveCSC NOTIFY aliveCSCChanged)
+  Q_PROPERTY(bool alivePower READ alivePower NOTIFY alivePowerChanged)
+  Q_PROPERTY(bool aliveFitness READ aliveFitness NOTIFY aliveFitnessChanged)
 
-    Q_PROPERTY(int hr READ hr NOTIFY statsChanged)
-    Q_PROPERTY(int maxHR READ maxHR NOTIFY statsChanged)
-    Q_PROPERTY(int minHR READ minHR NOTIFY statsChanged)
-    Q_PROPERTY(float average READ average NOTIFY statsChanged)
-    Q_PROPERTY(int time READ time NOTIFY statsChanged)
-    Q_PROPERTY(float calories READ calories NOTIFY statsChanged)
+  Q_PROPERTY(int hr READ hr NOTIFY statsChanged)
+  Q_PROPERTY(int maxHR READ maxHR NOTIFY statsChanged)
+  Q_PROPERTY(int minHR READ minHR NOTIFY statsChanged)
+  Q_PROPERTY(float average READ average NOTIFY statsChanged)
+  Q_PROPERTY(int time READ time NOTIFY statsChanged)
+  Q_PROPERTY(float calories READ calories NOTIFY statsChanged)
 
-    Q_PROPERTY(double powerBalance READ getPedalBalance NOTIFY statsChanged)
-    Q_PROPERTY(int powerInWatts READ getPowerInWatts NOTIFY statsChanged)
+  // CyclingPowerMeasurementData
+  Q_PROPERTY(double powerBalance READ getPedalBalance NOTIFY statsChanged)
+  Q_PROPERTY(int powerInWatts READ getPowerInWatts NOTIFY statsChanged)
 
-    Q_PROPERTY(unsigned int wheelRevolutions READ getWheelRevolutions NOTIFY statsChanged)
-    Q_PROPERTY(double wheelRevsTs READ getWheelRevsTs NOTIFY statsChanged)
-    Q_PROPERTY(unsigned int crankRevolutions READ getCrankRevolutions NOTIFY statsChanged)
-    Q_PROPERTY(double crankRevsTs READ getCrankRevsTs NOTIFY statsChanged)
+  // CSCMeasurementData
+  Q_PROPERTY(
+    unsigned int wheelRevolutions READ getWheelRevolutions NOTIFY statsChanged)
+  Q_PROPERTY(double wheelRevsTs READ getWheelRevsTs NOTIFY statsChanged)
+  Q_PROPERTY(
+    unsigned int crankRevolutions READ getCrankRevolutions NOTIFY statsChanged)
+  Q_PROPERTY(double crankRevsTs READ getCrankRevsTs NOTIFY statsChanged)
 
-    Q_PROPERTY(double instantSpeed READ getInstantSpeed NOTIFY statsChanged)
-    Q_PROPERTY(double averageSpeed READ getAverageSpeed NOTIFY statsChanged)
-    Q_PROPERTY(double instantCadenceInRPM READ getInstantCadenceInRPM NOTIFY statsChanged)
-    Q_PROPERTY(double averageCadenceInRPM READ getAverageCadenceInRPM NOTIFY statsChanged)
-    Q_PROPERTY(unsigned int totalDistanceInM READ getTotalDistanceInM NOTIFY statsChanged)
-    Q_PROPERTY(int resistanceLevel READ getResistanceLevel NOTIFY statsChanged)
-    Q_PROPERTY(int instantPowerInWatts READ getInstantPowerInWatts NOTIFY statsChanged)
-    Q_PROPERTY(int averagePowerInWatts READ getAveragePowerInWatts NOTIFY statsChanged)
+  // IndoorBikeData
+  Q_PROPERTY(double instantSpeed READ getInstantSpeed NOTIFY statsChanged)
+  Q_PROPERTY(double averageSpeed READ getAverageSpeed NOTIFY statsChanged)
+  Q_PROPERTY(
+    double instantCadenceInRPM READ getInstantCadenceInRPM NOTIFY statsChanged)
+  Q_PROPERTY(
+    double averageCadenceInRPM READ getAverageCadenceInRPM NOTIFY statsChanged)
+  Q_PROPERTY(
+    unsigned int totalDistanceInM READ getTotalDistanceInM NOTIFY statsChanged)
+  Q_PROPERTY(int resistanceLevel READ getResistanceLevel NOTIFY statsChanged)
+  Q_PROPERTY(
+    int instantPowerInWatts READ getInstantPowerInWatts NOTIFY statsChanged)
+  Q_PROPERTY(
+    int averagePowerInWatts READ getAveragePowerInWatts NOTIFY statsChanged)
 
+  // FitnessMachineFeatureData
 
-
-
-    Q_PROPERTY(AddressType addressType READ addressType WRITE setAddressType)
+  Q_PROPERTY(AddressType addressType READ addressType WRITE setAddressType)
 
 public:
-    enum class AddressType {
-        PublicAddress,
-        RandomAddress
-    };
-    Q_ENUM(AddressType)
+  enum class AddressType
+  {
+    PublicAddress,
+    RandomAddress
+  };
+  Q_ENUM(AddressType)
 
-    DeviceHandler(QObject *parent = nullptr);
+  DeviceHandler(QObject* parent = nullptr);
 
-    void setDevice(DeviceInfo *device);
-    void setAddressType(AddressType type);
-    AddressType addressType() const;
+  void setDevice(DeviceInfo* device);
+  void setAddressType(AddressType type);
+  AddressType addressType() const;
 
-    bool measuring() const;
-    bool aliveHR() const;
-    bool alivePower() const;
-    bool aliveCSC() const;
-    bool aliveFitness() const;
+  bool measuring() const;
+  bool aliveHR() const;
+  bool alivePower() const;
+  bool aliveCSC() const;
+  bool aliveFitness() const;
 
-    // Statistics
-    int hr() const;
-    int time() const;
-    float average() const;
-    int maxHR() const;
-    int minHR() const;
-    float calories() const;
+  // Statistics
+  int hr() const;
+  int time() const;
+  float average() const;
+  int maxHR() const;
+  int minHR() const;
+  float calories() const;
 
-
-    double getPedalBalance() const;
-    int16_t getPowerInWatts() const;
-    uint32_t getWheelRevolutions() const;
-    double getWheelRevsTs() const;
-    uint32_t getCrankRevolutions() const;
-    double getCrankRevsTs() const;
-    double getInstantSpeed() const;
-    double getAverageSpeed() const;
-    double getInstantCadenceInRPM() const;
-    double getAverageCadenceInRPM() const;
-    uint32_t getTotalDistanceInM() const;
-    int16_t  getResistanceLevel() const;
-    int16_t getInstantPowerInWatts() const;
-    int16_t getAveragePowerInWatts() const;
+  double getPedalBalance() const;
+  int16_t getPowerInWatts() const;
+  uint32_t getWheelRevolutions() const;
+  double getWheelRevsTs() const;
+  uint32_t getCrankRevolutions() const;
+  double getCrankRevsTs() const;
+  double getInstantSpeed() const;
+  double getAverageSpeed() const;
+  double getInstantCadenceInRPM() const;
+  double getAverageCadenceInRPM() const;
+  uint32_t getTotalDistanceInM() const;
+  int16_t getResistanceLevel() const;
+  int16_t getInstantPowerInWatts() const;
+  int16_t getAveragePowerInWatts() const;
 
 signals:
-    void measuringChanged();
-    void aliveHRChanged();
-    void alivePowerChanged();
-    void aliveCSCChanged();
-    void aliveFitnessChanged();
+  void measuringChanged();
+  void aliveHRChanged();
+  void alivePowerChanged();
+  void aliveCSCChanged();
+  void aliveFitnessChanged();
 
-    void statsChanged();
+  void statsChanged();
 
 public slots:
-    void startMeasurement();
-    void stopMeasurement();
-    void disconnectService();
+  void startMeasurement();
+  void stopMeasurement();
+  void disconnectService();
 
 private:
-    //QLowEnergyController
-    void serviceDiscovered(const QBluetoothUuid &);
-    void serviceScanDone();
+  // QLowEnergyController
+  void serviceDiscovered(const QBluetoothUuid&);
+  void serviceScanDone();
 
-    //QLowEnergyService
-    void serviceHRStateChanged(QLowEnergyService::ServiceState s);
-    void serviceFitnessMachineStateChanged(QLowEnergyService::ServiceState s);
-    void serviceCyclingSpeedAndCadenceStateChanged(QLowEnergyService::ServiceState s);
-    void serviceCyclingPowerStateChanged(QLowEnergyService::ServiceState s);
+  // QLowEnergyService
+  void serviceHRStateChanged(QLowEnergyService::ServiceState s);
+  void serviceFitnessMachineStateChanged(QLowEnergyService::ServiceState s);
+  void serviceCyclingSpeedAndCadenceStateChanged(
+    QLowEnergyService::ServiceState s);
+  void serviceCyclingPowerStateChanged(QLowEnergyService::ServiceState s);
 
-    void updateHeartRateValue(const QLowEnergyCharacteristic &c,
-                              const QByteArray &value);
-    void updateFitnessBikeDataValue(const QLowEnergyCharacteristic &c,
-                              const QByteArray &value);
-    void updateCSCValue(const QLowEnergyCharacteristic &c,
-                              const QByteArray &value);
-    void updatePowerValue(const QLowEnergyCharacteristic &c,
-                              const QByteArray &value);
-    void confirmedHRDescriptorWrite(const QLowEnergyDescriptor &d,
-                              const QByteArray &value);
+  void updateHeartRateValue(const QLowEnergyCharacteristic& c,
+                            const QByteArray& value);
+  void updateFitnessBikeDataValue(const QLowEnergyCharacteristic& c,
+                                  const QByteArray& value);
+  void updateCSCValue(const QLowEnergyCharacteristic& c,
+                      const QByteArray& value);
+  void updatePowerValue(const QLowEnergyCharacteristic& c,
+                        const QByteArray& value);
+  void confirmedHRDescriptorWrite(const QLowEnergyDescriptor& d,
+                                  const QByteArray& value);
 
-    void confirmedFitnessMachineFeaturesCharacteristicRead(const QLowEnergyCharacteristic &info,
-                            const QByteArray &value);
-    void confirmedFitnessDescriptorWrite(const QLowEnergyDescriptor &d,
-                              const QByteArray &value);
-    void confirmedCSCDescriptorWrite(const QLowEnergyDescriptor &d,
-                              const QByteArray &value);
-    void confirmedPowerDescriptorWrite(const QLowEnergyDescriptor &d,
-                              const QByteArray &value);
-
+  void confirmedFitnessMachineFeaturesCharacteristicRead(
+    const QLowEnergyCharacteristic& info,
+    const QByteArray& value);
+  void confirmedFitnessDescriptorWrite(const QLowEnergyDescriptor& d,
+                                       const QByteArray& value);
+  void confirmedCSCDescriptorWrite(const QLowEnergyDescriptor& d,
+                                   const QByteArray& value);
+  void confirmedPowerDescriptorWrite(const QLowEnergyDescriptor& d,
+                                     const QByteArray& value);
 
 #ifdef SIMULATOR
-    void updateDemoHR();
+  void updateDemoHR();
 #endif
 private:
-    void addHRMeasurement(int value);
-    void addFitnessBikeDataMeasurement(const IndoorBikeData & bikeData);
-    void addCSCMeasurement(const CSCMeasurementData & data);
-    void addPowerMeasurement(const CyclingPowerMeasurementData & data);
+  void addHRMeasurement(int value);
+  void addFitnessBikeDataMeasurement(const IndoorBikeData& bikeData);
+  void addCSCMeasurement(const CSCMeasurementData& data);
+  void addPowerMeasurement(const CyclingPowerMeasurementData& data);
 
-    void tryToStop();
+  void tryToStop();
 
-    QLowEnergyController *m_control = nullptr;
+  QLowEnergyController* m_control = nullptr;
 
-    QLowEnergyService *m_service_heart_rate = nullptr;
-    QLowEnergyService *m_service_fitness_machine = nullptr;
-    QLowEnergyService *m_service_cycling_speed_and_cadence = nullptr;
-    QLowEnergyService *m_service_cycling_power = nullptr;
+  QLowEnergyService* m_service_heart_rate = nullptr;
+  QLowEnergyService* m_service_fitness_machine = nullptr;
+  QLowEnergyService* m_service_cycling_speed_and_cadence = nullptr;
+  QLowEnergyService* m_service_cycling_power = nullptr;
 
-    std::vector<bool> m_services_running{false,false,false,false}; // heart, fitness, csc, power
+  std::vector<bool> m_services_running{ false,
+                                        false,
+                                        false,
+                                        false }; // heart, fitness, csc, power
 
-    QLowEnergyDescriptor m_notificationHrDesc;
-    QLowEnergyDescriptor m_notificationFitnessIndoorBikeDataDesc;
-    QLowEnergyDescriptor m_notificationCyclingSpeedAndCadenceDesc;
-    QLowEnergyDescriptor m_notificationCyclingPowerDesc;
+  QLowEnergyDescriptor m_notificationHrDesc;
+  QLowEnergyDescriptor m_notificationFitnessIndoorBikeDataDesc;
+  QLowEnergyDescriptor m_notificationCyclingSpeedAndCadenceDesc;
+  QLowEnergyDescriptor m_notificationCyclingPowerDesc;
 
-    DeviceInfo *m_currentDevice = nullptr;
+  DeviceInfo* m_currentDevice = nullptr;
 
-    bool m_foundHeartRateService{false};
-    bool m_foundCyclingPowerService{false};
-    bool m_foundFitnessMachineService{false};
-    bool m_foundCyclingSpeedAndCadenceService{false};
+  bool m_foundHeartRateService{ false };
+  bool m_foundCyclingPowerService{ false };
+  bool m_foundFitnessMachineService{ false };
+  bool m_foundCyclingSpeedAndCadenceService{ false };
 
-    bool m_measuring;
-    int m_currentValue, m_min, m_max, m_sum;
+  bool m_measuring;
+  int m_currentValue, m_min, m_max, m_sum;
 
-    std::unique_ptr<IndoorBikeData> m_currentIndoorBikeData;
-    std::unique_ptr<CSCMeasurementData> m_currentCSCData;
-    std::unique_ptr<CyclingPowerMeasurementData> m_currentPowerData;
-    std::unique_ptr<FitnessMachineFeature> m_currentFitnessMachineFeature;
-    std::unique_ptr<SupportedPowerRange> m_currentSupportedPowerRange;
-    std::unique_ptr<SupportedResistanceLevelRange> m_currentSupportedResistanceLevelRange;
+  std::unique_ptr<IndoorBikeData> m_currentIndoorBikeData;
+  std::unique_ptr<CSCMeasurementData> m_currentCSCData;
+  std::unique_ptr<CyclingPowerMeasurementData> m_currentPowerData;
+  std::unique_ptr<FitnessMachineFeatureData> m_currentFitnessMachineFeature;
+  std::unique_ptr<SupportedPowerRange> m_currentSupportedPowerRange;
+  std::unique_ptr<SupportedResistanceLevelRange>
+    m_currentSupportedResistanceLevelRange;
 
-    float m_avg, m_calories;
+  float m_avg, m_calories;
 
-    // Statistics
-    QDateTime m_start;
-    QDateTime m_stop;
+  // Statistics
+  QDateTime m_start;
+  QDateTime m_stop;
 
-    QVector<int> m_measurements;
-    QLowEnergyController::RemoteAddressType m_addressType = QLowEnergyController::PublicAddress;
+  QVector<int> m_measurements;
+  QLowEnergyController::RemoteAddressType m_addressType =
+    QLowEnergyController::PublicAddress;
 
 #ifdef SIMULATOR
-    QTimer m_demoTimer;
+  QTimer m_demoTimer;
 #endif
 };
 
