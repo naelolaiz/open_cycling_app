@@ -113,7 +113,7 @@ class DeviceHandler : public BluetoothBaseClass
   Q_PROPERTY(
     int averagePowerInWatts READ getAveragePowerInWatts NOTIFY statsChanged)
 
-  // FitnessMachineFeatureData
+  //////////////
 
   Q_PROPERTY(AddressType addressType READ addressType WRITE setAddressType)
 
@@ -215,6 +215,8 @@ private:
   void addFitnessBikeDataMeasurement(const IndoorBikeData& bikeData);
   void addCSCMeasurement(const CSCMeasurementData& data);
   void addPowerMeasurement(const CyclingPowerMeasurementData& data);
+  void addFitnessMachineStatusMeasurement(const FitnessMachineStatus& data);
+  void addTrainingStatusMeasurement(const TrainingStatus& data);
 
   void tryToStop();
 
@@ -225,15 +227,16 @@ private:
   QLowEnergyService* m_service_cycling_speed_and_cadence = nullptr;
   QLowEnergyService* m_service_cycling_power = nullptr;
 
-  std::vector<bool> m_services_running{ false,
-                                        false,
-                                        false,
-                                        false }; // heart, fitness, csc, power
+  std::vector<bool> m_services_running{
+    false, false, false, false, false, false
+  }; // heart, fitness, csc, power, fitness machine status, training status
 
   QLowEnergyDescriptor m_notificationHrDesc;
   QLowEnergyDescriptor m_notificationFitnessIndoorBikeDataDesc;
   QLowEnergyDescriptor m_notificationCyclingSpeedAndCadenceDesc;
   QLowEnergyDescriptor m_notificationCyclingPowerDesc;
+  QLowEnergyDescriptor m_notificationFitnessMachineStatusDesc;
+  QLowEnergyDescriptor m_notificationTrainingStatusDesc;
 
   DeviceInfo* m_currentDevice = nullptr;
 
@@ -252,6 +255,8 @@ private:
   std::unique_ptr<SupportedPowerRange> m_currentSupportedPowerRange;
   std::unique_ptr<SupportedResistanceLevelRange>
     m_currentSupportedResistanceLevelRange;
+  std::unique_ptr<FitnessMachineStatus> m_currentFitnessMachineStatus;
+  std::unique_ptr<TrainingStatus> m_currentTrainingStatus;
 
   float m_avg, m_calories;
 

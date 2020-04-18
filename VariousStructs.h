@@ -45,6 +45,8 @@ private:
 class FitnessMachineStatus : public FitnessMachineService
 {
 public:
+  FitnessMachineStatus(const quint8* data);
+  std::string dump() const;
   static QBluetoothUuid getCharUuid();
 };
 
@@ -75,6 +77,7 @@ public:
   Status getStatus() const;
   const std::string& getString();
   const std::string& getExtendedString();
+  std::string dump() const;
 
 private:
   const bool _trainingStatusStringPresent;

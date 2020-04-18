@@ -84,6 +84,16 @@ SupportedResistanceLevelRange::getCharUuid()
   return QBluetoothUuid(quint32(0x2ad6));
 }
 
+FitnessMachineStatus::FitnessMachineStatus(const quint8* data) {}
+
+std::string
+FitnessMachineStatus::dump() const
+{
+  std::stringstream s;
+  s << "TODO!" << std::endl;
+  return s.str();
+}
+
 QBluetoothUuid
 FitnessMachineStatus::getCharUuid()
 {
@@ -134,6 +144,70 @@ const std::string&
 TrainingStatus::getExtendedString()
 {
   return _extendedString;
+}
+
+std::string
+TrainingStatus::dump() const
+{
+  std::stringstream s;
+  s << "Status: ";
+  switch (_status) {
+    case OTHER:
+      s << "OTHER" << std::endl;
+      break;
+    case IDLE:
+      s << "IDLE" << std::endl;
+      break;
+    case WARMING_UP:
+      s << "WARMING UP" << std::endl;
+      break;
+    case LOW_INTENSITY_INTERVAL:
+      s << "LOW INTENSITY INTERVAL" << std::endl;
+      break;
+    case HIGH_INTENSITY_INTERVAL:
+      s << "HIGH INTENSITY INTERVAL" << std::endl;
+      break;
+    case RECOVER_INTERVAL:
+      s << "RECOVER INTERVAL" << std::endl;
+      break;
+    case ISOMETRIC:
+      s << "ISOMETRIC" << std::endl;
+      break;
+    case HEART_RATE_CONTROL:
+      s << "HEART RATE CONTROL" << std::endl;
+      break;
+    case FITNESS_TEST:
+      s << "FITNESS TEST" << std::endl;
+      break;
+    case SPEED_OUTSIDE_OF_CONTROL_REGION_LOW:
+      s << "SPEED OUTSIDE OF CONTROL REGION LOW" << std::endl;
+      break;
+    case SPEED_OUTSIDE_OF_CONTROL_REGION_HIGH:
+      s << "SPEED OUTSIDE OF CONTROL REGION HIGH" << std::endl;
+      break;
+    case COOL_DOWN:
+      s << "COOL DOWN" << std::endl;
+      break;
+    case WATT_CONTROl:
+      s << "WATT CONTROL" << std::endl;
+      break;
+    case MANUAL_MODE:
+      s << "MANUAL MODE" << std::endl;
+      break;
+    case PRE_WORKOUT:
+      s << "PRE WORKOUT" << std::endl;
+      break;
+    case POST_WORKOUT:
+    default:
+      s << "POST WORKOUT" << std::endl;
+  }
+  if (_trainingStatusStringPresent) {
+    s << "Status string: " << _string << std::endl;
+  }
+  if (_extendedStringPresent) {
+    s << "Status extended string: " << _extendedString << std::endl;
+  }
+  return s.str();
 }
 
 QBluetoothUuid
