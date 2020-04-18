@@ -387,7 +387,7 @@ void DeviceHandler::serviceCyclingSpeedAndCadenceStateChanged(QLowEnergyService:
     case QLowEnergyService::ServiceDiscovered:
     {
         setInfo(tr("Service CSC discovered."));
-        const QLowEnergyCharacteristic cscMeasurementChar = m_service_cycling_speed_and_cadence->characteristic(QBluetoothUuid(QBluetoothUuid::CSCMeasurement));
+        const QLowEnergyCharacteristic cscMeasurementChar = m_service_cycling_speed_and_cadence->characteristic(QBluetoothUuid::CSCMeasurement);
         if (!cscMeasurementChar.isValid()) {
             setError("CSC Data not found.");
             break;
@@ -417,7 +417,7 @@ void DeviceHandler::serviceCyclingPowerStateChanged(QLowEnergyService::ServiceSt
     case QLowEnergyService::ServiceDiscovered:
     {
         setInfo(tr("Service Power discovered."));
-        const QLowEnergyCharacteristic powerMeasurementChar = m_service_cycling_power->characteristic(QBluetoothUuid(QBluetoothUuid::CyclingPowerMeasurement));
+        const QLowEnergyCharacteristic powerMeasurementChar = m_service_cycling_power->characteristic(QBluetoothUuid::CyclingPowerMeasurement);
         if (!powerMeasurementChar.isValid()) {
             setError("Power Measurement Data not found.");
             break;
@@ -524,18 +524,18 @@ void DeviceHandler::confirmedFitnessMachineFeaturesCharacteristicRead(const QLow
     }
     const auto *data = reinterpret_cast<const quint8 *>(value.constData());
 
-    if(info.uuid() == QBluetoothUuid(quint32(0x2acc)))
+    if(info.uuid() == FitnessMachineFeature::getCharUuid())
     {
 
         m_currentFitnessMachineFeature.reset(new FitnessMachineFeature(data));
         qDebug() << m_currentFitnessMachineFeature->dump().str().c_str();
     }
-    else if(info.uuid() == QBluetoothUuid(SupportedPowerRange::getCharUuid()))
+    else if(info.uuid() == SupportedPowerRange::getCharUuid())
     {
         m_currentSupportedPowerRange.reset(new SupportedPowerRange(data));
         qDebug() << m_currentSupportedPowerRange->dump().str().c_str();
     }
-    else if (info.uuid() == QBluetoothUuid(SupportedResistanceLevelRange::getCharUuid()))
+    else if (info.uuid() == SupportedResistanceLevelRange::getCharUuid())
     {
         m_currentSupportedResistanceLevelRange.reset(new SupportedResistanceLevelRange(data));
         qDebug() << m_currentSupportedResistanceLevelRange->dump().str().c_str();
