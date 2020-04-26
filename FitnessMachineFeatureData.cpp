@@ -29,8 +29,8 @@ FitnessMachineFeatureData::dump() const
 
 FitnessMachineFeatureData::TargetSettingFeatures::TargetSettingFeatures(
   const quint8* data)
-  : _targetSettingFeatures(data[0] + (data[1] << 8) + (data[2] << 16) +
-                           (data[3] << 24))
+  : _targetSettingFeatures(data[4] + (data[5] << 8) + (data[6] << 16) +
+                           (data[7] << 24))
   , _speedTargetSettingSupported(_targetSettingFeatures & 1)
   , _inclinationTargetSettingSupported((_targetSettingFeatures >> 1) & 1)
   , _resistanceTargetSettingSupported((_targetSettingFeatures >> 2) & 1)
@@ -99,8 +99,8 @@ FitnessMachineFeatureData::TargetSettingFeatures::dump() const
 
 FitnessMachineFeatureData::MachineFeatures::MachineFeatures(const quint8* data)
 
-  : _fitnessMachineFeatures(data[4] + (data[5] << 8) + (data[6] << 16) +
-                            (data[7] << 24))
+  : _fitnessMachineFeatures(data[0] + (data[1] << 8) + (data[2] << 16) +
+                            (data[3] << 24))
   , _averageSpeedSupported(_fitnessMachineFeatures & 1)
   , _cadenceSupported((_fitnessMachineFeatures >> 1) & 1)
   , _totalDistanceSupported((_fitnessMachineFeatures >> 2) & 1)
