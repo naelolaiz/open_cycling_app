@@ -3,7 +3,8 @@
 ** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the QtBluetooth module of the Qt Toolkit.
+** This file is part of the examples of the QtBluetooth module of the Qt
+*Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -48,46 +49,56 @@
 **
 ****************************************************************************/
 
-#include "heartrate-global.h"
 #include "connectionhandler.h"
+#include "heartrate-global.h"
 #include <QtBluetooth/qtbluetooth-config.h>
 #include <QtCore/qsystemdetection.h>
 
-ConnectionHandler::ConnectionHandler(QObject *parent) : QObject(parent)
+ConnectionHandler::ConnectionHandler(QObject* parent)
+  : QObject(parent)
+  , m_localDevice(QBluetoothAddress(QString("00:19:86:00:24:B9")), this)
 {
-    connect(&m_localDevice, &QBluetoothLocalDevice::hostModeStateChanged,
-            this, &ConnectionHandler::hostModeChanged);
+  connect(&m_localDevice,
+          &QBluetoothLocalDevice::hostModeStateChanged,
+          this,
+          &ConnectionHandler::hostModeChanged);
 }
 
-bool ConnectionHandler::alive() const
+bool
+ConnectionHandler::alive() const
 {
 #if defined(SIMULATOR) || defined(QT_PLATFORM_UIKIT)
-    return true;
+  return true;
 #else
-    return m_localDevice.isValid() && m_localDevice.hostMode() != QBluetoothLocalDevice::HostPoweredOff;
+  return m_localDevice.isValid() &&
+         m_localDevice.hostMode() != QBluetoothLocalDevice::HostPoweredOff;
 #endif
 }
 
-bool ConnectionHandler::requiresAddressType() const
+bool
+ConnectionHandler::requiresAddressType() const
 {
 #if QT_CONFIG(bluez)
-    return true;
+  return true;
 #else
-    return false;
+  return false;
 #endif
 }
 
-QString ConnectionHandler::name() const
+QString
+ConnectionHandler::name() const
 {
-    return m_localDevice.name();
+  return m_localDevice.name();
 }
 
-QString ConnectionHandler::address() const
+QString
+ConnectionHandler::address() const
 {
-    return m_localDevice.address().toString();
+  return m_localDevice.address().toString();
 }
 
-void ConnectionHandler::hostModeChanged(QBluetoothLocalDevice::HostMode /*mode*/)
+void ConnectionHandler::hostModeChanged(
+  QBluetoothLocalDevice::HostMode /*mode*/)
 {
-    emit deviceChanged();
+  emit deviceChanged();
 }
