@@ -986,27 +986,27 @@ DeviceHandler::getStepPowerInWatts() const
   return m_currentSupportedPowerRange->getMinimumIncrementInWatts();
 }
 
-int16_t
+double
 DeviceHandler::getMinimumResistanceLevel() const
 {
   if (!m_currentSupportedResistanceLevelRange)
-    return 0;
+    return 0.;
   return m_currentSupportedResistanceLevelRange->getMinimumResistanceLevel();
 }
 
-int16_t
+double
 DeviceHandler::getMaximumResistanceLevel() const
 {
   if (!m_currentSupportedResistanceLevelRange)
-    return 0;
+    return 0.;
   return m_currentSupportedResistanceLevelRange->getMaximumResistanceLevel();
 }
 
-int16_t
+double
 DeviceHandler::getStepResistanceLevel() const
 {
   if (!m_currentSupportedResistanceLevelRange)
-    return 0;
+    return 0.;
   return m_currentSupportedResistanceLevelRange->getMinimumIncrement();
 }
 

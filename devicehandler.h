@@ -122,11 +122,11 @@ class DeviceHandler : public BluetoothBaseClass
   Q_PROPERTY(
     int stepPowerInWatts READ getStepPowerInWatts NOTIFY powerRangeStatsChanged)
 
-  Q_PROPERTY(int minimumResistanceLevel READ getMinimumResistanceLevel NOTIFY
+  Q_PROPERTY(double minimumResistanceLevel READ getMinimumResistanceLevel NOTIFY
                resistanceLevelChanged)
-  Q_PROPERTY(int maximumResistanceLevel READ getMaximumResistanceLevel NOTIFY
+  Q_PROPERTY(double maximumResistanceLevel READ getMaximumResistanceLevel NOTIFY
                resistanceLevelChanged)
-  Q_PROPERTY(int stepResistanceLevel READ getStepResistanceLevel NOTIFY
+  Q_PROPERTY(double stepResistanceLevel READ getStepResistanceLevel NOTIFY
                resistanceLevelChanged)
 
   ///
@@ -179,9 +179,9 @@ public:
   int16_t getMinimumPowerInWatts() const;
   int16_t getMaximumPowerInWatts() const;
   int16_t getStepPowerInWatts() const;
-  int16_t getMinimumResistanceLevel() const;
-  int16_t getMaximumResistanceLevel() const;
-  int16_t getStepResistanceLevel() const;
+  double getMinimumResistanceLevel() const;
+  double getMaximumResistanceLevel() const;
+  double getStepResistanceLevel() const;
 
 signals:
   void measuringChanged();

@@ -49,22 +49,22 @@ SupportedResistanceLevelRange::SupportedResistanceLevelRange(const quint8* data)
   , _minimumIncrement(data[4] + (data[5] << 8))
 {}
 
-int16_t
+double
 SupportedResistanceLevelRange::getMinimumResistanceLevel() const
 {
-  return _minimumResistanceLevel;
+  return _minimumResistanceLevel * 0.1;
 }
 
-int16_t
+double
 SupportedResistanceLevelRange::getMaximumResistanceLevel() const
 {
-  return _maximumResistanceLevel;
+  return _maximumResistanceLevel * 0.1;
 }
 
-int16_t
+double
 SupportedResistanceLevelRange::getMinimumIncrement() const
 {
-  return _minimumIncrement;
+  return _minimumIncrement * 0.1;
 }
 
 std::string

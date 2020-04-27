@@ -200,7 +200,7 @@ GamePage {
                 anchors.leftMargin: 10
                 anchors.top: powerTarget.bottom
                 anchors.topMargin: 10
-                text: "resistance target(" + resistanceTarget.from + "-" + resistanceTarget.to + "): "
+                text: "resistance target(" + deviceHandler.minimumResistanceLevel + "-" + deviceHandler.maximumResistanceLevel + "): "
             }
 
             SpinBox {
@@ -211,10 +211,23 @@ GamePage {
                 anchors.rightMargin: 10
                 anchors.top: powerTarget.bottom
                 anchors.topMargin: 10
-                from: deviceHandler.minimumResistanceLevel
-                to: deviceHandler.maximumResistanceLevel
-                stepSize: deviceHandler.stepResistanceLevel
-                onValueChanged: console.log("value changed to: " + value)
+                property int decimals: 1
+                property real realValue: value / 10.
+                validator: DoubleValidator {
+                        bottom: Math.min(resistanceTarget.from, resistanceTarget.to)
+                        top:  Math.max(resistanceTarget.from, resistanceTarget.to)
+                    }
+                textFromValue: function(value, locale) {
+                        return Number(value / 10).toLocaleString(locale, 'f', resistanceTarget.decimals)
+                    }
+
+                valueFromText: function(text, locale) {
+                        return Number.fromLocaleString(locale, text) * 10
+                    }
+                from: deviceHandler.minimumResistanceLevel * 10
+                to: deviceHandler.maximumResistanceLevel * 10
+                stepSize: deviceHandler.stepResistanceLevel * 10
+                onValueChanged: console.log("value changed to: " + realValue)
             }
         }
     }

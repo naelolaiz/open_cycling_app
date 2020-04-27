@@ -30,9 +30,9 @@ class SupportedResistanceLevelRange : public FitnessMachineService
 {
 public:
   SupportedResistanceLevelRange(const quint8* data);
-  int16_t getMinimumResistanceLevel() const;
-  int16_t getMaximumResistanceLevel() const;
-  int16_t getMinimumIncrement() const;
+  double getMinimumResistanceLevel() const;
+  double getMaximumResistanceLevel() const;
+  double getMinimumIncrement() const;
   std::string dump();
   static QBluetoothUuid getCharUuid();
 
