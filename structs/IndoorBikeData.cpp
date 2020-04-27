@@ -6,42 +6,42 @@ IndoorBikeData::IndoorBikeData(const quint8* data)
   : _flags(qFromLittleEndian<quint16>(data[0]))
 {
   uint16_t index = 2;
-  if (_moreData()) {
+  if (haveMoreData()) {
     _instantSpeed = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_averageSpeedPresent()) {
+  if (isAverageSpeedPresent()) {
     _averageSpeed = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_instantCadencePresent()) {
+  if (isInstantCadencePresent()) {
     _instantCadence = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_averageCadencePresent()) {
+  if (isAverageCadencePresent()) {
     _averageCadence = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_totalDistancePresent()) {
+  if (isTotalDistancePresent()) {
     // TODO! !?
     //_totalDistance = qFromLittleEndian
     _totalDistance =
       data[index] + (data[index + 1] << 8) + (data[index + 2] << 16); // ?
     index += 3;
   }
-  if (_resistanceLevelPresent()) {
+  if (isResistanceLevelPresent()) {
     _resistanceLevel = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_instantPowerPresent()) {
+  if (isInstantPowerPresent()) {
     _instantPower = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_averagePowerPresent()) {
+  if (isAveragePowerPresent()) {
     _averagePower = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_expendedEnergyPresent()) {
+  if (isExpendedEnergyPresent()) {
     _totalEnergy = data[index] + (data[index + 1] << 8);
     index += 2;
     _energyPerHour = data[index] + (data[index + 1] << 8);
@@ -49,19 +49,19 @@ IndoorBikeData::IndoorBikeData(const quint8* data)
     _energyPerMinute = reinterpret_cast<quint8>(data[index]);
     index++;
   }
-  if (_heartRatePresent()) {
+  if (isHeartRatePresent()) {
     _heartRate = reinterpret_cast<quint8>(data[index]);
     index++;
   }
-  if (_metabolicEquivalentPresent()) {
+  if (isMetabolicEquivalentPresent()) {
     _metabolicEquivalent = reinterpret_cast<quint8>(data[index]);
     index++;
   }
-  if (_elapsedTimePresent()) {
+  if (isElapsedTimePresent()) {
     _elapsedTime = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_remainingTimePresent()) {
+  if (isRemainingTimePresent()) {
     _remainingTime = data[index] + (data[index + 1] << 8);
     index += 2;
   }
@@ -163,37 +163,37 @@ IndoorBikeData::dump() const
   std::stringstream s;
   s << "Instant Speed: " << getInstantSpeedInKmPerSecond() << " Km/s"
     << std::endl;
-  if (_averageSpeedPresent())
+  if (isAverageSpeedPresent())
     s << "average speed: " << getAverageSpeedInKmPerSecond() << " Km/s"
       << std::endl;
-  if (_instantCadencePresent())
+  if (isInstantCadencePresent())
     s << "Instant Cadence:" << getInstantCadenceInRPM() << " RPM" << std::endl;
-  if (_averageCadencePresent())
+  if (isAverageCadencePresent())
     s << "Average Cadence: " << getAverageCadenceInRPM() << " RPM" << std::endl;
-  if (_totalDistancePresent())
+  if (isTotalDistancePresent())
     s << "Total Distance: " << getTotalDistanceInMeters() << " meters"
       << std::endl;
-  if (_resistanceLevelPresent())
+  if (isResistanceLevelPresent())
     s << "Resistance Level: " << getResistanceLevel() << " (unitless) "
       << std::endl;
-  if (_instantPowerPresent())
+  if (isInstantPowerPresent())
     s << "Instant Power: " << getInstantPowerInWatts() << " Watts" << std::endl;
-  if (_averagePowerPresent())
+  if (isAveragePowerPresent())
     s << "Average Power: " << getAveragePowerInWatts() << " Watts" << std::endl;
-  if (_expendedEnergyPresent())
+  if (isExpendedEnergyPresent())
     s << "Total Energy: " << getTotalEnergyInKiloCalorie() << " KiloCalorie"
       << std::endl
       << "Energy Per Hour: " << getEnergyPerHourInKiloCalorie()
       << " KiloCalorie" << std::endl
       << "Energy Per Minute: " << getEnergyPerMinuteInKiloCalorie()
       << " KiloCalorie" << std::endl;
-  if (_heartRatePresent())
+  if (isHeartRatePresent())
     s << "Heart Rate: " << getBPM() << " BPM" << std::endl;
-  if (_metabolicEquivalentPresent())
+  if (isMetabolicEquivalentPresent())
     s << "Metabolic Equivalent: " << getMetabolicEquivalent();
-  if (_elapsedTimePresent())
+  if (isElapsedTimePresent())
     s << "Elapsed Time: " << getElapsedTimeInSecs() << " secs" << std::endl;
-  if (_remainingTimePresent())
+  if (isRemainingTimePresent())
     s << "Remaining Time: " << getRemainingTimeInSecs() << " secs" << std::endl;
 
   return s.str();
@@ -203,4 +203,82 @@ QBluetoothUuid
 IndoorBikeData::getCharUuid()
 {
   return QBluetoothUuid(quint32(0x2ad2));
+}
+
+bool
+IndoorBikeData::haveMoreData() const
+{
+  return _flags & 1;
+}
+
+bool
+IndoorBikeData::isAverageSpeedPresent() const
+{
+  return (_flags >> 1) & 1;
+}
+
+bool
+IndoorBikeData::isInstantCadencePresent() const
+{
+  return ((_flags >> 2) & 1);
+}
+
+bool
+IndoorBikeData::isAverageCadencePresent() const
+{
+  return ((_flags >> 3) & 1);
+}
+
+bool
+IndoorBikeData::isTotalDistancePresent() const
+{
+  return ((_flags >> 4) & 1);
+}
+
+bool
+IndoorBikeData::isResistanceLevelPresent() const
+{
+  return ((_flags >> 5) & 1);
+}
+
+bool
+IndoorBikeData::isInstantPowerPresent() const
+{
+  return ((_flags >> 6) & 1);
+}
+
+bool
+IndoorBikeData::isAveragePowerPresent() const
+{
+  return ((_flags >> 7) & 1);
+}
+
+bool
+IndoorBikeData::isExpendedEnergyPresent() const
+{
+  return ((_flags >> 8) & 1);
+}
+
+bool
+IndoorBikeData::isHeartRatePresent() const
+{
+  return ((_flags >> 9) & 1);
+}
+
+bool
+IndoorBikeData::isMetabolicEquivalentPresent() const
+{
+  return ((_flags >> 10) & 1);
+}
+
+bool
+IndoorBikeData::isElapsedTimePresent() const
+{
+  return ((_flags >> 11) & 1);
+}
+
+bool
+IndoorBikeData::isRemainingTimePresent() const
+{
+  return ((_flags >> 12) & 1);
 }
