@@ -31,122 +31,307 @@ FitnessMachineFeatureData::TargetSettingFeatures::TargetSettingFeatures(
   const quint8* data)
   : _targetSettingFeatures(data[4] + (data[5] << 8) + (data[6] << 16) +
                            (data[7] << 24))
-  , _speedTargetSettingSupported(_targetSettingFeatures & 1)
-  , _inclinationTargetSettingSupported((_targetSettingFeatures >> 1) & 1)
-  , _resistanceTargetSettingSupported((_targetSettingFeatures >> 2) & 1)
-  , _powerTargetSettingSupported((_targetSettingFeatures >> 3) & 1)
-  , _heartRateTargetSettingSupported((_targetSettingFeatures >> 4) & 1)
-  , _targetedExpendedEnergyConfigurationSupported(
-      (_targetSettingFeatures >> 5) & 1)
-  , _TargetedStepNumberConfigurationSupported((_targetSettingFeatures >> 6) & 1)
-  , _TargetedStrideNumberConfigurationSupported((_targetSettingFeatures >> 7) &
-                                                1)
-  , _TargetedDistanceConfigurationSupported((_targetSettingFeatures >> 8) & 1)
-  , _TargetedTrainingTimeConfigurationSupported((_targetSettingFeatures >> 9) &
-                                                1)
-  , _TargetedTimeinTwoHeartRateZonesConfigurationSupported(
-      (_targetSettingFeatures >> 10) & 1)
-  , _TargetedTimeinThreeHeartRateZonesConfigurationSupported(
-      (_targetSettingFeatures >> 11) & 1)
-  , _TargetedTimeinFiveHeartRateZonesConfigurationSupported(
-      (_targetSettingFeatures >> 12) & 1)
-  , _IndoorBikeSimulationParametersSupported((_targetSettingFeatures >> 13) & 1)
-  , _WheelCircumferenceConfigurationSupported((_targetSettingFeatures >> 14) &
-                                              1)
-  , _SpinDownControlSupported((_targetSettingFeatures >> 15) & 1)
-  , _TargetedCadenceConfigurationSupported((_targetSettingFeatures >> 16) & 1)
 {}
 
 std::string
 FitnessMachineFeatureData::TargetSettingFeatures::dump() const
 {
   std::stringstream s;
-  s << "_speedTargetSettingSupported: " << _speedTargetSettingSupported
+  s << "speedTargetSettingSupported: " << isSpeedTargetSettingSupported()
     << std::endl;
-  s << "_inclinationTargetSettingSupported: "
-    << _inclinationTargetSettingSupported << std::endl;
-  s << "_resistanceTargetSettingSupported: "
-    << _resistanceTargetSettingSupported << std::endl;
-  s << "_powerTargetSettingSupported: " << _powerTargetSettingSupported
+  s << "inclinationTargetSettingSupported: "
+    << isInclinationTargetSettingSupported() << std::endl;
+  s << "resistanceTargetSettingSupported: "
+    << isResistanceTargetSettingSupported() << std::endl;
+  s << "powerTargetSettingSupported: " << isPowerTargetSettingSupported()
     << std::endl;
-  s << "_heartRateTargetSettingSupported: " << _heartRateTargetSettingSupported
+  s << "heartRateTargetSettingSupported: "
+    << isHeartRateTargetSettingSupported() << std::endl;
+  s << "targetedExpendedEnergyConfigurationSupported: "
+    << isTargetedExpendedEnergyConfigurationSupported() << std::endl;
+  s << "TargetedStepNumberConfigurationSupported: "
+    << isTargetedStepNumberConfigurationSupported() << std::endl;
+  s << "TargetedStrideNumberConfigurationSupported: "
+    << isTargetedStrideNumberConfigurationSupported() << std::endl;
+  s << "TargetedDistanceConfigurationSupported: "
+    << isTargetedDistanceConfigurationSupported() << std::endl;
+  s << "TargetedTrainingTimeConfigurationSupported: "
+    << isTargetedTrainingTimeConfigurationSupported() << std::endl;
+  s << "TargetedTimeinTwoHeartRateZonesConfigurationSupported: "
+    << isTargetedTimeinTwoHeartRateZonesConfigurationSupported() << std::endl;
+  s << "TargetedTimeinThreeHeartRateZonesConfigurationSupported: "
+    << isTargetedTimeinThreeHeartRateZonesConfigurationSupported() << std::endl;
+  s << "TargetedTimeinFiveHeartRateZonesConfigurationSupported: "
+    << isTargetedTimeinFiveHeartRateZonesConfigurationSupported() << std::endl;
+  s << "IndoorBikeSimulationParametersSupported: "
+    << isIndoorBikeSimulationParametersSupported() << std::endl;
+  s << "WheelCircumferenceConfigurationSupported: "
+    << isWheelCircumferenceConfigurationSupported() << std::endl;
+  s << "SpinDownControlSupported: " << isSpinDownControlSupported()
     << std::endl;
-  s << "_targetedExpendedEnergyConfigurationSupported: "
-    << _targetedExpendedEnergyConfigurationSupported << std::endl;
-  s << "_TargetedStepNumberConfigurationSupported: "
-    << _TargetedStepNumberConfigurationSupported << std::endl;
-  s << "_TargetedStrideNumberConfigurationSupported: "
-    << _TargetedStrideNumberConfigurationSupported << std::endl;
-  s << "_TargetedDistanceConfigurationSupported: "
-    << _TargetedDistanceConfigurationSupported << std::endl;
-  s << "_TargetedTrainingTimeConfigurationSupported: "
-    << _TargetedTrainingTimeConfigurationSupported << std::endl;
-  s << "_TargetedTimeinTwoHeartRateZonesConfigurationSupported: "
-    << _TargetedTimeinTwoHeartRateZonesConfigurationSupported << std::endl;
-  s << "_TargetedTimeinThreeHeartRateZonesConfigurationSupported: "
-    << _TargetedTimeinThreeHeartRateZonesConfigurationSupported << std::endl;
-  s << "_TargetedTimeinFiveHeartRateZonesConfigurationSupported: "
-    << _TargetedTimeinFiveHeartRateZonesConfigurationSupported << std::endl;
-  s << "_IndoorBikeSimulationParametersSupported: "
-    << _IndoorBikeSimulationParametersSupported << std::endl;
-  s << "_WheelCircumferenceConfigurationSupported: "
-    << _WheelCircumferenceConfigurationSupported << std::endl;
-  s << "_SpinDownControlSupported: " << _SpinDownControlSupported << std::endl;
-  s << "_TargetedCadenceConfigurationSupported: "
-    << _TargetedCadenceConfigurationSupported << std::endl;
+  s << "TargetedCadenceConfigurationSupported: "
+    << isTargetedCadenceConfigurationSupported() << std::endl;
   return s.str();
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isSpeedTargetSettingSupported() const
+{
+  return (_targetSettingFeatures & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isInclinationTargetSettingSupported() const
+{
+  return ((_targetSettingFeatures >> 1) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isResistanceTargetSettingSupported() const
+{
+  return ((_targetSettingFeatures >> 2) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isPowerTargetSettingSupported() const
+{
+  return ((_targetSettingFeatures >> 3) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isHeartRateTargetSettingSupported() const
+{
+  return ((_targetSettingFeatures >> 4) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isTargetedExpendedEnergyConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 5) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isTargetedStepNumberConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 6) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isTargetedStrideNumberConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 7) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isTargetedDistanceConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 8) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isTargetedTrainingTimeConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 9) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isTargetedTimeinTwoHeartRateZonesConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 10) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isTargetedTimeinThreeHeartRateZonesConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 11) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isTargetedTimeinFiveHeartRateZonesConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 12) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isIndoorBikeSimulationParametersSupported() const
+{
+  return ((_targetSettingFeatures >> 13) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isWheelCircumferenceConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 14) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::isSpinDownControlSupported()
+  const
+{
+  return ((_targetSettingFeatures >> 15) & 1);
+}
+
+bool
+FitnessMachineFeatureData::TargetSettingFeatures::
+  isTargetedCadenceConfigurationSupported() const
+{
+  return ((_targetSettingFeatures >> 16) & 1);
 }
 
 FitnessMachineFeatureData::MachineFeatures::MachineFeatures(const quint8* data)
 
   : _fitnessMachineFeatures(data[0] + (data[1] << 8) + (data[2] << 16) +
                             (data[3] << 24))
-  , _averageSpeedSupported(_fitnessMachineFeatures & 1)
-  , _cadenceSupported((_fitnessMachineFeatures >> 1) & 1)
-  , _totalDistanceSupported((_fitnessMachineFeatures >> 2) & 1)
-  , _inclinationSupported((_fitnessMachineFeatures >> 3) & 1)
-  , _elevationGainSupported((_fitnessMachineFeatures >> 4) & 1)
-  , _paceSupported((_fitnessMachineFeatures >> 5) & 1)
-  , _stepCountSupported((_fitnessMachineFeatures >> 6) & 1)
-  , _resistanceLevelSupported((_fitnessMachineFeatures >> 7) & 1)
-  , _strideCountSupported((_fitnessMachineFeatures >> 8) & 1)
-  , _expendedEnergySupported((_fitnessMachineFeatures >> 9) & 1)
-  , _heartRateMeasurementSupported((_fitnessMachineFeatures >> 10) & 1)
-  , _metabolicEquivalentSupported((_fitnessMachineFeatures >> 11) & 1)
-  , _elapsedTimeSupported((_fitnessMachineFeatures >> 12) & 1)
-  , _remainingTimeSupported((_fitnessMachineFeatures >> 13) & 1)
-  , _powerMeasurementSupported((_fitnessMachineFeatures >> 14) & 1)
-  , _forceOnBeltAndPowerOutputSupported((_fitnessMachineFeatures >> 15) & 1)
-  , _userDataRetentionSupported((_fitnessMachineFeatures >> 16) & 1)
 {}
 
 std::string
 FitnessMachineFeatureData::MachineFeatures::dump() const
 {
   std::stringstream s;
-  s << "_averageSpeedSupported: " << _averageSpeedSupported << std::endl;
-  s << "_cadenceSupported: " << _cadenceSupported << std::endl;
-  s << "_totalDistanceSupported: " << _totalDistanceSupported << std::endl;
-  s << "_inclinationSupported: " << _inclinationSupported << std::endl;
-  s << "_elevationGainSupported: " << _elevationGainSupported << std::endl;
-  s << "_paceSupported: " << _paceSupported << std::endl;
-  s << "_stepCountSupported: " << _stepCountSupported << std::endl;
-  s << "_resistanceLevelSupported: " << _resistanceLevelSupported << std::endl;
-  s << "_strideCountSupported: " << _strideCountSupported << std::endl;
-  s << "_expendedEnergySupported: " << _expendedEnergySupported << std::endl;
-  s << "_heartRateMeasurementSupported: " << _heartRateMeasurementSupported
+  s << "averageSpeedSupported: " << isAverageSpeedSupported() << std::endl;
+  s << "cadenceSupported: " << isCadenceSupported() << std::endl;
+  s << "totalDistanceSupported: " << isTotalDistanceSupported() << std::endl;
+  s << "inclinationSupported: " << isInclinationSupported() << std::endl;
+  s << "elevationGainSupported: " << isElevationGainSupported() << std::endl;
+  s << "paceSupported: " << isPaceSupported() << std::endl;
+  s << "stepCountSupported: " << isStepCountSupported() << std::endl;
+  s << "resistanceLevelSupported: " << isResistanceLevelSupported()
     << std::endl;
-  s << "_metabolicEquivalentSupported: " << _metabolicEquivalentSupported
+  s << "strideCountSupported: " << isStrideCountSupported() << std::endl;
+  s << "expendedEnergySupported: " << isExpendedEnergySupported() << std::endl;
+  s << "heartRateMeasurementSupported: " << isHeartRateMeasurementSupported()
     << std::endl;
-  s << "_elapsedTimeSupported: " << _elapsedTimeSupported << std::endl;
-  s << "_remainingTimeSupported: " << _remainingTimeSupported << std::endl;
-  s << "_powerMeasurementSupported: " << _powerMeasurementSupported
+  s << "metabolicEquivalentSupported: " << isMetabolicEquivalentSupported()
     << std::endl;
-  s << "_forceOnBeltAndPowerOutputSupported: "
-    << _forceOnBeltAndPowerOutputSupported << std::endl;
-  s << "_userDataRetentionSupported: " << _userDataRetentionSupported
+  s << "elapsedTimeSupported: " << isElapsedTimeSupported() << std::endl;
+  s << "remainingTimeSupported: " << isRemainingTimeSupported() << std::endl;
+  s << "powerMeasurementSupported: " << isPowerMeasurementSupported()
+    << std::endl;
+  s << "forceOnBeltAndPowerOutputSupported: "
+    << isForceOnBeltAndPowerOutputSupported() << std::endl;
+  s << "userDataRetentionSupported: " << isUserDataRetentionSupported()
     << std::endl;
   return s.str();
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isAverageSpeedSupported() const
+{
+  return (_fitnessMachineFeatures & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isCadenceSupported() const
+{
+  return ((_fitnessMachineFeatures >> 1) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isTotalDistanceSupported() const
+{
+  return ((_fitnessMachineFeatures >> 2) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isInclinationSupported() const
+{
+  return ((_fitnessMachineFeatures >> 3) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isElevationGainSupported() const
+{
+  return ((_fitnessMachineFeatures >> 4) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isPaceSupported() const
+{
+  return ((_fitnessMachineFeatures >> 5) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isStepCountSupported() const
+{
+  return ((_fitnessMachineFeatures >> 6) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isResistanceLevelSupported() const
+{
+  return ((_fitnessMachineFeatures >> 7) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isStrideCountSupported() const
+{
+  return ((_fitnessMachineFeatures >> 8) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isExpendedEnergySupported() const
+{
+  return ((_fitnessMachineFeatures >> 9) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isHeartRateMeasurementSupported()
+  const
+{
+  return ((_fitnessMachineFeatures >> 10) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isMetabolicEquivalentSupported()
+  const
+{
+  return ((_fitnessMachineFeatures >> 11) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isElapsedTimeSupported() const
+{
+  return ((_fitnessMachineFeatures >> 12) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isRemainingTimeSupported() const
+{
+  return ((_fitnessMachineFeatures >> 13) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isPowerMeasurementSupported() const
+{
+  return ((_fitnessMachineFeatures >> 14) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::
+  isForceOnBeltAndPowerOutputSupported() const
+{
+  return ((_fitnessMachineFeatures >> 15) & 1);
+}
+
+bool
+FitnessMachineFeatureData::MachineFeatures::isUserDataRetentionSupported() const
+{
+  return ((_fitnessMachineFeatures >> 16) & 1);
 }
 
 QBluetoothUuid

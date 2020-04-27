@@ -31,19 +31,21 @@ public:
 
 private:
   const uint16_t _flags;
-  const bool _moreData;
-  const bool _averageSpeedPresent;
-  const bool _instantCadencePresent;
-  const bool _averageCadencePresent;
-  const bool _totalDistancePresent;
-  const bool _resistanceLevelPresent;
-  const bool _instantPowerPresent;
-  const bool _averagePowerPresent;
-  const bool _expendedEnergyPresent;
-  const bool _heartRatePresent;
-  const bool _metabolicEquivalentPresent;
-  const bool _elapsedTimePresent;
-  const bool _remainingTimePresent;
+
+  bool _moreData() const { return _flags & 1; }
+  bool _averageSpeedPresent() const { return (_flags >> 1) & 1; }
+  bool _instantCadencePresent() const { return ((_flags >> 2) & 1); }
+  bool _averageCadencePresent() const { return ((_flags >> 3) & 1); }
+  bool _totalDistancePresent() const { return ((_flags >> 4) & 1); }
+  bool _resistanceLevelPresent() const { return ((_flags >> 5) & 1); }
+  bool _instantPowerPresent() const { return ((_flags >> 6) & 1); }
+  bool _averagePowerPresent() const { return ((_flags >> 7) & 1); }
+  bool _expendedEnergyPresent() const { return ((_flags >> 8) & 1); }
+  bool _heartRatePresent() const { return ((_flags >> 9) & 1); }
+  bool _metabolicEquivalentPresent() const { return ((_flags >> 10) & 1); }
+  bool _elapsedTimePresent() const { return ((_flags >> 11) & 1); }
+  bool _remainingTimePresent() const { return ((_flags >> 12) & 1); }
+
   uint16_t _instantSpeed{ 0u };
   uint16_t _averageSpeed{ 0u };
   uint16_t _instantCadence{ 0u };

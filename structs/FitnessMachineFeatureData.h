@@ -7,53 +7,59 @@
 
 class FitnessMachineFeatureData
 {
-  struct MachineFeatures
+  class MachineFeatures
   {
+  private:
+    const uint32_t _fitnessMachineFeatures;
+
+  public:
     MachineFeatures(const quint8* data);
     std::string dump() const;
 
-    const uint32_t _fitnessMachineFeatures;
-    const bool _averageSpeedSupported;
-    const bool _cadenceSupported;
-    const bool _totalDistanceSupported;
-    const bool _inclinationSupported;
-    const bool _elevationGainSupported;
-    const bool _paceSupported;
-    const bool _stepCountSupported;
-    const bool _resistanceLevelSupported;
-    const bool _strideCountSupported;
-    const bool _expendedEnergySupported;
-    const bool _heartRateMeasurementSupported;
-    const bool _metabolicEquivalentSupported;
-    const bool _elapsedTimeSupported;
-    const bool _remainingTimeSupported;
-    const bool _powerMeasurementSupported;
-    const bool _forceOnBeltAndPowerOutputSupported;
-    const bool _userDataRetentionSupported;
+    bool isAverageSpeedSupported() const;
+    bool isCadenceSupported() const;
+    bool isTotalDistanceSupported() const;
+    bool isInclinationSupported() const;
+    bool isElevationGainSupported() const;
+    bool isPaceSupported() const;
+    bool isStepCountSupported() const;
+    bool isResistanceLevelSupported() const;
+    bool isStrideCountSupported() const;
+    bool isExpendedEnergySupported() const;
+    bool isHeartRateMeasurementSupported() const;
+    bool isMetabolicEquivalentSupported() const;
+    bool isElapsedTimeSupported() const;
+    bool isRemainingTimeSupported() const;
+    bool isPowerMeasurementSupported() const;
+    bool isForceOnBeltAndPowerOutputSupported() const;
+    bool isUserDataRetentionSupported() const;
   };
-  struct TargetSettingFeatures
+  class TargetSettingFeatures
   {
+  private:
+    const uint32_t _targetSettingFeatures;
+
+  public:
     TargetSettingFeatures(const quint8* data);
     std::string dump() const;
 
-    const uint32_t _targetSettingFeatures;
-    const bool _speedTargetSettingSupported;
-    const bool _inclinationTargetSettingSupported;
-    const bool _resistanceTargetSettingSupported;
-    const bool _powerTargetSettingSupported;
-    const bool _heartRateTargetSettingSupported;
-    const bool _targetedExpendedEnergyConfigurationSupported;
-    const bool _TargetedStepNumberConfigurationSupported;
-    const bool _TargetedStrideNumberConfigurationSupported;
-    const bool _TargetedDistanceConfigurationSupported;
-    const bool _TargetedTrainingTimeConfigurationSupported;
-    const bool _TargetedTimeinTwoHeartRateZonesConfigurationSupported;
-    const bool _TargetedTimeinThreeHeartRateZonesConfigurationSupported;
-    const bool _TargetedTimeinFiveHeartRateZonesConfigurationSupported;
-    const bool _IndoorBikeSimulationParametersSupported;
-    const bool _WheelCircumferenceConfigurationSupported;
-    const bool _SpinDownControlSupported;
-    const bool _TargetedCadenceConfigurationSupported;
+    bool isSpeedTargetSettingSupported() const;
+    bool isInclinationTargetSettingSupported() const;
+    bool isResistanceTargetSettingSupported() const;
+    bool isPowerTargetSettingSupported() const;
+    bool isHeartRateTargetSettingSupported() const;
+    bool isTargetedExpendedEnergyConfigurationSupported() const;
+    bool isTargetedStepNumberConfigurationSupported() const;
+    bool isTargetedStrideNumberConfigurationSupported() const;
+    bool isTargetedDistanceConfigurationSupported() const;
+    bool isTargetedTrainingTimeConfigurationSupported() const;
+    bool isTargetedTimeinTwoHeartRateZonesConfigurationSupported() const;
+    bool isTargetedTimeinThreeHeartRateZonesConfigurationSupported() const;
+    bool isTargetedTimeinFiveHeartRateZonesConfigurationSupported() const;
+    bool isIndoorBikeSimulationParametersSupported() const;
+    bool isWheelCircumferenceConfigurationSupported() const;
+    bool isSpinDownControlSupported() const;
+    bool isTargetedCadenceConfigurationSupported() const;
   };
 
 public:
