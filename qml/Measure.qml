@@ -207,8 +207,6 @@ GamePage {
                 id: resistanceTarget
                 editable: true
                 anchors.left: margs2.right
-                anchors.right: rectangleOnRightColumn.right
-                anchors.rightMargin: 10
                 anchors.top: powerTarget.bottom
                 anchors.topMargin: 10
                 property int decimals: 1
@@ -228,6 +226,15 @@ GamePage {
                 to: deviceHandler.maximumResistanceLevel * 10
                 stepSize: deviceHandler.stepResistanceLevel * 10
                 onValueChanged: console.log("value changed to: " + realValue)
+            }
+            Button {
+                id: sendNewResistanceTarget
+                anchors.verticalCenter: resistanceTarget.verticalCenter
+                anchors.left:resistanceTarget.right
+                anchors.right: rectangleOnRightColumn.right
+                anchors.rightMargin: 10
+                text: "send"
+                onPressed: console.log("sending" + resistanceTarget.realValue)
             }
         }
     }
