@@ -10,7 +10,8 @@ class CyclingPowerMeasurementData
 {
 public:
   CyclingPowerMeasurementData(
-    const quint8* data); // todo: add previous state for CSC
+    const quint8*
+      data); // TODO: add previous state for CSC to count overflows in time
   double getPowerBalance() const;
   int16_t getInstantPowerInWatts() const;
 
@@ -20,19 +21,19 @@ public:
 
 private:
   const uint16_t _flags;
-  const bool _pedalBalancePresent;
-  const bool _pedalBalanceReferencePresent;
-  const bool _accumulatedTorquePresent;
-  const bool _accumulatedTorqueSourcePresent;
-  const bool _wheelRevolutionDataPresent;
-  const bool _crankRevolutionDataPresent;
-  const bool _extremeForceMagnitudesPresent;
-  const bool _extremeTorqueMagnitudesPresent;
-  const bool _extremeAnglesPresent;
-  const bool _topDeadSpotAnglePresent;
-  const bool _bottomDeadSpotAnglePresent;
-  const bool _accumulatedEnergyPresent;
-  const bool _offsetCompensationIndicator;
+  bool isPedalBalancePresent();
+  bool isPedalBalanceReferencePresent();
+  bool isAccumulatedTorquePresent();
+  bool isAccumulatedTorqueSourcePresent();
+  bool isWheelRevolutionDataPresent();
+  bool isCrankRevolutionDataPresent();
+  bool isExtremeForceMagnitudesPresent();
+  bool isExtremeTorqueMagnitudesPresent();
+  bool isExtremeAnglesPresent();
+  bool isTopDeadSpotAnglePresent();
+  bool isBottomDeadSpotAnglePresent();
+  bool isAccumulatedEnergyPresent();
+  bool isOffsetCompensationIndicatorPresent();
 
   int16_t _instantPowerInWatts{ 0 };
   uint8_t _pedalPowerBalance{ 100u };

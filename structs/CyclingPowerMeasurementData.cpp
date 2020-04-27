@@ -4,33 +4,20 @@
 
 CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8* data)
   : _flags(qFromLittleEndian<quint16>(data[0]))
-  , _pedalBalancePresent(_flags & 1)
-  , _pedalBalanceReferencePresent((_flags >> 1) & 1)
-  , _accumulatedTorquePresent((_flags >> 2) & 1)
-  , _accumulatedTorqueSourcePresent((_flags >> 3) & 1)
-  , _wheelRevolutionDataPresent((_flags >> 4) & 1)
-  , _crankRevolutionDataPresent((_flags >> 5) & 1)
-  , _extremeForceMagnitudesPresent((_flags >> 6) & 1)
-  , _extremeTorqueMagnitudesPresent((_flags >> 7) & 1)
-  , _extremeAnglesPresent((_flags >> 8) & 1)
-  , _topDeadSpotAnglePresent((_flags >> 9) & 1)
-  , _bottomDeadSpotAnglePresent((_flags >> 10) & 1)
-  , _accumulatedEnergyPresent((_flags >> 11) & 1)
-  , _offsetCompensationIndicator((_flags >> 12) & 1)
 {
   uint16_t index = 2;
 
   _instantPowerInWatts = data[index] + (data[index + 1] << 8);
   index += 2;
-  if (_pedalBalancePresent) {
+  if (isPedalBalancePresent()) {
     _pedalPowerBalance = data[index];
     index += 1;
   }
-  if (_accumulatedTorquePresent) {
+  if (isAccumulatedTorquePresent()) {
     _accumulatedTorque = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_wheelRevolutionDataPresent) {
+  if (isWheelRevolutionDataPresent()) {
     _wheelRevolutions = data[index] + (data[index + 1] << 8) +
                         (data[index + 2] << 16) + (data[index + 3] << 24);
     //_wheelRevolutions = qFromLittleEndian<quint32>(data[index]);
@@ -38,7 +25,7 @@ CyclingPowerMeasurementData::CyclingPowerMeasurementData(const quint8* data)
     _wheelRevolutionsLastEventTs = data[index] + (data[index + 1] << 8);
     index += 2;
   }
-  if (_crankRevolutionDataPresent) {
+  if (isCrankRevolutionDataPresent()) {
     _crankRevolutions = data[index] + (data[index + 1] << 8);
     index += 2;
     _crankRevolutionsLastEventTs = data[index] + (data[index + 1] << 8);
@@ -71,4 +58,82 @@ CyclingPowerMeasurementData::dump() const
   s << "Power Balance: " << getPowerBalance() << "%" << std::endl;
   s << "Instant Power: " << getInstantPowerInWatts() << " Watts" << std::endl;
   return s.str();
+}
+
+bool
+CyclingPowerMeasurementData::isPedalBalancePresent()
+{
+  return (_flags & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isPedalBalanceReferencePresent()
+{
+  return ((_flags >> 1) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isAccumulatedTorquePresent()
+{
+  return ((_flags >> 2) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isAccumulatedTorqueSourcePresent()
+{
+  return ((_flags >> 3) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isWheelRevolutionDataPresent()
+{
+  return ((_flags >> 4) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isCrankRevolutionDataPresent()
+{
+  return ((_flags >> 5) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isExtremeForceMagnitudesPresent()
+{
+  return ((_flags >> 6) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isExtremeTorqueMagnitudesPresent()
+{
+  return ((_flags >> 7) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isExtremeAnglesPresent()
+{
+  return ((_flags >> 8) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isTopDeadSpotAnglePresent()
+{
+  return ((_flags >> 9) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isBottomDeadSpotAnglePresent()
+{
+  return ((_flags >> 10) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isAccumulatedEnergyPresent()
+{
+  return ((_flags >> 11) & 1);
+}
+
+bool
+CyclingPowerMeasurementData::isOffsetCompensationIndicatorPresent()
+{
+  return ((_flags >> 12) & 1);
 }
