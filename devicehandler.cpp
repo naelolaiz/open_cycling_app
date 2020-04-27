@@ -651,10 +651,12 @@ DeviceHandler::confirmedFitnessMachineFeaturesCharacteristicRead(
   } else if (info.uuid() == SupportedPowerRange::getCharUuid()) {
     m_currentSupportedPowerRange.reset(new SupportedPowerRange(data));
     qDebug() << m_currentSupportedPowerRange->dump().c_str();
+    emit powerRangeStatsChanged();
   } else if (info.uuid() == SupportedResistanceLevelRange::getCharUuid()) {
     m_currentSupportedResistanceLevelRange.reset(
       new SupportedResistanceLevelRange(data));
     qDebug() << m_currentSupportedResistanceLevelRange->dump().c_str();
+    emit resistanceLevelChanged();
   }
 }
 
@@ -958,6 +960,54 @@ DeviceHandler::getAveragePowerInWatts() const
   if (!m_currentIndoorBikeData)
     return 0;
   return m_currentIndoorBikeData->getAveragePowerInWatts();
+}
+
+int16_t
+DeviceHandler::getMinimumPowerInWatts() const
+{
+  if (!m_currentSupportedPowerRange)
+    return 0;
+  return m_currentSupportedPowerRange->getMinimumPowerInWatts();
+}
+
+int16_t
+DeviceHandler::getMaximumPowerInWatts() const
+{
+  if (!m_currentSupportedPowerRange)
+    return 0;
+  return m_currentSupportedPowerRange->getMaximumPowerInWatts();
+}
+
+int16_t
+DeviceHandler::getStepPowerInWatts() const
+{
+  if (!m_currentSupportedPowerRange)
+    return 0;
+  return m_currentSupportedPowerRange->getMinimumIncrementInWatts();
+}
+
+int16_t
+DeviceHandler::getMinimumResistanceLevel() const
+{
+  if (!m_currentSupportedResistanceLevelRange)
+    return 0;
+  return m_currentSupportedResistanceLevelRange->getMinimumResistanceLevel();
+}
+
+int16_t
+DeviceHandler::getMaximumResistanceLevel() const
+{
+  if (!m_currentSupportedResistanceLevelRange)
+    return 0;
+  return m_currentSupportedResistanceLevelRange->getMaximumResistanceLevel();
+}
+
+int16_t
+DeviceHandler::getStepResistanceLevel() const
+{
+  if (!m_currentSupportedResistanceLevelRange)
+    return 0;
+  return m_currentSupportedResistanceLevelRange->getMinimumIncrement();
 }
 
 void

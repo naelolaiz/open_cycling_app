@@ -49,6 +49,7 @@
 ****************************************************************************/
 
 import QtQuick 2.5
+import QtQuick.Controls 2.5
 
 GamePage {
     id: measurePage
@@ -167,8 +168,6 @@ GamePage {
         anchors.left: middleColumn.right
         anchors.leftMargin: 10
         anchors.top: leftOldColumn.top
-
-
         Rectangle
         {
             id: rectangleOnRightColumn
@@ -176,7 +175,46 @@ GamePage {
             height: width
             color: GameSettings.viewColor2
             Text {
-                text:  "testing..."
+                id: margs1
+                anchors.left: rectangleOnRightColumn.left
+                anchors.leftMargin: 10
+                anchors.topMargin: 20
+                text: "Power target(" + powerTarget.from + "-" + powerTarget.to + "): "
+            }
+
+            SpinBox {
+                id: powerTarget
+                editable: true
+                anchors.left: margs1.right
+                anchors.topMargin: 20
+                anchors.right: rectangleOnRightColumn.right
+                anchors.rightMargin: 10
+                from: deviceHandler.minimumPowerInWatts
+                to: deviceHandler.maximumPowerInWatts
+                stepSize: deviceHandler.stepPowerInWatts
+                onValueChanged: console.log("value changed to: " + value)
+            }
+            Text {
+                id: margs2
+                anchors.left: rectangleOnRightColumn.left
+                anchors.leftMargin: 10
+                anchors.top: powerTarget.bottom
+                anchors.topMargin: 10
+                text: "resistance target(" + resistanceTarget.from + "-" + resistanceTarget.to + "): "
+            }
+
+            SpinBox {
+                id: resistanceTarget
+                editable: true
+                anchors.left: margs2.right
+                anchors.right: rectangleOnRightColumn.right
+                anchors.rightMargin: 10
+                anchors.top: powerTarget.bottom
+                anchors.topMargin: 10
+                from: deviceHandler.minimumResistanceLevel
+                to: deviceHandler.maximumResistanceLevel
+                stepSize: deviceHandler.stepResistanceLevel
+                onValueChanged: console.log("value changed to: " + value)
             }
         }
     }

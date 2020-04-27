@@ -114,6 +114,22 @@ class DeviceHandler : public BluetoothBaseClass
     int averagePowerInWatts READ getAveragePowerInWatts NOTIFY statsChanged)
 
   //////////////
+  // configuration and status reports
+  Q_PROPERTY(int minimumPowerInWatts READ getMinimumPowerInWatts NOTIFY
+               powerRangeStatsChanged)
+  Q_PROPERTY(int maximumPowerInWatts READ getMaximumPowerInWatts NOTIFY
+               powerRangeStatsChanged)
+  Q_PROPERTY(
+    int stepPowerInWatts READ getStepPowerInWatts NOTIFY powerRangeStatsChanged)
+
+  Q_PROPERTY(int minimumResistanceLevel READ getMinimumResistanceLevel NOTIFY
+               resistanceLevelChanged)
+  Q_PROPERTY(int maximumResistanceLevel READ getMaximumResistanceLevel NOTIFY
+               resistanceLevelChanged)
+  Q_PROPERTY(int stepResistanceLevel READ getStepResistanceLevel NOTIFY
+               resistanceLevelChanged)
+
+  ///
 
   Q_PROPERTY(AddressType addressType READ addressType WRITE setAddressType)
 
@@ -159,6 +175,13 @@ public:
   int16_t getResistanceLevel() const;
   int16_t getInstantPowerInWatts() const;
   int16_t getAveragePowerInWatts() const;
+  ////
+  int16_t getMinimumPowerInWatts() const;
+  int16_t getMaximumPowerInWatts() const;
+  int16_t getStepPowerInWatts() const;
+  int16_t getMinimumResistanceLevel() const;
+  int16_t getMaximumResistanceLevel() const;
+  int16_t getStepResistanceLevel() const;
 
 signals:
   void measuringChanged();
@@ -168,6 +191,9 @@ signals:
   void aliveFitnessChanged();
 
   void statsChanged();
+
+  void powerRangeStatsChanged();
+  void resistanceLevelChanged();
 
 public slots:
   void startMeasurement();
