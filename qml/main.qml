@@ -55,7 +55,7 @@ import "."
 Window {
     id: wroot
     visible: true
-    width: 720 * .7
+    width: 2000 * .7//720 * .7
     height: 1240 * .7
     title: qsTr("HeartRateGame")
     color: GameSettings.backgroundColor
