@@ -52,12 +52,12 @@
 #ifndef DEVICEHANDLER_H
 #define DEVICEHANDLER_H
 
-#include "CSCMeasurementData.h"
-#include "CyclingPowerMeasurementData.h"
-#include "FitnessMachineFeatureData.h"
-#include "IndoorBikeData.h"
-#include "VariousStructs.h"
 #include "bluetoothbaseclass.h"
+#include "structs/CSCMeasurementData.h"
+#include "structs/CyclingPowerMeasurementData.h"
+#include "structs/FitnessMachineFeatureData.h"
+#include "structs/IndoorBikeData.h"
+#include "structs/VariousStructs.h"
 
 #include <QDateTime>
 #include <QTimer>
