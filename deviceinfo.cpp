@@ -3,7 +3,8 @@
 ** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the QtBluetooth module of the Qt Toolkit.
+** This file is part of the examples of the QtBluetooth module of the Qt
+*Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -48,44 +49,41 @@
 **
 ****************************************************************************/
 
-#include "heartrate-global.h"
 #include "deviceinfo.h"
+#include "heartrate-global.h"
 #include <QBluetoothAddress>
 #include <QBluetoothUuid>
 
-DeviceInfo::DeviceInfo(const QBluetoothDeviceInfo &info):
-    m_device(info)
+DeviceInfo::DeviceInfo(const QBluetoothDeviceInfo& info)
+  : m_device(info)
+{}
+
+QBluetoothDeviceInfo
+DeviceInfo::getDevice() const
 {
+  return m_device;
 }
 
-QBluetoothDeviceInfo DeviceInfo::getDevice() const
+QString
+DeviceInfo::getName() const
 {
-    return m_device;
+  return m_device.name();
 }
 
-QString DeviceInfo::getName() const
+QString
+DeviceInfo::getAddress() const
 {
-#ifdef SIMULATOR
-    return "Demo device";
+#if defined Q_OS_DARWIN
+  // workaround for Core Bluetooth:
+  return m_device.deviceUuid().toString();
 #else
-    return m_device.name();
+  return m_device.address().toString();
 #endif
 }
 
-QString DeviceInfo::getAddress() const
+void
+DeviceInfo::setDevice(const QBluetoothDeviceInfo& device)
 {
-#ifdef SIMULATOR
-    return "00:11:22:33:44:55";
-#elif defined Q_OS_DARWIN
-    // workaround for Core Bluetooth:
-    return m_device.deviceUuid().toString();
-#else
-    return m_device.address().toString();
-#endif
-}
-
-void DeviceInfo::setDevice(const QBluetoothDeviceInfo &device)
-{
-    m_device = device;
-    emit deviceChanged();
+  m_device = device;
+  emit deviceChanged();
 }

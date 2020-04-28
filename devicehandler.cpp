@@ -65,15 +65,7 @@ DeviceHandler::DeviceHandler(QObject* parent)
   , m_sum(0)
   , m_avg(0)
   , m_calories(0)
-{
-#ifdef SIMULATOR
-  m_demoTimer.setSingleShot(false);
-  m_demoTimer.setInterval(2000);
-  connect(&m_demoTimer, &QTimer::timeout, this, &DeviceHandler::updateDemoHR);
-  m_demoTimer.start();
-  updateDemoHR();
-#endif
-}
+{}
 
 void
 DeviceHandler::setAddressType(AddressType type)
@@ -102,11 +94,6 @@ DeviceHandler::setDevice(DeviceInfo* device)
 {
   clearMessages();
   m_currentDevice = device;
-
-#ifdef SIMULATOR
-  setInfo(tr("Demo device connected."));
-  return;
-#endif
 
   // Disconnect and delete old connection
   if (m_control) {
@@ -604,25 +591,6 @@ DeviceHandler::updatePowerValue(const QLowEnergyCharacteristic& c,
 }
 
 //! [Reading value]
-
-#ifdef SIMULATOR
-void
-DeviceHandler::updateDemoHR()
-{
-  int randomValue = 0;
-  if (m_currentValue < 30) { // Initial value
-    randomValue = 55 + QRandomGenerator::global()->bounded(30);
-  } else if (!m_measuring) { // Value when relax
-    randomValue = qBound(
-      55, m_currentValue - 2 + QRandomGenerator::global()->bounded(5), 75);
-  } else { // Measuring
-    randomValue = m_currentValue + QRandomGenerator::global()->bounded(10) - 2;
-  }
-
-  addMeasurement(randomValue);
-}
-#endif
-
 void
 DeviceHandler::confirmedHRDescriptorWrite(const QLowEnergyDescriptor& d,
                                           const QByteArray& value)
@@ -763,10 +731,6 @@ DeviceHandler::measuring() const
 bool
 DeviceHandler::aliveHR() const
 {
-#ifdef SIMULATOR
-  return true;
-#endif
-
   if (m_service_heart_rate) {
     return m_service_heart_rate->state() ==
            QLowEnergyService::ServiceDiscovered;
@@ -778,9 +742,6 @@ DeviceHandler::aliveHR() const
 bool
 DeviceHandler::alivePower() const
 {
-#ifdef SIMULATOR
-  return true;
-#endif
   if (m_service_cycling_power) {
     return m_service_cycling_power->state() ==
            QLowEnergyService::ServiceDiscovered;
@@ -791,9 +752,6 @@ DeviceHandler::alivePower() const
 bool
 DeviceHandler::aliveCSC() const
 {
-#ifdef SIMULATOR
-  return true;
-#endif
   if (m_service_cycling_speed_and_cadence) {
     return m_service_cycling_speed_and_cadence->state() ==
            QLowEnergyService::ServiceDiscovered;
@@ -804,9 +762,6 @@ DeviceHandler::aliveCSC() const
 bool
 DeviceHandler::aliveFitness() const
 {
-#ifdef SIMULATOR
-  return true;
-#endif
   if (m_service_fitness_machine) {
     return m_service_fitness_machine->state() ==
            QLowEnergyService::ServiceDiscovered;

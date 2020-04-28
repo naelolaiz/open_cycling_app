@@ -67,12 +67,8 @@ ConnectionHandler::ConnectionHandler(QObject* parent)
 bool
 ConnectionHandler::alive() const
 {
-#if defined(SIMULATOR) || defined(QT_PLATFORM_UIKIT)
-  return true;
-#else
   return m_localDevice.isValid() &&
          m_localDevice.hostMode() != QBluetoothLocalDevice::HostPoweredOff;
-#endif
 }
 
 bool

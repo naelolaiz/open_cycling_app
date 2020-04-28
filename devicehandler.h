@@ -233,9 +233,6 @@ private:
   void confirmedPowerDescriptorWrite(const QLowEnergyDescriptor& d,
                                      const QByteArray& value);
 
-#ifdef SIMULATOR
-  void updateDemoHR();
-#endif
 private:
   void addHRMeasurement(int value);
   void addFitnessBikeDataMeasurement(const IndoorBikeData& bikeData);
@@ -293,10 +290,6 @@ private:
   QVector<int> m_measurements;
   QLowEnergyController::RemoteAddressType m_addressType =
     QLowEnergyController::PublicAddress;
-
-#ifdef SIMULATOR
-  QTimer m_demoTimer;
-#endif
 };
 
 #endif // DEVICEHANDLER_H

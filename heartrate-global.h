@@ -3,7 +3,8 @@
 ** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: https://www.qt.io/licensing/
 **
-** This file is part of the examples of the QtBluetooth module of the Qt Toolkit.
+** This file is part of the examples of the QtBluetooth module of the Qt
+*Toolkit.
 **
 ** $QT_BEGIN_LICENSE:BSD$
 ** Commercial License Usage
@@ -50,12 +51,5 @@
 
 #ifndef HEARTRATEGLOBAL_H
 #define HEARTRATEGLOBAL_H
-
-//#define USE_SIMULATOR
-
-#if defined(Q_OS_WIN32) || defined(USE_SIMULATOR)
-#define SIMULATOR
-#endif
-
 
 #endif // HEARTRATEGLOBAL_H
