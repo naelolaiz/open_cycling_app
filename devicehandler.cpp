@@ -364,6 +364,8 @@ DeviceHandler::serviceFitnessMachineStateChanged(
     case QLowEnergyService::DiscoveringServices:
       setInfo(tr("Discovering Fitness services..."));
       break;
+      //////
+      ///// service discovered
     case QLowEnergyService::ServiceDiscovered: {
       setInfo(tr("Service Fitness discovered."));
       ///////
@@ -394,6 +396,8 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       }
       m_service_fitness_machine->readCharacteristic(resistanceRangeChar);
       ///////
+      /// enable read notifications for indor bike data
+      ///
       const QLowEnergyCharacteristic indoorBikeDataChar =
         m_service_fitness_machine->characteristic(
           IndoorBikeData::getCharUuid());
@@ -410,6 +414,8 @@ DeviceHandler::serviceFitnessMachineStateChanged(
         m_services_running[1] = true;
       }
       ///////
+      /// enable read notifications fitness machine status
+      ///
 
       const QLowEnergyCharacteristic fitnessMachineStatusChar =
         m_service_fitness_machine->characteristic(
@@ -427,6 +433,8 @@ DeviceHandler::serviceFitnessMachineStateChanged(
         m_services_running[4] = true;
       }
       ///////
+      /// enable read notifications training status
+      ///
 
       const QLowEnergyCharacteristic trainingStatusChar =
         m_service_fitness_machine->characteristic(
@@ -445,7 +453,8 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       // m_service_fitness_machine->readCharacteristic(resistanceRangeChar);
 
       break;
-    }
+    } /////
+    /////////// service discovered
     default:
       // nothing for now
       break;
