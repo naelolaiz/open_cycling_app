@@ -28,6 +28,8 @@ public:
   uint16_t getRemainingTimeInSecs() const;
   std::string dump() const;
   static QBluetoothUuid getCharUuid();
+  bool operator==(const IndoorBikeData& other) const;
+  bool operator!=(const IndoorBikeData& other) const;
 
 private:
   const uint16_t _flags;

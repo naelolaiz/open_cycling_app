@@ -990,7 +990,11 @@ DeviceHandler::addHRMeasurement(int value)
 void
 DeviceHandler::addFitnessBikeDataMeasurement(const IndoorBikeData& bikeData)
 {
-  qDebug() << bikeData.dump().c_str();
+  // first time, or new data
+  if (!m_currentIndoorBikeData ||
+      (m_currentIndoorBikeData && *m_currentIndoorBikeData != bikeData)) {
+    qDebug() << bikeData.dump().c_str();
+  }
   m_currentIndoorBikeData.reset(new IndoorBikeData(bikeData));
   emit statsChanged();
 }
@@ -998,7 +1002,9 @@ DeviceHandler::addFitnessBikeDataMeasurement(const IndoorBikeData& bikeData)
 void
 DeviceHandler::addCSCMeasurement(const CSCMeasurementData& data)
 {
-  qDebug() << data.dump().c_str();
+  if (!m_currentCSCData || (m_currentCSCData && *m_currentCSCData != data)) {
+    qDebug() << data.dump().c_str();
+  }
   m_currentCSCData.reset(new CSCMeasurementData(data));
   emit statsChanged();
 }
@@ -1006,7 +1012,10 @@ DeviceHandler::addCSCMeasurement(const CSCMeasurementData& data)
 void
 DeviceHandler::addPowerMeasurement(const CyclingPowerMeasurementData& data)
 {
-  qDebug() << data.dump().c_str();
+  if (!m_currentPowerData ||
+      (m_currentPowerData && *m_currentPowerData != data)) {
+    qDebug() << data.dump().c_str();
+  }
   m_currentPowerData.reset(new CyclingPowerMeasurementData(data));
   emit statsChanged();
 }

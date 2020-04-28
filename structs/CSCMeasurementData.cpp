@@ -83,3 +83,30 @@ CSCMeasurementData::dump() const
     << getLastWheelEventTimestampInSecs() << std::endl;
   return s.str();
 }
+
+bool
+CSCMeasurementData::operator==(const CSCMeasurementData& other)
+{
+  return this->_wheelRevolutionDataPresent ==
+           other._wheelRevolutionDataPresent &&
+         this->_crankRevolutionDataPresent ==
+           other._crankRevolutionDataPresent &&
+         this->_previousWheelEventTimestamp ==
+           other._previousWheelEventTimestamp &&
+         this->_previousCrankEventTimestamp ==
+           other._previousCrankEventTimestamp &&
+         this->_accumulatedTimeForWheelEvents ==
+           other._accumulatedTimeForWheelEvents &&
+         this->_accumulatedTimeForCrankEvents ==
+           other._accumulatedTimeForCrankEvents &&
+         this->_wheelRevolutions == other._wheelRevolutions &&
+         this->_lastWheelEventTimestamp == other._lastWheelEventTimestamp &&
+         this->_crankRevolutions == other._crankRevolutions &&
+         this->_lastCrankEventTimestamp == other._lastCrankEventTimestamp;
+}
+
+bool
+CSCMeasurementData::operator!=(const CSCMeasurementData& other)
+{
+  return !(*this == other);
+}

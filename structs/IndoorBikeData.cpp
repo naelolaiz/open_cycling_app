@@ -206,6 +206,33 @@ IndoorBikeData::getCharUuid()
 }
 
 bool
+IndoorBikeData::operator==(const IndoorBikeData& other) const
+{
+  return this->_flags == other._flags &&
+         this->_instantSpeed == other._instantSpeed &&
+         this->_averageSpeed == other._averageSpeed &&
+         this->_instantCadence == other._instantCadence &&
+         this->_averageCadence == other._averageCadence &&
+         this->_totalDistance == other._totalDistance &&
+         this->_resistanceLevel == other._resistanceLevel &&
+         this->_instantPower == other._instantPower &&
+         this->_averagePower == other._averagePower &&
+         this->_totalEnergy == other._totalEnergy &&
+         this->_energyPerHour == other._energyPerHour &&
+         this->_energyPerMinute == other._energyPerMinute &&
+         this->_heartRate == other._heartRate &&
+         this->_metabolicEquivalent == other._metabolicEquivalent &&
+         this->_elapsedTime == other._elapsedTime &&
+         this->_remainingTime == other._remainingTime;
+}
+
+bool
+IndoorBikeData::operator!=(const IndoorBikeData& other) const
+{
+  return !(*this == other);
+}
+
+bool
 IndoorBikeData::haveMoreData() const
 {
   return _flags & 1;

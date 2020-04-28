@@ -20,6 +20,8 @@ public:
   static QBluetoothUuid getCharUuid();
 
   std::string dump() const;
+  bool operator==(const CSCMeasurementData& other);
+  bool operator!=(const CSCMeasurementData& other);
 
 private:
   const bool _wheelRevolutionDataPresent{ false };

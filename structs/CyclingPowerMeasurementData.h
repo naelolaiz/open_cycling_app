@@ -18,6 +18,8 @@ public:
   static QBluetoothUuid getCharUuid();
 
   std::string dump() const;
+  bool operator==(const CyclingPowerMeasurementData& other) const;
+  bool operator!=(const CyclingPowerMeasurementData& other) const;
 
 private:
   const uint16_t _flags;

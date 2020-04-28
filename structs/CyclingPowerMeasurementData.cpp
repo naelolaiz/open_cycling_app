@@ -61,6 +61,38 @@ CyclingPowerMeasurementData::dump() const
 }
 
 bool
+CyclingPowerMeasurementData::operator==(
+  const CyclingPowerMeasurementData& other) const
+{
+  return this->_flags == other._flags &&
+         this->_instantPowerInWatts == other._instantPowerInWatts &&
+         this->_pedalPowerBalance == other._pedalPowerBalance &&
+         this->_accumulatedTorque == other._accumulatedTorque &&
+         this->_wheelRevolutions == other._wheelRevolutions &&
+         this->_wheelRevolutionsLastEventTs ==
+           other._wheelRevolutionsLastEventTs &&
+         this->_crankRevolutions == other._crankRevolutions &&
+         this->_crankRevolutionsLastEventTs ==
+           other._crankRevolutionsLastEventTs &&
+         this->_extremeMaxForceMagnitudesInNewtons ==
+           other._extremeMaxForceMagnitudesInNewtons &&
+         this->_extremeMinForceMagnitudesInNewtons ==
+           other._extremeMinForceMagnitudesInNewtons &&
+         this->_extremeMaxTorqueMagnitudesInNewtonsMetres ==
+           other._extremeMaxTorqueMagnitudesInNewtonsMetres &&
+         this->_extremeMinTorqueMagnitudesInNewtonsMetres ==
+           other._extremeMinTorqueMagnitudesInNewtonsMetres;
+  // TODO
+}
+
+bool
+CyclingPowerMeasurementData::operator!=(
+  const CyclingPowerMeasurementData& other) const
+{
+  return !(*this == other);
+}
+
+bool
 CyclingPowerMeasurementData::isPedalBalancePresent()
 {
   return (_flags & 1);
