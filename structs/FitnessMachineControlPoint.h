@@ -9,6 +9,19 @@
 class FitnessMachineControlPoint
 {
 public:
+  FitnessMachineControlPoint();
+
+  // control methods
+  bool reset();
+  bool start();
+  bool stop();
+  bool pause();
+  bool setTargetResistanceLevel(double level);
+  bool setTargetPower(int16_t powerInWatts);
+  bool setWheelCircumference(double circumferenceInMilimeters);
+  bool setTargetedCadence(double rpm);
+
+private:
   enum OpCode : quint8
   {
     REQUEST_CONTROL = 0x00,
@@ -30,9 +43,14 @@ public:
     SET_TARGETED_TIME_IN_FIVE_HRZ = 0x10,
     SET_INDOOR_BIKE_SIMULATION_PARAMETERS = 0x11,
     SET_WHEEL_CIRCUMFERENCE = 0x12,
-    SPIN_DOWN_CONTROl = 0x13,
+    SPIN_DOWN_CONTROL = 0x13,
     SET_TARGETED_CADENCE = 0x14,
     RESPONSE_CODE = 0x80
+  };
+  enum StopPause : quint8
+  {
+    STOP = 0x01,
+    PAUSE = 0x02
   };
   enum ResponseResultCode : quint8
   {
@@ -42,7 +60,22 @@ public:
     OPERATION_FAILED = 0x04,
     CONTROL_NOT_PERMITTED = 0x05
   };
-  FitnessMachineControlPoint();
+
+  bool sendCommandAndCheckReturn(OpCode opcode,
+                                 quint8* data = nullptr,
+                                 uint8_t dataSize = 1)
+  {
+    // send REQUEST_CONTROL
+    // wait OK; return false otherwise
+    // send opcode and data...
+    // return if result OK
+    return true;
+  }
+  bool stopPause(StopPause parameter)
+  {
+    quint8 parameterCasted = static_cast<quint8>(parameter);
+    return sendCommandAndCheckReturn(STOP_PAUSE, &parameterCasted);
+  }
 };
 
 #endif // FITNESSMACHINECONTROLPOINT_H
