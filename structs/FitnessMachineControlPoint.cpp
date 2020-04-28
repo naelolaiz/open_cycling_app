@@ -63,3 +63,24 @@ FitnessMachineControlPoint::setTargetedCadence(double rpm)
   data[1] = (targetedCadenceInt >> 8) & 0xFF;
   return sendCommandAndCheckReturn(SET_TARGETED_CADENCE, data, 2);
 }
+
+bool
+FitnessMachineControlPoint::sendCommandAndCheckReturn(
+  FitnessMachineControlPoint::OpCode opcode,
+  quint8* data,
+  uint8_t dataSize)
+{
+  // send REQUEST_CONTROL
+  // wait OK; return false otherwise
+  // send opcode and data...
+  // return if result OK
+  return true;
+}
+
+bool
+FitnessMachineControlPoint::stopPause(
+  FitnessMachineControlPoint::StopPause parameter)
+{
+  quint8 parameterCasted = static_cast<quint8>(parameter);
+  return sendCommandAndCheckReturn(STOP_PAUSE, &parameterCasted);
+}

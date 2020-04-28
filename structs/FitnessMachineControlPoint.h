@@ -63,19 +63,8 @@ private:
 
   bool sendCommandAndCheckReturn(OpCode opcode,
                                  quint8* data = nullptr,
-                                 uint8_t dataSize = 1)
-  {
-    // send REQUEST_CONTROL
-    // wait OK; return false otherwise
-    // send opcode and data...
-    // return if result OK
-    return true;
-  }
-  bool stopPause(StopPause parameter)
-  {
-    quint8 parameterCasted = static_cast<quint8>(parameter);
-    return sendCommandAndCheckReturn(STOP_PAUSE, &parameterCasted);
-  }
+                                 uint8_t dataSize = 1);
+  bool stopPause(StopPause parameter);
 };
 
 #endif // FITNESSMACHINECONTROLPOINT_H
