@@ -7,6 +7,7 @@ CONFIG += c++11
 HEADERS += \
     structs/CSCMeasurementData.h \
     structs/CyclingPowerMeasurementData.h \
+    structs/FitnessMachineControlPoint.h \
     structs/FitnessMachineFeatureData.h \
     structs/IndoorBikeData.h \
     structs/VariousStructs.h \
@@ -20,6 +21,7 @@ HEADERS += \
 SOURCES += main.cpp \
     structs/CSCMeasurementData.cpp \
     structs/CyclingPowerMeasurementData.cpp \
+    structs/FitnessMachineControlPoint.cpp \
     structs/FitnessMachineFeatureData.cpp \
     structs/IndoorBikeData.cpp \
     structs/VariousStructs.cpp \

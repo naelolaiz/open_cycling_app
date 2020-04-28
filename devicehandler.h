@@ -55,6 +55,7 @@
 #include "bluetoothbaseclass.h"
 #include "structs/CSCMeasurementData.h"
 #include "structs/CyclingPowerMeasurementData.h"
+#include "structs/FitnessMachineControlPoint.h"
 #include "structs/FitnessMachineFeatureData.h"
 #include "structs/IndoorBikeData.h"
 #include "structs/VariousStructs.h"
