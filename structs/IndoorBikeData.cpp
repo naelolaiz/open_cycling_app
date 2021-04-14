@@ -82,13 +82,13 @@ IndoorBikeData::getAverageSpeedInKmPerSecond() const
 double
 IndoorBikeData::getInstantCadenceInRPM() const
 {
-  return _instantCadence * 0.5;
+  return _instantCadence * 0.025;
 }
 
 double
 IndoorBikeData::getAverageCadenceInRPM() const
 {
-  return _averageCadence * 0.5;
+  return _averageCadence;
 }
 
 uint32_t

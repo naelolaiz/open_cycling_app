@@ -58,9 +58,7 @@ DeviceFinder::DeviceFinder(DeviceHandler* handler, QObject* parent)
   , m_deviceHandler(handler)
 {
   //! [devicediscovery-1]
-  m_deviceDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent(
-    QBluetoothAddress(QString("00:19:86:00:24:B9")), this);
-
+  m_deviceDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
   m_deviceDiscoveryAgent->setLowEnergyDiscoveryTimeout(5000);
 
   connect(m_deviceDiscoveryAgent,

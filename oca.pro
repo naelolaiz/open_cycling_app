@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = heartrate-game
+TARGET = oca
 
 QT += qml quick bluetooth
 CONFIG += c++11
@@ -16,7 +16,7 @@ HEADERS += \
     devicefinder.h \
     devicehandler.h \
     bluetoothbaseclass.h \
-    heartrate-global.h
+    oca-global.h
 
 SOURCES += main.cpp \
     structs/CSCMeasurementData.cpp \
@@ -37,5 +37,5 @@ RESOURCES += qml.qrc \
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
 
-target.path = $$[QT_INSTALL_EXAMPLES]/bluetooth/heartrate-game
+target.path = $$[QT_INSTALL_EXAMPLES]/bluetooth/oca
 INSTALLS += target

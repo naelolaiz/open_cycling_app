@@ -53,7 +53,7 @@
 #define DEVICEFINDER_H
 
 #include "bluetoothbaseclass.h"
-#include "heartrate-global.h"
+#include "oca-global.h"
 
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothDeviceInfo>

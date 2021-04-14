@@ -57,7 +57,7 @@ Window {
     visible: true
     width: 2000 * .7//720 * .7
     height: 1240 * .7
-    title: qsTr("HeartRateGame")
+    title: qsTr("Open Cycling App")
     color: GameSettings.backgroundColor
 
     Component.onCompleted: {

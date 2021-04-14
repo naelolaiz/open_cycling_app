@@ -50,13 +50,12 @@
 ****************************************************************************/
 
 #include "connectionhandler.h"
-#include "heartrate-global.h"
+#include "oca-global.h"
 #include <QtBluetooth/qtbluetooth-config.h>
 #include <QtCore/qsystemdetection.h>
 
 ConnectionHandler::ConnectionHandler(QObject* parent)
   : QObject(parent)
-  , m_localDevice(QBluetoothAddress(QString("00:19:86:00:24:B9")), this)
 {
   connect(&m_localDevice,
           &QBluetoothLocalDevice::hostModeStateChanged,

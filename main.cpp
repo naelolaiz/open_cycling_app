@@ -52,6 +52,7 @@
 #include <QLoggingCategory>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QFont>
 
 #include "connectionhandler.h"
 #include "devicefinder.h"
@@ -61,6 +62,9 @@ int main(int argc, char *argv[])
 {
     QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QFont font = QGuiApplication::font();
+    font.setPointSizeF(20);
+    QGuiApplication::setFont(font);
     QGuiApplication app(argc, argv);
 
     ConnectionHandler connectionHandler;

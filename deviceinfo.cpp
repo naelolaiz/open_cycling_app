@@ -50,7 +50,7 @@
 ****************************************************************************/
 
 #include "deviceinfo.h"
-#include "heartrate-global.h"
+#include "oca-global.h"
 #include <QBluetoothAddress>
 #include <QBluetoothUuid>
 

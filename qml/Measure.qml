@@ -77,7 +77,7 @@ GamePage {
             anchors.horizontalCenter: parent.horizontalCenter
             width: Math.min(measurePage.width, measurePage.height-GameSettings.fieldHeight*4) - 2*GameSettings.fieldMargin
             height: width
-            color: GameSettings.viewColor
+            color: "White" //GameSettings.viewColor
 
             Text {
                 anchors.top: parent.top
@@ -155,7 +155,7 @@ GamePage {
             id: rectangleOnMiddleColumn
             width: Math.min(measurePage.width, measurePage.height-GameSettings.fieldHeight*4) - 2*GameSettings.fieldMargin
             height: width
-            color: GameSettings.viewColor2
+            color: "White" //GameSettings.viewColor2
             Text {
                 text:  "testing..."
             }
@@ -173,7 +173,7 @@ GamePage {
             id: rectangleOnRightColumn
             width: Math.min(measurePage.width, measurePage.height-GameSettings.fieldHeight*4) - 2*GameSettings.fieldMargin
             height: width
-            color: GameSettings.viewColor2
+            color: "White" //GameSettings.viewColor2
             Text {
                 id: margs1
                 anchors.left: rectangleOnRightColumn.left

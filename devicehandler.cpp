@@ -51,7 +51,7 @@
 
 #include "devicehandler.h"
 #include "deviceinfo.h"
-#include "heartrate-global.h"
+#include "oca-global.h"
 #include <QDebug>
 #include <QRandomGenerator>
 #include <QtEndian>
