@@ -74,6 +74,12 @@ FitnessMachineControlPoint::sendCommandAndCheckReturn(
   // wait OK; return false otherwise
   // send opcode and data...
   // return if result OK
+    //i.e.:
+    //aquire notify for FTMS Control Point
+    // write 0x00 (request control)
+    // wait for 0x80 00 01 (OK)
+    // send opcode and data
+    // wait for 0x80 opcode xx
   return true;
 }
 

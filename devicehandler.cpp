@@ -344,7 +344,7 @@ DeviceHandler::serviceHRStateChanged(QLowEnergyService::ServiceState s)
       if (m_notificationHrDesc.isValid()) {
         m_service_heart_rate->writeDescriptor(m_notificationHrDesc,
                                               QByteArray::fromHex("0100"));
-        m_services_running[0] = true;
+        m_services_running.mHeart = true;
       }
 
       break;
@@ -411,7 +411,7 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       if (m_notificationFitnessIndoorBikeDataDesc.isValid()) {
         m_service_fitness_machine->writeDescriptor(
           m_notificationFitnessIndoorBikeDataDesc, QByteArray::fromHex("0100"));
-        m_services_running[1] = true;
+        m_services_running.mFitness = true;
       }
       ///////
       /// enable read notifications fitness machine status
@@ -430,7 +430,7 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       if (m_notificationFitnessMachineStatusDesc.isValid()) {
         m_service_fitness_machine->writeDescriptor(
           m_notificationFitnessMachineStatusDesc, QByteArray::fromHex("0100"));
-        m_services_running[4] = true;
+        m_services_running.mFitnessMachineStatus = true;
       }
       ///////
       /// enable read notifications training status
@@ -448,7 +448,7 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       if (m_notificationTrainingStatusDesc.isValid()) {
         m_service_fitness_machine->writeDescriptor(
           m_notificationTrainingStatusDesc, QByteArray::fromHex("0100"));
-        m_services_running[5] = true;
+        m_services_running.mTrainingStatus = true;
       }
       // m_service_fitness_machine->readCharacteristic(resistanceRangeChar);
 
@@ -486,7 +486,7 @@ DeviceHandler::serviceCyclingSpeedAndCadenceStateChanged(
         m_service_cycling_speed_and_cadence->writeDescriptor(
           m_notificationCyclingSpeedAndCadenceDesc,
           QByteArray::fromHex("0100"));
-        m_services_running[2] = true;
+        m_services_running.mCSC = true;
       }
       break;
     }
@@ -520,7 +520,7 @@ DeviceHandler::serviceCyclingPowerStateChanged(
       if (m_notificationCyclingPowerDesc.isValid()) {
         m_service_cycling_power->writeDescriptor(m_notificationCyclingPowerDesc,
                                                  QByteArray::fromHex("0100"));
-        m_services_running[3] = true;
+        m_services_running.mPower = true;
       }
       break;
     }
@@ -607,7 +607,7 @@ DeviceHandler::confirmedHRDescriptorWrite(const QLowEnergyDescriptor& d,
   if (d.isValid() && d == m_notificationHrDesc &&
       value == QByteArray::fromHex("0000")) {
     // disabled notifications -> assume disconnect intent
-    m_services_running[0] = false;
+    m_services_running.mHeart = false;
     tryToStop();
   }
 }
@@ -646,13 +646,13 @@ DeviceHandler::confirmedFitnessDescriptorWrite(const QLowEnergyDescriptor& d,
   if (value == QByteArray::fromHex("0000")) {
     if (d == m_notificationFitnessIndoorBikeDataDesc) {
       // disabled notifications -> assume disconnect intent
-      m_services_running[1] = false;
+      m_services_running.mFitness = false;
     } else if (d == m_notificationFitnessMachineStatusDesc) {
       // disabled notifications -> assume disconnect intent
-      m_services_running[4] = false;
+      m_services_running.mFitnessMachineStatus = false;
     } else if (d == m_notificationTrainingStatusDesc) {
       // disabled notifications -> assume disconnect intent
-      m_services_running[5] = false;
+      m_services_running.mTrainingStatus = false;
     }
     tryToStop();
   }
@@ -666,7 +666,7 @@ DeviceHandler::confirmedCSCDescriptorWrite(const QLowEnergyDescriptor& d,
       value == QByteArray::fromHex("0000")) {
     // disabled notifications -> assume disconnect intent
 
-    m_services_running[2] = false;
+    m_services_running.mCSC = false;
     tryToStop();
   }
 }
@@ -678,7 +678,7 @@ DeviceHandler::confirmedPowerDescriptorWrite(const QLowEnergyDescriptor& d,
   if (d.isValid() && d == m_notificationCyclingPowerDesc &&
       value == QByteArray::fromHex("0000")) {
     // disabled notifications -> assume disconnect intent
-    m_services_running[3] = false;
+    m_services_running.mPower = false;
     tryToStop();
   }
 }
@@ -1049,9 +1049,7 @@ DeviceHandler::addTrainingStatusMeasurement(const TrainingStatus& data)
 void
 DeviceHandler::tryToStop()
 {
-  if (!std::any_of(m_services_running.begin(),
-                   m_services_running.end(),
-                   [](bool a) { return a; })) {
+  if (!m_services_running.isAnyActive()) {
     m_control->disconnectFromDevice();
     if (m_service_heart_rate) {
       delete m_service_heart_rate;

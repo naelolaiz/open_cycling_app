@@ -251,9 +251,22 @@ private:
   QLowEnergyService* m_service_cycling_speed_and_cadence = nullptr;
   QLowEnergyService* m_service_cycling_power = nullptr;
 
-  std::vector<bool> m_services_running{
-    false, false, false, false, false, false
-  }; // heart, fitness, csc, power, fitness machine status, training status
+  struct ServicesStatus
+  {
+      bool isAnyActive() const
+      {
+          return mHeart || mFitness || mCSC || mPower || mFitnessMachineStatus || mTrainingStatus;
+      }
+
+      bool mHeart                {false};
+      bool mFitness              {false};
+      bool mCSC                  {false};
+      bool mPower                {false};
+      bool mFitnessMachineStatus {false};
+      bool mTrainingStatus       {false};
+  };
+
+  ServicesStatus m_services_running;
 
   QLowEnergyDescriptor m_notificationHrDesc;
   QLowEnergyDescriptor m_notificationFitnessIndoorBikeDataDesc;
