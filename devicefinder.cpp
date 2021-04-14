@@ -114,12 +114,13 @@ DeviceFinder::addDevice(const QBluetoothDeviceInfo& device)
 {
   // If device is LowEnergy-device, add it to the list
   if (device.coreConfigurations() &
-      QBluetoothDeviceInfo::LowEnergyCoreConfiguration) {
-    m_devices.append(new DeviceInfo(device));
-    setInfo(tr("Low Energy device found. Scanning more..."));
-    //! [devicediscovery-3]
-    emit devicesChanged();
-    //! [devicediscovery-4]
+      QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
+  {
+      m_devices.append(new DeviceInfo(device));
+      setInfo(tr("Low Energy device found. Scanning more..."));
+      //! [devicediscovery-3]
+      emit devicesChanged();
+      //! [devicediscovery-4]
   }
   //...
 }
@@ -129,20 +130,30 @@ void
 DeviceFinder::scanError(QBluetoothDeviceDiscoveryAgent::Error error)
 {
   if (error == QBluetoothDeviceDiscoveryAgent::PoweredOffError)
+  {
     setError(tr("The Bluetooth adaptor is powered off."));
+  }
   else if (error == QBluetoothDeviceDiscoveryAgent::InputOutputError)
+  {
     setError(tr("Writing or reading from the device resulted in an error."));
+  }
   else
+  {
     setError(tr("An unknown error has occurred."));
+  }
 }
 
 void
 DeviceFinder::scanFinished()
 {
   if (m_devices.isEmpty())
+  {
     setError(tr("No Low Energy devices found."));
+  }
   else
+  {
     setInfo(tr("Scanning done."));
+  }
 
   emit scanningChanged();
   emit devicesChanged();
@@ -154,16 +165,20 @@ DeviceFinder::connectToService(const QString& address)
   m_deviceDiscoveryAgent->stop();
 
   DeviceInfo* currentDevice = nullptr;
-  for (QObject* entry : qAsConst(m_devices)) {
-    auto device = qobject_cast<DeviceInfo*>(entry);
-    if (device && device->getAddress() == address) {
-      currentDevice = device;
-      break;
-    }
+  for (QObject* entry : qAsConst(m_devices))
+  {
+      auto device = qobject_cast<DeviceInfo*>(entry);
+      if (device && device->getAddress() == address)
+      {
+          currentDevice = device;
+          break;
+      }
   }
 
   if (currentDevice)
-    m_deviceHandler->setDevice(currentDevice);
+  {
+      m_deviceHandler->setDevice(currentDevice);
+  }
 
   clearMessages();
 }

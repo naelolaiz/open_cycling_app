@@ -622,18 +622,22 @@ DeviceHandler::confirmedFitnessMachineFeaturesCharacteristicRead(
   }
   const auto* data = reinterpret_cast<const quint8*>(value.constData());
 
-  if (info.uuid() == FitnessMachineFeatureData::getCharUuid()) {
-    m_currentFitnessMachineFeature.reset(new FitnessMachineFeatureData(data));
-    qDebug() << m_currentFitnessMachineFeature->dump().c_str();
-  } else if (info.uuid() == SupportedPowerRange::getCharUuid()) {
-    m_currentSupportedPowerRange.reset(new SupportedPowerRange(data));
-    qDebug() << m_currentSupportedPowerRange->dump().c_str();
-    emit powerRangeStatsChanged();
-  } else if (info.uuid() == SupportedResistanceLevelRange::getCharUuid()) {
-    m_currentSupportedResistanceLevelRange.reset(
-      new SupportedResistanceLevelRange(data));
-    qDebug() << m_currentSupportedResistanceLevelRange->dump().c_str();
-    emit resistanceLevelChanged();
+  if (info.uuid() == FitnessMachineFeatureData::getCharUuid())
+  {
+      m_currentFitnessMachineFeature.reset(new FitnessMachineFeatureData(data));
+      qDebug() << m_currentFitnessMachineFeature->dump().c_str();
+  }
+  else if (info.uuid() == SupportedPowerRange::getCharUuid())
+  {
+      m_currentSupportedPowerRange.reset(new SupportedPowerRange(data));
+      qDebug() << m_currentSupportedPowerRange->dump().c_str();
+      emit powerRangeStatsChanged();
+  }
+  else if (info.uuid() == SupportedResistanceLevelRange::getCharUuid())
+  {
+      m_currentSupportedResistanceLevelRange.reset(new SupportedResistanceLevelRange(data));
+      qDebug() << m_currentSupportedResistanceLevelRange->dump().c_str();
+      emit resistanceLevelChanged();
   }
 }
 
@@ -642,19 +646,27 @@ DeviceHandler::confirmedFitnessDescriptorWrite(const QLowEnergyDescriptor& d,
                                                const QByteArray& value)
 {
   if (!d.isValid())
-    return;
-  if (value == QByteArray::fromHex("0000")) {
-    if (d == m_notificationFitnessIndoorBikeDataDesc) {
-      // disabled notifications -> assume disconnect intent
-      m_services_running.mFitness = false;
-    } else if (d == m_notificationFitnessMachineStatusDesc) {
-      // disabled notifications -> assume disconnect intent
-      m_services_running.mFitnessMachineStatus = false;
-    } else if (d == m_notificationTrainingStatusDesc) {
-      // disabled notifications -> assume disconnect intent
-      m_services_running.mTrainingStatus = false;
-    }
-    tryToStop();
+  {
+      return;
+  }
+  if (value == QByteArray::fromHex("0000"))
+  {
+      if (d == m_notificationFitnessIndoorBikeDataDesc)
+      {
+          // disabled notifications -> assume disconnect intent
+          m_services_running.mFitness = false;
+      }
+      else if (d == m_notificationFitnessMachineStatusDesc)
+      {
+          // disabled notifications -> assume disconnect intent
+          m_services_running.mFitnessMachineStatus = false;
+      }
+      else if (d == m_notificationTrainingStatusDesc)
+      {
+          // disabled notifications -> assume disconnect intent
+          m_services_running.mTrainingStatus = false;
+      }
+      tryToStop();
   }
 }
 
@@ -662,12 +674,13 @@ void
 DeviceHandler::confirmedCSCDescriptorWrite(const QLowEnergyDescriptor& d,
                                            const QByteArray& value)
 {
-  if (d.isValid() && d == m_notificationCyclingSpeedAndCadenceDesc &&
-      value == QByteArray::fromHex("0000")) {
-    // disabled notifications -> assume disconnect intent
-
-    m_services_running.mCSC = false;
-    tryToStop();
+  if (d.isValid() &&
+      d == m_notificationCyclingSpeedAndCadenceDesc &&
+      value == QByteArray::fromHex("0000"))
+  {
+      // disabled notifications -> assume disconnect intent
+      m_services_running.mCSC = false;
+      tryToStop();
   }
 }
 
@@ -675,11 +688,13 @@ void
 DeviceHandler::confirmedPowerDescriptorWrite(const QLowEnergyDescriptor& d,
                                              const QByteArray& value)
 {
-  if (d.isValid() && d == m_notificationCyclingPowerDesc &&
-      value == QByteArray::fromHex("0000")) {
-    // disabled notifications -> assume disconnect intent
-    m_services_running.mPower = false;
-    tryToStop();
+  if (d.isValid() &&
+      d == m_notificationCyclingPowerDesc &&
+      value == QByteArray::fromHex("0000"))
+  {
+      // disabled notifications -> assume disconnect intent
+      m_services_running.mPower = false;
+      tryToStop();
   }
 }
 
@@ -689,45 +704,46 @@ DeviceHandler::disconnectService()
   std::vector<QLowEnergyService**> servicesToDelete;
   auto disableNotifications =
     [&servicesToDelete](const QLowEnergyDescriptor& descriptor,
-                        QLowEnergyService** service) {
+                        QLowEnergyService** service)
+    {
       const bool notificationCurrentlyEnabled =
         descriptor.isValid() && (*service) &&
         descriptor.value() == QByteArray::fromHex("0100");
 
-      if (notificationCurrentlyEnabled) {
-        (*service)->writeDescriptor(descriptor, QByteArray::fromHex("0000"));
-      } else {
-        servicesToDelete.push_back(service);
+      if (notificationCurrentlyEnabled)
+      {
+          (*service)->writeDescriptor(descriptor, QByteArray::fromHex("0000"));
+      }
+      else
+      {
+          servicesToDelete.push_back(service);
       }
     };
 
-  typedef std::tuple<const QLowEnergyDescriptor&, QLowEnergyService**, bool&>
-    Tuple;
-  const std::vector<Tuple> tuples{
-    { m_notificationHrDesc, &m_service_heart_rate, m_foundHeartRateService },
-    { m_notificationCyclingPowerDesc,
-      &m_service_cycling_power,
-      m_foundCyclingPowerService },
-    { m_notificationFitnessIndoorBikeDataDesc,
-      &m_service_fitness_machine,
-      m_foundFitnessMachineService },
-    { m_notificationCyclingSpeedAndCadenceDesc,
-      &m_service_cycling_speed_and_cadence,
-      m_foundCyclingSpeedAndCadenceService }
+  typedef std::tuple<const QLowEnergyDescriptor&, QLowEnergyService**, bool&> ServiceAttributesTuple;
+
+  const std::vector<ServiceAttributesTuple> servicesTuples
+  {
+    { m_notificationHrDesc,                     &m_service_heart_rate,                m_foundHeartRateService },
+    { m_notificationCyclingPowerDesc,           &m_service_cycling_power,             m_foundCyclingPowerService },
+    { m_notificationFitnessIndoorBikeDataDesc,  &m_service_fitness_machine,           m_foundFitnessMachineService },
+    { m_notificationCyclingSpeedAndCadenceDesc, &m_service_cycling_speed_and_cadence, m_foundCyclingSpeedAndCadenceService }
   };
 
-  for (auto& tuple : tuples) {
-    std::get<2>(tuple) = false;
-    disableNotifications(std::get<0>(tuple), std::get<1>(tuple));
+  for (auto& tuple : servicesTuples)
+  {
+      std::get<2>(tuple) = false;
+      disableNotifications(std::get<0>(tuple), std::get<1>(tuple));
   }
 
-  if (servicesToDelete.size() > 0) {
-    if (m_control)
+  if (servicesToDelete.size() > 0 && m_control)
+  {
       m_control->disconnectFromDevice();
   }
-  for (auto** service : servicesToDelete) {
-    delete *service;
-    *service = nullptr;
+  for (auto** service : servicesToDelete)
+  {
+      delete *service;
+      *service = nullptr;
   }
 }
 
@@ -740,9 +756,9 @@ DeviceHandler::measuring() const
 bool
 DeviceHandler::aliveHR() const
 {
-  if (m_service_heart_rate) {
-    return m_service_heart_rate->state() ==
-           QLowEnergyService::ServiceDiscovered;
+  if (m_service_heart_rate)
+  {
+      return m_service_heart_rate->state() == QLowEnergyService::ServiceDiscovered;
   }
 
   return false;
@@ -751,9 +767,9 @@ DeviceHandler::aliveHR() const
 bool
 DeviceHandler::alivePower() const
 {
-  if (m_service_cycling_power) {
-    return m_service_cycling_power->state() ==
-           QLowEnergyService::ServiceDiscovered;
+  if (m_service_cycling_power)
+  {
+    return m_service_cycling_power->state() == QLowEnergyService::ServiceDiscovered;
   }
   return false;
 }
@@ -761,9 +777,9 @@ DeviceHandler::alivePower() const
 bool
 DeviceHandler::aliveCSC() const
 {
-  if (m_service_cycling_speed_and_cadence) {
-    return m_service_cycling_speed_and_cadence->state() ==
-           QLowEnergyService::ServiceDiscovered;
+  if (m_service_cycling_speed_and_cadence)
+  {
+      return m_service_cycling_speed_and_cadence->state() == QLowEnergyService::ServiceDiscovered;
   }
   return false;
 }
@@ -771,9 +787,9 @@ DeviceHandler::aliveCSC() const
 bool
 DeviceHandler::aliveFitness() const
 {
-  if (m_service_fitness_machine) {
-    return m_service_fitness_machine->state() ==
-           QLowEnergyService::ServiceDiscovered;
+  if (m_service_fitness_machine)
+  {
+      return m_service_fitness_machine->state() == QLowEnergyService::ServiceDiscovered;
   }
   return false;
 }
@@ -818,7 +834,9 @@ double
 DeviceHandler::getPedalBalance() const
 {
   if (!m_currentPowerData)
+  {
     return 0.;
+  }
   return m_currentPowerData->getPowerBalance();
 }
 
@@ -826,7 +844,9 @@ int16_t
 DeviceHandler::getPowerInWatts() const
 {
   if (!m_currentPowerData)
+  {
     return 0;
+  }
   return m_currentPowerData->getInstantPowerInWatts();
 }
 
@@ -834,7 +854,9 @@ uint32_t
 DeviceHandler::getWheelRevolutions() const
 {
   if (!m_currentCSCData)
+  {
     return 0u;
+  }
   return m_currentCSCData->getWheelRevolutions();
 }
 
@@ -842,7 +864,9 @@ double
 DeviceHandler::getWheelRevsTs() const
 {
   if (!m_currentCSCData)
+  {
     return 0u;
+  }
   return m_currentCSCData->getLastWheelEventTimestampInSecs();
 }
 
@@ -850,7 +874,9 @@ uint32_t
 DeviceHandler::getCrankRevolutions() const
 {
   if (!m_currentCSCData)
+  {
     return 0u;
+  }
   return m_currentCSCData->getCrankRevolutions();
 }
 
@@ -858,7 +884,9 @@ double
 DeviceHandler::getCrankRevsTs() const
 {
   if (!m_currentCSCData)
+  {
     return 0u;
+  }
   return m_currentCSCData->getLastCrankEventTimestampInSecs();
 }
 
@@ -866,7 +894,9 @@ double
 DeviceHandler::getInstantSpeed() const
 {
   if (!m_currentIndoorBikeData)
+  {
     return 0.;
+  }
   return m_currentIndoorBikeData->getInstantSpeedInKmPerSecond();
 }
 
@@ -874,7 +904,9 @@ double
 DeviceHandler::getAverageSpeed() const
 {
   if (!m_currentIndoorBikeData)
+  {
     return 0.;
+  }
   return m_currentIndoorBikeData->getAverageSpeedInKmPerSecond();
 }
 
@@ -882,7 +914,9 @@ double
 DeviceHandler::getInstantCadenceInRPM() const
 {
   if (!m_currentIndoorBikeData)
+  {
     return 0.;
+  }
   return m_currentIndoorBikeData->getInstantCadenceInRPM();
 }
 
@@ -890,7 +924,9 @@ double
 DeviceHandler::getAverageCadenceInRPM() const
 {
   if (!m_currentIndoorBikeData)
+  {
     return 0.;
+  }
   return m_currentIndoorBikeData->getAverageCadenceInRPM();
 }
 
@@ -898,7 +934,9 @@ uint32_t
 DeviceHandler::getTotalDistanceInM() const
 {
   if (!m_currentIndoorBikeData)
+  {
     return 0u;
+  }
   return m_currentIndoorBikeData->getTotalDistanceInMeters();
 }
 
@@ -906,7 +944,9 @@ int16_t
 DeviceHandler::getResistanceLevel() const
 {
   if (!m_currentIndoorBikeData)
+  {
     return 0;
+  }
   return m_currentIndoorBikeData->getResistanceLevel();
 }
 
@@ -914,7 +954,9 @@ int16_t
 DeviceHandler::getInstantPowerInWatts() const
 {
   if (!m_currentIndoorBikeData)
+  {
     return 0;
+  }
   return m_currentIndoorBikeData->getInstantPowerInWatts();
 }
 
@@ -922,7 +964,9 @@ int16_t
 DeviceHandler::getAveragePowerInWatts() const
 {
   if (!m_currentIndoorBikeData)
+  {
     return 0;
+  }
   return m_currentIndoorBikeData->getAveragePowerInWatts();
 }
 
@@ -930,7 +974,9 @@ int16_t
 DeviceHandler::getMinimumPowerInWatts() const
 {
   if (!m_currentSupportedPowerRange)
+  {
     return 0;
+  }
   return m_currentSupportedPowerRange->getMinimumPowerInWatts();
 }
 
@@ -938,7 +984,9 @@ int16_t
 DeviceHandler::getMaximumPowerInWatts() const
 {
   if (!m_currentSupportedPowerRange)
+  {
     return 0;
+  }
   return m_currentSupportedPowerRange->getMaximumPowerInWatts();
 }
 
@@ -946,7 +994,9 @@ int16_t
 DeviceHandler::getStepPowerInWatts() const
 {
   if (!m_currentSupportedPowerRange)
+  {
     return 0;
+  }
   return m_currentSupportedPowerRange->getMinimumIncrementInWatts();
 }
 
@@ -954,7 +1004,9 @@ double
 DeviceHandler::getMinimumResistanceLevel() const
 {
   if (!m_currentSupportedResistanceLevelRange)
+  {
     return 0.;
+  }
   return m_currentSupportedResistanceLevelRange->getMinimumResistanceLevel();
 }
 
@@ -962,7 +1014,9 @@ double
 DeviceHandler::getMaximumResistanceLevel() const
 {
   if (!m_currentSupportedResistanceLevelRange)
+  {
     return 0.;
+  }
   return m_currentSupportedResistanceLevelRange->getMaximumResistanceLevel();
 }
 
@@ -970,7 +1024,9 @@ double
 DeviceHandler::getStepResistanceLevel() const
 {
   if (!m_currentSupportedResistanceLevelRange)
+  {
     return 0.;
+  }
   return m_currentSupportedResistanceLevelRange->getMinimumIncrement();
 }
 
@@ -980,7 +1036,8 @@ DeviceHandler::addHRMeasurement(int value)
   m_currentValue = value;
 
   // If measuring and value is appropriate
-  if (m_measuring && value > 30 && value < 250) {
+  if (m_measuring && value > 30 && value < 250)
+  {
     m_stop = QDateTime::currentDateTime();
     m_measurements << value;
 
@@ -1001,7 +1058,8 @@ DeviceHandler::addFitnessBikeDataMeasurement(const IndoorBikeData& bikeData)
 {
   // first time, or new data
   if (!m_currentIndoorBikeData ||
-      (m_currentIndoorBikeData && *m_currentIndoorBikeData != bikeData)) {
+      (m_currentIndoorBikeData && *m_currentIndoorBikeData != bikeData))
+  {
     qDebug() << bikeData.dump().c_str();
   }
   m_currentIndoorBikeData.reset(new IndoorBikeData(bikeData));
@@ -1011,7 +1069,8 @@ DeviceHandler::addFitnessBikeDataMeasurement(const IndoorBikeData& bikeData)
 void
 DeviceHandler::addCSCMeasurement(const CSCMeasurementData& data)
 {
-  if (!m_currentCSCData || (m_currentCSCData && *m_currentCSCData != data)) {
+  if (!m_currentCSCData || (m_currentCSCData && *m_currentCSCData != data))
+  {
     qDebug() << data.dump().c_str();
   }
   m_currentCSCData.reset(new CSCMeasurementData(data));
@@ -1022,7 +1081,8 @@ void
 DeviceHandler::addPowerMeasurement(const CyclingPowerMeasurementData& data)
 {
   if (!m_currentPowerData ||
-      (m_currentPowerData && *m_currentPowerData != data)) {
+      (m_currentPowerData && *m_currentPowerData != data))
+  {
     qDebug() << data.dump().c_str();
   }
   m_currentPowerData.reset(new CyclingPowerMeasurementData(data));
@@ -1049,21 +1109,26 @@ DeviceHandler::addTrainingStatusMeasurement(const TrainingStatus& data)
 void
 DeviceHandler::tryToStop()
 {
-  if (!m_services_running.isAnyActive()) {
+  if (!m_services_running.isAnyActive())
+  {
     m_control->disconnectFromDevice();
-    if (m_service_heart_rate) {
+    if (m_service_heart_rate)
+    {
       delete m_service_heart_rate;
       m_service_heart_rate = nullptr;
     }
-    if (m_service_cycling_power) {
+    if (m_service_cycling_power)
+    {
       delete m_service_cycling_power;
       m_service_cycling_power = nullptr;
     }
-    if (m_service_cycling_speed_and_cadence) {
+    if (m_service_cycling_speed_and_cadence)
+    {
       delete m_service_cycling_speed_and_cadence;
       m_service_cycling_speed_and_cadence = nullptr;
     }
-    if (m_service_fitness_machine) {
+    if (m_service_fitness_machine)
+    {
       delete m_service_fitness_machine;
       m_service_fitness_machine = nullptr;
     }
