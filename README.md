@@ -5,8 +5,8 @@ Many values hardcoded to my USB dongle and specific smart trainer. A lot to adap
 
 ## Screenshots
 
-[![services discovered](https://raw.githubusercontent.com/naelolaiz/open_cycling_app/master/doc/Screenshot_services_discovered.png)]
-[![pedaling](https://raw.githubusercontent.com/naelolaiz/open_cycling_app/master/doc/Screenshot_some_cadence.png)]
+![services discovered](https://raw.githubusercontent.com/naelolaiz/open_cycling_app/master/doc/Screenshot_services_discovered.png)
+![pedaling](https://raw.githubusercontent.com/naelolaiz/open_cycling_app/master/doc/Screenshot_some_cadence.png)
 
 
 
