@@ -1,7 +1,7 @@
 # Based on Qt-QML example HeartRateGame #
 
 Opens a BLE smart trainer and fetch some data.
-Many values hardcoded to my USB dongle and specific smart trainer. A lot to adapt and cleanup... but a valid proof of concept.
+A lot to adapt and cleanup... but a starting place to do a proof of concept.
 
 ## Bluetooth specs and other useful links
 * https://www.bluetooth.com/specifications/specs/
