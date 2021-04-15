@@ -70,7 +70,8 @@ DeviceHandler::DeviceHandler(QObject* parent)
 void
 DeviceHandler::setAddressType(AddressType type)
 {
-  switch (type) {
+  switch (type)
+  {
     case DeviceHandler::AddressType::PublicAddress:
       m_addressType = QLowEnergyController::PublicAddress;
       break;
@@ -84,8 +85,9 @@ DeviceHandler::AddressType
 DeviceHandler::addressType() const
 {
   if (m_addressType == QLowEnergyController::RandomAddress)
-    return DeviceHandler::AddressType::RandomAddress;
-
+  {
+      return DeviceHandler::AddressType::RandomAddress;
+  }
   return DeviceHandler::AddressType::PublicAddress;
 }
 
@@ -96,14 +98,16 @@ DeviceHandler::setDevice(DeviceInfo* device)
   m_currentDevice = device;
 
   // Disconnect and delete old connection
-  if (m_control) {
+  if (m_control)
+  {
     m_control->disconnectFromDevice();
     delete m_control;
     m_control = nullptr;
   }
 
   // Create new controller and connect it if device available
-  if (m_currentDevice) {
+  if (m_currentDevice)
+  {
     // Make connections
     //! [Connect-Signals-1]
     m_control =
@@ -120,7 +124,8 @@ DeviceHandler::setDevice(DeviceInfo* device)
             this,
             &DeviceHandler::serviceScanDone);
 
-    auto cantConnectError = [this](QLowEnergyController::Error error) {
+    auto cantConnectError = [this](QLowEnergyController::Error error)
+    {
       Q_UNUSED(error);
       setError("Cannot connect to remote device.");
     };
@@ -131,13 +136,15 @@ DeviceHandler::setDevice(DeviceInfo* device)
         &QLowEnergyController::error),
       this,
       cantConnectError);
-    connect(m_control, &QLowEnergyController::connected, this, [this]() {
-      setInfo("Controller connected. Search services...");
-      m_control->discoverServices();
-    });
-    connect(m_control, &QLowEnergyController::disconnected, this, [this]() {
-      setError("LowEnergy controller disconnected");
-    });
+    connect(m_control, &QLowEnergyController::connected, this, [this]()
+      {
+        setInfo("Controller connected. Search services...");
+        m_control->discoverServices();
+      });
+    connect(m_control, &QLowEnergyController::disconnected, this, [this]()
+      {
+        setError("LowEnergy controller disconnected");
+      });
 
     // Connect
     m_control->connectToDevice();
@@ -172,19 +179,26 @@ DeviceHandler::stopMeasurement()
 void
 DeviceHandler::serviceDiscovered(const QBluetoothUuid& gatt)
 {
-  if (gatt == QBluetoothUuid(QBluetoothUuid::HeartRate)) {
+  if (gatt == QBluetoothUuid(QBluetoothUuid::HeartRate))
+  {
     setInfo("Heart Rate service discovered. Waiting for service scan to be "
             "done...");
     m_foundHeartRateService = true;
-  } else if (gatt == QBluetoothUuid(QBluetoothUuid::CyclingPower)) {
+  }
+  else if (gatt == QBluetoothUuid(QBluetoothUuid::CyclingPower))
+  {
     setInfo("Cycling power service discovered. Waiting for service scan to be "
             "done...");
     m_foundCyclingPowerService = true;
-  } else if (gatt == QBluetoothUuid(QBluetoothUuid::CyclingSpeedAndCadence)) {
+  }
+  else if (gatt == QBluetoothUuid(QBluetoothUuid::CyclingSpeedAndCadence))
+  {
     setInfo("Cycling Speed and Cadence service discovered. Waiting for service "
             "scan to be done...");
     m_foundCyclingSpeedAndCadenceService = true;
-  } else if (gatt == FitnessMachineService::getServiceUuid()) {
+  }
+  else if (gatt == FitnessMachineService::getServiceUuid())
+  {
     setInfo("Fitness Machine service discovered. Waiting for service scan to "
             "be done...");
     m_foundFitnessMachineService = true;
@@ -198,12 +212,14 @@ DeviceHandler::serviceScanDone()
   setInfo("Service scan done.");
 
   // Delete old services if available
-  for (auto*& service : std::vector<QLowEnergyService*>{
-         { m_service_heart_rate,
+  for (auto*& service : std::vector<QLowEnergyService*>
+        {{ m_service_heart_rate,
            m_service_cycling_power,
            m_service_fitness_machine,
-           m_service_cycling_speed_and_cadence } }) {
-    if (service) {
+           m_service_cycling_speed_and_cadence }})
+  {
+    if (service)
+    {
       delete service;
       service = nullptr;
     }
@@ -211,25 +227,30 @@ DeviceHandler::serviceScanDone()
 
   //! [Filter HeartRate service 2]
   // If heartRateService found, create new service
-  if (m_foundHeartRateService) {
+  if (m_foundHeartRateService)
+  {
     m_service_heart_rate = m_control->createServiceObject(
       QBluetoothUuid(QBluetoothUuid::HeartRate), this);
   }
-  if (m_foundCyclingPowerService) {
+  if (m_foundCyclingPowerService)
+  {
     m_service_cycling_power = m_control->createServiceObject(
       QBluetoothUuid(QBluetoothUuid::CyclingPower), this);
   }
-  if (m_foundFitnessMachineService) {
+  if (m_foundFitnessMachineService)
+  {
     m_service_fitness_machine = m_control->createServiceObject(
       FitnessMachineService::getServiceUuid(), this);
   }
-  if (m_foundCyclingSpeedAndCadenceService) {
+  if (m_foundCyclingSpeedAndCadenceService)
+  {
     m_service_cycling_speed_and_cadence = m_control->createServiceObject(
       QBluetoothUuid(QBluetoothUuid::CyclingSpeedAndCadence), this);
   }
 
   ///// create connections
-  if (m_service_heart_rate) {
+  if (m_service_heart_rate)
+  {
     connect(m_service_heart_rate,
             &QLowEnergyService::stateChanged,
             this,
@@ -243,11 +264,14 @@ DeviceHandler::serviceScanDone()
             this,
             &DeviceHandler::confirmedHRDescriptorWrite);
     m_service_heart_rate->discoverDetails();
-  } else {
+  }
+  else
+  {
     setInfo("Heart Rate Service not found.");
   }
 
-  if (m_service_cycling_power) {
+  if (m_service_cycling_power)
+  {
     connect(m_service_cycling_power,
             &QLowEnergyService::stateChanged,
             this,
@@ -261,11 +285,14 @@ DeviceHandler::serviceScanDone()
             this,
             &DeviceHandler::confirmedPowerDescriptorWrite);
     m_service_cycling_power->discoverDetails();
-  } else {
+  }
+  else
+  {
     setInfo("Cycling Power Service not found.");
   }
 
-  if (m_service_fitness_machine) {
+  if (m_service_fitness_machine)
+  {
     // 0x2acc // fitness machine feature
     // m_service_fitness_machine->readCharacteristic(QLowEnergyCharacteristic::)
 
@@ -294,11 +321,14 @@ DeviceHandler::serviceScanDone()
             this,
             &DeviceHandler::confirmedFitnessMachineFeaturesCharacteristicRead);
     m_service_fitness_machine->discoverDetails();
-  } else {
+  }
+  else
+  {
     setInfo("Fitness machine service not found.");
   }
 
-  if (m_service_cycling_speed_and_cadence) {
+  if (m_service_cycling_speed_and_cadence)
+  {
     connect(m_service_cycling_speed_and_cadence,
             &QLowEnergyService::stateChanged,
             this,
@@ -312,7 +342,9 @@ DeviceHandler::serviceScanDone()
             this,
             &DeviceHandler::confirmedCSCDescriptorWrite);
     m_service_cycling_speed_and_cadence->discoverDetails();
-  } else {
+  }
+  else
+  {
     setInfo("CSC service not found.");
   }
 
@@ -324,7 +356,8 @@ DeviceHandler::serviceScanDone()
 void
 DeviceHandler::serviceHRStateChanged(QLowEnergyService::ServiceState s)
 {
-  switch (s) {
+  switch (s)
+  {
     case QLowEnergyService::DiscoveringServices:
       setInfo(tr("Discovering HR services..."));
       break;
@@ -334,19 +367,20 @@ DeviceHandler::serviceHRStateChanged(QLowEnergyService::ServiceState s)
       const QLowEnergyCharacteristic hrChar =
         m_service_heart_rate->characteristic(
           QBluetoothUuid(QBluetoothUuid::HeartRateMeasurement));
-      if (!hrChar.isValid()) {
+      if (!hrChar.isValid())
+      {
         setError("HR Data not found.");
         break;
       }
 
       m_notificationHrDesc =
         hrChar.descriptor(QBluetoothUuid::ClientCharacteristicConfiguration);
-      if (m_notificationHrDesc.isValid()) {
+      if (m_notificationHrDesc.isValid())
+      {
         m_service_heart_rate->writeDescriptor(m_notificationHrDesc,
                                               QByteArray::fromHex("0100"));
         m_services_running.mHeart = true;
       }
-
       break;
     }
     default:
@@ -360,19 +394,22 @@ void
 DeviceHandler::serviceFitnessMachineStateChanged(
   QLowEnergyService::ServiceState s)
 {
-  switch (s) {
+  switch (s)
+  {
     case QLowEnergyService::DiscoveringServices:
       setInfo(tr("Discovering Fitness services..."));
       break;
       //////
       ///// service discovered
-    case QLowEnergyService::ServiceDiscovered: {
+    case QLowEnergyService::ServiceDiscovered:
+    {
       setInfo(tr("Service Fitness discovered."));
       ///////
       const QLowEnergyCharacteristic fitnessMachineFeatureChar =
         m_service_fitness_machine->characteristic(
           FitnessMachineFeatureData::getCharUuid());
-      if (!fitnessMachineFeatureChar.isValid()) {
+      if (!fitnessMachineFeatureChar.isValid())
+      {
         setError("Fitness Machine Feature Not found");
         break;
       }
@@ -381,7 +418,8 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       const QLowEnergyCharacteristic powerRangeChar =
         m_service_fitness_machine->characteristic(
           SupportedPowerRange::getCharUuid());
-      if (!powerRangeChar.isValid()) {
+      if (!powerRangeChar.isValid())
+      {
         setError("Power range Not found");
         break;
       }
@@ -390,7 +428,8 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       const QLowEnergyCharacteristic resistanceRangeChar =
         m_service_fitness_machine->characteristic(
           SupportedResistanceLevelRange::getCharUuid());
-      if (!resistanceRangeChar.isValid()) {
+      if (!resistanceRangeChar.isValid())
+      {
         setError("Resistance range Not found");
         break;
       }
@@ -401,14 +440,16 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       const QLowEnergyCharacteristic indoorBikeDataChar =
         m_service_fitness_machine->characteristic(
           IndoorBikeData::getCharUuid());
-      if (!indoorBikeDataChar.isValid()) {
+      if (!indoorBikeDataChar.isValid())
+      {
         setError("Indoor Bike Data not found.");
         break;
       }
       ///// acquire notify of indoor bike data
       m_notificationFitnessIndoorBikeDataDesc = indoorBikeDataChar.descriptor(
         QBluetoothUuid::ClientCharacteristicConfiguration);
-      if (m_notificationFitnessIndoorBikeDataDesc.isValid()) {
+      if (m_notificationFitnessIndoorBikeDataDesc.isValid())
+      {
         m_service_fitness_machine->writeDescriptor(
           m_notificationFitnessIndoorBikeDataDesc, QByteArray::fromHex("0100"));
         m_services_running.mFitness = true;
@@ -420,14 +461,16 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       const QLowEnergyCharacteristic fitnessMachineStatusChar =
         m_service_fitness_machine->characteristic(
           FitnessMachineStatus::getCharUuid());
-      if (!fitnessMachineFeatureChar.isValid()) {
+      if (!fitnessMachineFeatureChar.isValid())
+      {
         setError("Fitness machine status Not found");
         break;
       }
       m_notificationFitnessMachineStatusDesc =
         fitnessMachineStatusChar.descriptor(
           QBluetoothUuid::ClientCharacteristicConfiguration);
-      if (m_notificationFitnessMachineStatusDesc.isValid()) {
+      if (m_notificationFitnessMachineStatusDesc.isValid())
+      {
         m_service_fitness_machine->writeDescriptor(
           m_notificationFitnessMachineStatusDesc, QByteArray::fromHex("0100"));
         m_services_running.mFitnessMachineStatus = true;
@@ -439,13 +482,15 @@ DeviceHandler::serviceFitnessMachineStateChanged(
       const QLowEnergyCharacteristic trainingStatusChar =
         m_service_fitness_machine->characteristic(
           TrainingStatus::getCharUuid());
-      if (!trainingStatusChar.isValid()) {
+      if (!trainingStatusChar.isValid())
+      {
         setError("Training status Not found");
         break;
       }
       m_notificationTrainingStatusDesc = trainingStatusChar.descriptor(
         QBluetoothUuid::ClientCharacteristicConfiguration);
-      if (m_notificationTrainingStatusDesc.isValid()) {
+      if (m_notificationTrainingStatusDesc.isValid())
+      {
         m_service_fitness_machine->writeDescriptor(
           m_notificationTrainingStatusDesc, QByteArray::fromHex("0100"));
         m_services_running.mTrainingStatus = true;
@@ -466,23 +511,27 @@ void
 DeviceHandler::serviceCyclingSpeedAndCadenceStateChanged(
   QLowEnergyService::ServiceState s)
 {
-  switch (s) {
+  switch (s)
+  {
     case QLowEnergyService::DiscoveringServices:
       setInfo(tr("Discovering CSC services..."));
       break;
-    case QLowEnergyService::ServiceDiscovered: {
+    case QLowEnergyService::ServiceDiscovered:
+    {
       setInfo(tr("Service CSC discovered."));
       const QLowEnergyCharacteristic cscMeasurementChar =
         m_service_cycling_speed_and_cadence->characteristic(
           QBluetoothUuid::CSCMeasurement);
-      if (!cscMeasurementChar.isValid()) {
+      if (!cscMeasurementChar.isValid())
+      {
         setError("CSC Data not found.");
         break;
       }
 
       m_notificationCyclingSpeedAndCadenceDesc = cscMeasurementChar.descriptor(
         QBluetoothUuid::ClientCharacteristicConfiguration);
-      if (m_notificationCyclingSpeedAndCadenceDesc.isValid()) {
+      if (m_notificationCyclingSpeedAndCadenceDesc.isValid())
+      {
         m_service_cycling_speed_and_cadence->writeDescriptor(
           m_notificationCyclingSpeedAndCadenceDesc,
           QByteArray::fromHex("0100"));
@@ -501,23 +550,27 @@ void
 DeviceHandler::serviceCyclingPowerStateChanged(
   QLowEnergyService::ServiceState s)
 {
-  switch (s) {
+  switch (s)
+  {
     case QLowEnergyService::DiscoveringServices:
       setInfo(tr("Discovering Power services..."));
       break;
-    case QLowEnergyService::ServiceDiscovered: {
+    case QLowEnergyService::ServiceDiscovered:
+    {
       setInfo(tr("Service Power discovered."));
       const QLowEnergyCharacteristic powerMeasurementChar =
         m_service_cycling_power->characteristic(
           QBluetoothUuid::CyclingPowerMeasurement);
-      if (!powerMeasurementChar.isValid()) {
+      if (!powerMeasurementChar.isValid())
+      {
         setError("Power Measurement Data not found.");
         break;
       }
 
       m_notificationCyclingPowerDesc = powerMeasurementChar.descriptor(
         QBluetoothUuid::ClientCharacteristicConfiguration);
-      if (m_notificationCyclingPowerDesc.isValid()) {
+      if (m_notificationCyclingPowerDesc.isValid())
+      {
         m_service_cycling_power->writeDescriptor(m_notificationCyclingPowerDesc,
                                                  QByteArray::fromHex("0100"));
         m_services_running.mPower = true;
@@ -539,7 +592,9 @@ DeviceHandler::updateHeartRateValue(const QLowEnergyCharacteristic& c,
 {
   // ignore any other characteristic change -> shouldn't really happen though
   if (c.uuid() != QBluetoothUuid(QBluetoothUuid::HeartRateMeasurement))
+  {
     return;
+  }
 
   auto data = reinterpret_cast<const quint8*>(value.constData());
   quint8 flags = *data;
@@ -547,9 +602,13 @@ DeviceHandler::updateHeartRateValue(const QLowEnergyCharacteristic& c,
   // Heart Rate
   int hrvalue = 0;
   if (flags & 0x1) // HR 16 bit? otherwise 8 bit
+  {
     hrvalue = static_cast<int>(qFromLittleEndian<quint16>(data[1]));
+  }
   else
+  {
     hrvalue = static_cast<int>(data[1]);
+  }
 
   addHRMeasurement(hrvalue);
 }
@@ -559,17 +618,20 @@ DeviceHandler::updateFitnessBikeDataValue(const QLowEnergyCharacteristic& c,
                                           const QByteArray& value)
 {
   // ignore any other characteristic change -> shouldn't really happen though
-  if (c.uuid() == IndoorBikeData::getCharUuid()) {
+  if (c.uuid() == IndoorBikeData::getCharUuid())
+  {
     const IndoorBikeData indoorBikeData(
       reinterpret_cast<const quint8*>(value.constData()));
     addFitnessBikeDataMeasurement(indoorBikeData);
   }
-  if (c.uuid() == FitnessMachineStatus::getCharUuid()) {
+  if (c.uuid() == FitnessMachineStatus::getCharUuid())
+  {
     const FitnessMachineStatus fitnessMachineStatus(
       reinterpret_cast<const quint8*>(value.constData()));
     addFitnessMachineStatusMeasurement(fitnessMachineStatus);
   }
-  if (c.uuid() == TrainingStatus::getCharUuid()) {
+  if (c.uuid() == TrainingStatus::getCharUuid())
+  {
     const TrainingStatus trainingStatus(
       reinterpret_cast<const quint8*>(value.constData()));
     addTrainingStatusMeasurement(trainingStatus);
@@ -581,7 +643,9 @@ DeviceHandler::updateCSCValue(const QLowEnergyCharacteristic& c,
                               const QByteArray& value)
 {
   if (c.uuid() != CSCMeasurementData::getCharUuid())
+  {
     return;
+  }
   const CSCMeasurementData measurementData(
     reinterpret_cast<const quint8*>(value.constData()), m_currentCSCData.get());
   addCSCMeasurement(measurementData);
@@ -592,7 +656,9 @@ DeviceHandler::updatePowerValue(const QLowEnergyCharacteristic& c,
                                 const QByteArray& value)
 {
   if (c.uuid() != CyclingPowerMeasurementData::getCharUuid())
+  {
     return;
+  }
 
   const CyclingPowerMeasurementData measurementData(
     reinterpret_cast<const quint8*>(value.constData()));
@@ -605,7 +671,8 @@ DeviceHandler::confirmedHRDescriptorWrite(const QLowEnergyDescriptor& d,
                                           const QByteArray& value)
 {
   if (d.isValid() && d == m_notificationHrDesc &&
-      value == QByteArray::fromHex("0000")) {
+      value == QByteArray::fromHex("0000"))
+  {
     // disabled notifications -> assume disconnect intent
     m_services_running.mHeart = false;
     tryToStop();
@@ -617,7 +684,8 @@ DeviceHandler::confirmedFitnessMachineFeaturesCharacteristicRead(
   const QLowEnergyCharacteristic& info,
   const QByteArray& value)
 {
-  if (!info.isValid()) {
+  if (!info.isValid())
+  {
     qDebug() << "FitnessMachineFeaturesCharRead not good!";
   }
   const auto* data = reinterpret_cast<const quint8*>(value.constData());
